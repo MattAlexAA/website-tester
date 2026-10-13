@@ -21,7 +21,9 @@
   h1{font-family:var(--display);font-weight:800;font-size:clamp(50px,8vw,96px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink);margin-top:12px}
   .lede{margin-top:22px;font-size:clamp(16px,2vw,19px);color:#3B3B44;max-width:40ch}
   .stage{position:relative;aspect-ratio:1;width:100%;max-width:520px;justify-self:center;touch-action:none}
-  .stage canvas{display:block;width:100%;height:100%;cursor:grab}
+  .stage canvas{display:block;width:100%;height:100%;cursor:grab;outline:none}
+  .stage canvas.grabbing{cursor:grabbing}
+  .stage canvas:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
   .stage .fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:14px;padding:20px}
   .controls{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
   .btn{font-family:var(--px);font-size:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);box-shadow:4px 4px 0 var(--ink);cursor:pointer;text-transform:uppercase}
@@ -40,10 +42,11 @@
   <div>
     <p class="eyebrow">Prototype · 3D cube logo</p>
     <h1>Stop<br>scrambling.</h1>
-    <p class="lede">Sweep your cursor across the tiles. Each tile you pass turns its slice the way you moved, like a Rubik's cube. Stop, and it solves itself back to the logo.</p>
+    <p class="lede">Click and drag to rotate the cube any way you like. Sweep your cursor across the tiles and each one turns its slice, like a Rubik's cube. Stop, and it solves itself back to the logo.</p>
     <div class="controls">
       <button type="button" class="btn go" id="scramble">Scramble</button>
       <button type="button" class="btn" id="solve">Solve</button>
+      <button type="button" class="btn" id="reset">Reset view</button>
     </div>
     <p class="status" id="status" role="status">Solved</p>
   </div>
@@ -55,7 +58,7 @@
   <div class="how">
     <div><h3>One cube, four letters</h3><p>A real 5×5×5 cube. Each side carries one cube of the logo: A on the front in red, S in blue on the right, A in green on the back, P in orange on the left. Turning a slice pulls the next letter round.</p></div>
     <div><h3>Inverted look</h3><p>The letter tiles are white and the rest of each face is the cube colour, on black plastic like a real puzzle.</p></div>
-    <div><h3>Hover to turn</h3><p>The tile under the cursor turns its row or column in the direction you're moving. On a phone, swipe across it. Drag on the background to spin the whole cube.</p></div>
+    <div><h3>Rotate and turn</h3><p>Click and drag anywhere to rotate the whole cube, all the way round, and flick it to spin. Hover a tile to turn its slice. On a phone, drag the background to rotate and swipe across tiles to turn them. Arrow keys rotate it too.</p></div>
     <div><h3>Solves itself</h3><p>After a second without a turn, it undoes every move in reverse until the logo is back.</p></div>
   </div>
 </div></section>
@@ -85,8 +88,9 @@
   var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
 
   var cube = new THREE.Group();
-  var BASE_X = 0.42, BASE_Y = -0.62;
-  cube.rotation.set(BASE_X, BASE_Y, 0);
+  var HOME = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.42, -0.62, 0));
+  var base = HOME.clone();             // where the viewer has rotated the cube to
+  cube.quaternion.copy(base);
   scene.add(cube);
 
   var bodyGeo = new THREE.BoxGeometry(1, 1, 1);
@@ -196,10 +200,13 @@
 
   function setStatus(t){ statusEl.textContent = t; }
 
-  /* ---------- pointer: hover a tile to turn it, drag the background to spin ---------- */
+  /* ---------- pointer ----------
+     Mouse: hover a tile to turn its slice; press and drag anywhere to rotate the cube.
+     Touch: swipe from a tile to turn slices; drag from the background to rotate. */
   var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   var lastSticker = null, lastX = 0, lastY = 0, vx = 0, vy = 0;
-  var spin = {on:false, x:0, y:0, rx:BASE_X, ry:BASE_Y}, tilt = {x:0, y:0};
+  var rotating = false, spinV = {x:0, y:0}, tilt = {x:0, y:0}, touchTurning = false;
+  var ROT = 0.009, X_AXIS = new THREE.Vector3(1,0,0), Y_AXIS = new THREE.Vector3(0,1,0);
 
   function hit(e){
     var r = renderer.domElement.getBoundingClientRect();
@@ -221,26 +228,43 @@
     return {axis:axis, layer:layerOf(h.object.parent, axis), dir: axisV[axis] > 0 ? 1 : -1};
   }
 
+  /* rotate around the screen's axes, so dragging always moves the cube the way your hand moves */
+  function rotateBy(dx, dy){
+    var q = new THREE.Quaternion().setFromAxisAngle(Y_AXIS, dx * ROT)
+      .multiply(new THREE.Quaternion().setFromAxisAngle(X_AXIS, dy * ROT));
+    base.premultiply(q).normalize();
+  }
+
   var cvs = renderer.domElement;
+  cvs.tabIndex = 0;
+  cvs.setAttribute('aria-label', 'ASAP cube. Drag to rotate, arrow keys to rotate, hover tiles to turn them.');
   cvs.addEventListener('pointerdown', function(e){
-    lastX = e.clientX; lastY = e.clientY; vx = vy = 0;
-    if(!hit(e)){ spin.on = true; spin.x = e.clientX; spin.y = e.clientY; spin.rx = cube.rotation.x; spin.ry = cube.rotation.y; cvs.setPointerCapture(e.pointerId); }
+    lastX = e.clientX; lastY = e.clientY; vx = vy = 0; spinV.x = spinV.y = 0;
+    var h = hit(e);
+    if(e.pointerType !== 'mouse' && h){ touchTurning = true; lastSticker = h.object; return; }
+    rotating = true; tilt.x = tilt.y = 0;
+    cvs.classList.add('grabbing'); cvs.setPointerCapture(e.pointerId);
   });
-  window.addEventListener('pointerup', function(){ spin.on = false; });
-  cvs.addEventListener('pointerleave', function(){ lastSticker = null; tilt.x = tilt.y = 0; });
+  function release(){
+    rotating = false; touchTurning = false; cvs.classList.remove('grabbing');
+  }
+  cvs.addEventListener('pointerup', release);
+  cvs.addEventListener('pointercancel', release);
+  cvs.addEventListener('pointerleave', function(){ if(!rotating){ lastSticker = null; tilt.x = tilt.y = 0; } });
   cvs.addEventListener('pointermove', function(e){
     var dx = e.clientX - lastX, dy = e.clientY - lastY;
     lastX = e.clientX; lastY = e.clientY;
     vx = vx*0.6 + dx*0.4; vy = vy*0.6 + dy*0.4;
-    if(spin.on){
-      cube.rotation.y = spin.ry + (e.clientX - spin.x) * 0.01;
-      cube.rotation.x = Math.max(-1.2, Math.min(1.2, spin.rx + (e.clientY - spin.y) * 0.01));
-      BASE_X = cube.rotation.x; BASE_Y = cube.rotation.y;
+    if(rotating){
+      rotateBy(dx, dy);
+      spinV.x = dx; spinV.y = dy;
       return;
     }
-    var r = cvs.getBoundingClientRect();
-    tilt.x = ((e.clientY - r.top) / r.height - .5) * 0.18;
-    tilt.y = ((e.clientX - r.left) / r.width - .5) * 0.25;
+    if(e.pointerType === 'mouse'){
+      var r = cvs.getBoundingClientRect();
+      tilt.x = ((e.clientY - r.top) / r.height - .5) * 0.18;
+      tilt.y = ((e.clientX - r.left) / r.width - .5) * 0.25;
+    } else if(!touchTurning) return;
     var h = hit(e);
     var s = h ? h.object : null;
     // gaps between tiles hit nothing, so remember the last real tile
@@ -250,9 +274,14 @@
     }
     if(s) lastSticker = s;
   });
+  cvs.addEventListener('keydown', function(e){
+    var k = {ArrowLeft:[-14,0], ArrowRight:[14,0], ArrowUp:[0,-14], ArrowDown:[0,14]}[e.key];
+    if(k){ e.preventDefault(); rotateBy(k[0], k[1]); }
+  });
 
   document.getElementById('scramble').addEventListener('click', scramble);
   document.getElementById('solve').addEventListener('click', solve);
+  document.getElementById('reset').addEventListener('click', function(){ spinV.x = spinV.y = 0; base.copy(HOME); });
 
   /* ---------- render ---------- */
   function resize(){
@@ -260,11 +289,16 @@
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(stage); resize();
+  var target = new THREE.Quaternion(), tiltQ = new THREE.Quaternion(), tiltE = new THREE.Euler();
   (function loop(){
-    if(!spin.on && !reduce){
-      cube.rotation.x += (BASE_X + tilt.x - cube.rotation.x) * 0.06;
-      cube.rotation.y += (BASE_Y + tilt.y - cube.rotation.y) * 0.06;
+    if(!rotating && !reduce && (Math.abs(spinV.x) + Math.abs(spinV.y)) > 0.05){
+      rotateBy(spinV.x, spinV.y);                        // a flick keeps spinning, then slows
+      spinV.x *= 0.92; spinV.y *= 0.92;
     }
+    tiltQ.setFromEuler(tiltE.set(tilt.x, tilt.y, 0));
+    target.copy(base).premultiply(tiltQ);
+    if(reduce || rotating) cube.quaternion.copy(target);
+    else cube.quaternion.slerp(target, 0.12);
     renderer.render(scene, camera);
     requestAnimationFrame(loop);
   })();
