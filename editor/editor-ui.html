@@ -1,0 +1,215 @@
+<style data-src="editor">
+  /* Site editor toolbar. Sits on top of the ASAP Assets site; uses the site's own ink/acid palette. */
+  :root{--ed-ink:#000;--ed-paper:#fff;--ed-acid:#F9FF2D;--ed-blue:#0048FF;--ed-muted:#B9B9C0;--ed-warn:#FF6A00;--ed-ok:#00C24A}
+  .ed-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9999;display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:calc(100% - 32px);padding:8px;background:var(--ed-ink);color:var(--ed-paper);border:2px solid var(--ed-ink);box-shadow:6px 6px 0 var(--ed-acid);font:500 13px/1.2 "Inter",system-ui,sans-serif}
+  .ed-bar button,.ed-bar select{font:inherit;font-weight:600;color:var(--ed-paper);background:transparent;border:1.5px solid #4A4A52;padding:7px 11px;cursor:pointer;min-height:34px}
+  .ed-bar select{max-width:170px}
+  .ed-bar select option{color:var(--ed-ink);background:var(--ed-paper)}
+  .ed-bar button:hover,.ed-bar select:hover{border-color:var(--ed-paper)}
+  .ed-bar button:focus-visible,.ed-bar select:focus-visible{outline:2px solid var(--ed-acid);outline-offset:2px}
+  .ed-bar button[disabled]{opacity:.4;cursor:default}
+  .ed-bar .ed-primary{background:var(--ed-acid);color:var(--ed-ink);border-color:var(--ed-acid)}
+  .ed-bar .ed-toggle[aria-pressed="true"]{background:var(--ed-paper);color:var(--ed-ink);border-color:var(--ed-paper)}
+  .ed-status{display:flex;align-items:center;gap:6px;padding:0 6px;color:var(--ed-muted);white-space:nowrap}
+  .ed-status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ed-muted)}
+  .ed-status[data-s="dirty"]::before{background:var(--ed-warn)}
+  .ed-status[data-s="saving"]::before{background:var(--ed-acid)}
+  .ed-status[data-s="saved"]::before{background:var(--ed-ok)}
+  html.ed-on [data-edit]{caret-color:var(--ed-blue)}
+  html.ed-on [data-edit]:focus{outline:none}
+  html.ed-on [data-edit] *:hover:not(:has(*:hover)){outline:2px dashed var(--ed-blue);outline-offset:3px}
+  html.ed-on [data-edit] a{cursor:text}
+  @media (max-width:560px){.ed-bar{gap:6px}.ed-bar select{max-width:120px}.ed-hint{display:none}}
+</style>
+<script data-src="editor">
+(function(){
+  /* The published document is: this skeleton, then every body element marked
+     data-src (kept verbatim) or data-edit (the editable site, cleaned of
+     runtime state), in order. Runtime-injected nodes and this toolbar are skipped. */
+  var SKELETON = '__SKELETON__';
+  var TITLE = '<title data-src>ASAP Assets Website</title>';
+  var STASH = 'asap-editor';
+  var AUTOSAVE_MS = 12000;
+
+  var art = null, editing = false, dirty = false, saving = false, readOnly = false, timer = 0;
+  var bar, statusEl, toggleBtn, saveBtn, pageSel;
+
+  function regions(){ return document.querySelectorAll('body > [data-edit]'); }
+
+  function cleanClone(el){
+    var c = el.cloneNode(true);
+    var all = [c].concat(Array.prototype.slice.call(c.querySelectorAll('*')));
+    all.forEach(function(n){
+      n.removeAttribute('contenteditable');
+      n.removeAttribute('spellcheck');
+      if(n.classList){
+        n.classList.remove('in');            // reveal animation state
+        if(n.classList.contains('nl')) n.classList.remove('on');   // active nav state
+        if(n.getAttribute('class') === '') n.removeAttribute('class');
+      }
+    });
+    c.querySelectorAll('.view').forEach(function(v){ v.setAttribute('hidden',''); });  // router state
+    return c;
+  }
+
+  function buildDoc(){
+    var out = '';
+    Array.prototype.forEach.call(document.body.children, function(el){
+      if(el.tagName === 'TITLE') out += TITLE + '\n';    // the router rewrites document.title per page
+      else if(el.hasAttribute('data-src')) out += el.outerHTML + '\n';
+      else if(el.hasAttribute('data-edit')) out += cleanClone(el).outerHTML + '\n';
+    });
+    return SKELETON + out + '</body></html>';
+  }
+
+  function setStatus(s, text){ statusEl.dataset.s = s; statusEl.textContent = text; }
+
+  function setEditing(on){
+    editing = on && !readOnly;
+    document.documentElement.classList.toggle('ed-on', editing);
+    regions().forEach(function(r){
+      if(editing){ r.setAttribute('contenteditable','true'); r.setAttribute('spellcheck','true'); }
+      else { r.removeAttribute('contenteditable'); r.removeAttribute('spellcheck'); }
+    });
+    toggleBtn.setAttribute('aria-pressed', String(editing));
+    toggleBtn.textContent = editing ? 'Editing on' : 'Edit text';
+  }
+
+  function markDirty(){
+    if(readOnly) return;
+    dirty = true; saveBtn.disabled = false;
+    setStatus('dirty', 'Unsaved changes');
+    clearTimeout(timer);
+    timer = setTimeout(save, AUTOSAVE_MS);
+  }
+
+  function stash(extra){
+    try{
+      sessionStorage.setItem(STASH, JSON.stringify(Object.assign({
+        hash: location.hash, y: window.scrollY, edit: editing
+      }, extra || {})));
+    }catch(e){}
+  }
+
+  function save(){
+    clearTimeout(timer);
+    if(!dirty || saving || readOnly || !art) return;
+    saving = true; saveBtn.disabled = true;
+    setStatus('saving', 'Saving…');
+    var html = buildDoc();
+    stash({justSaved: true});
+    art.publish(html).then(function(){
+      dirty = false;
+      setStatus('saved', 'Saved');           // the view reloads to the new version
+    }, function(err){
+      saving = false;
+      var code = err && err.code;
+      stash({justSaved: false});
+      if(code === 'conflict'){
+        dirty = false;
+        setStatus('dirty', 'Page changed elsewhere. Loading the latest version…');
+      } else if(code === 'not_writer' || code === 'not_granted' || code === 'consent_required' || code === 'not_declared' || code === 'capability_disabled'){
+        goReadOnly();
+      } else if(code === 'rate_limited'){
+        saveBtn.disabled = false;
+        setStatus('dirty', 'Saving too often. Retrying in 30s');
+        timer = setTimeout(save, 30000);
+      } else {
+        saveBtn.disabled = false;
+        setStatus('dirty', 'Save failed. Click Save to try again');
+      }
+    });
+  }
+
+  function goReadOnly(){
+    readOnly = true; setEditing(false);
+    toggleBtn.disabled = true; saveBtn.disabled = true;
+    setStatus('', 'View only');
+  }
+
+  function pageLabel(k){
+    var L = {'home':'Home','small-business':'Small Business','brands':'Brands','creators':'Creators','personalised':'Personalised',
+      'how-it-works':'How it works','about':'About','faq':'FAQ','compare':'Compare','can-i-use-chatgpt-for-content-ideas':'ChatGPT or us?',
+      'contact':'Contact','privacy':'Privacy','pricing.md':'pricing.md'};
+    return L[k] || k;
+  }
+  function currentKey(){
+    var h = location.hash.slice(1); if(!h || h.charAt(0) !== '/') return 'home';
+    return h.split('#')[0].replace(/^\/|\/$/g,'') || 'home';
+  }
+
+  function buildBar(){
+    bar = document.createElement('div');
+    bar.className = 'ed-bar'; bar.setAttribute('role','toolbar'); bar.setAttribute('aria-label','Site editor');
+    toggleBtn = document.createElement('button'); toggleBtn.type = 'button'; toggleBtn.className = 'ed-toggle';
+    toggleBtn.addEventListener('click', function(){ setEditing(!editing); });
+    pageSel = document.createElement('select'); pageSel.id = 'ed-page'; pageSel.setAttribute('aria-label','Go to page');
+    document.querySelectorAll('.view[data-view]').forEach(function(v){
+      var k = v.getAttribute('data-view'), o = document.createElement('option');
+      o.value = k; o.textContent = pageLabel(k); pageSel.appendChild(o);
+    });
+    pageSel.addEventListener('change', function(){ location.hash = pageSel.value === 'home' ? '#/' : '#/' + pageSel.value; });
+    window.addEventListener('hashchange', function(){ pageSel.value = currentKey(); });
+    saveBtn = document.createElement('button'); saveBtn.type = 'button'; saveBtn.className = 'ed-primary';
+    saveBtn.textContent = 'Save'; saveBtn.disabled = true; saveBtn.addEventListener('click', save);
+    statusEl = document.createElement('span'); statusEl.className = 'ed-status'; statusEl.setAttribute('role','status');
+    bar.append(toggleBtn, pageSel, saveBtn, statusEl);
+    document.body.appendChild(bar);
+    pageSel.value = currentKey();
+    setStatus('', 'Connecting…');
+    setEditing(false); toggleBtn.disabled = true;
+  }
+
+  /* In edit mode a click places the caret instead of following links or opening Calendly. */
+  window.addEventListener('click', function(e){
+    if(!editing || bar.contains(e.target)) return;
+    var a = e.target.closest && e.target.closest('a');
+    if(a){ e.preventDefault(); e.stopPropagation(); }
+  }, true);
+
+  document.addEventListener('input', function(e){
+    if(editing && e.target.closest && e.target.closest('[data-edit]')) markDirty();
+  });
+  /* Paste as plain text so no outside formatting lands in the site. */
+  document.addEventListener('paste', function(e){
+    if(!editing || !(e.target.closest && e.target.closest('[data-edit]'))) return;
+    e.preventDefault();
+    var t = (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, t);
+  });
+  document.addEventListener('keydown', function(e){
+    if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's'){ e.preventDefault(); save(); }
+    if(e.key === 'Escape' && editing){ setEditing(false); }
+  });
+  window.addEventListener('beforeunload', function(){ if(dirty) stash({justSaved:false}); });
+
+  function restore(){
+    var s = null;
+    try{ s = JSON.parse(sessionStorage.getItem(STASH) || 'null'); sessionStorage.removeItem(STASH); }catch(e){}
+    if(!s) return;
+    if(s.hash && s.hash !== location.hash) location.hash = s.hash;
+    setTimeout(function(){ window.scrollTo(0, s.y || 0); }, 60);
+    if(s.edit) setEditing(true);
+    if(s.justSaved) setStatus('saved', 'Saved');
+  }
+
+  function start(){
+    buildBar();
+    var tries = 0;
+    (function wait(){
+      if(window.claude && window.claude.use) return connect();
+      if(++tries > 40){ goReadOnly(); setStatus('', 'Open on claude.ai to edit'); return; }
+      setTimeout(wait, 100);
+    })();
+  }
+  function connect(){
+    window.claude.use('artifact').then(function(ns){
+      if(!ns){ goReadOnly(); return; }
+      art = ns; toggleBtn.disabled = false;
+      setStatus('saved', 'All changes saved');
+      restore();
+    }, goReadOnly);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
