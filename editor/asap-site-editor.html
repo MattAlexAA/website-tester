@@ -311,6 +311,24 @@
   .prose blockquote + p{margin-top:16px;font-size:14px;color:var(--muted)}
   .prose .tbl-wrap{margin:26px 0 30px}
 
+  /* ---------- hero: headline accent + 3D cube ---------- */
+  .hero h1{font-size:clamp(40px,5.2vw,72px)}
+  .hero h1 .asap-today{font-family:var(--serif);font-style:italic;font-weight:800;text-transform:none;letter-spacing:-.01em;color:var(--red-t);
+    text-decoration:underline;text-decoration-thickness:.07em;text-underline-offset:.12em;white-space:nowrap}
+  .hero .lede{max-width:46ch}
+  .hero .lede + .lede{margin-top:14px}
+  .hero-cube{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+  .cube-stage{width:100%;max-width:500px;aspect-ratio:1;touch-action:pan-y}
+  .cube-stage canvas{display:block;width:100%;height:100%;cursor:grab;outline:none}
+  .cube-stage canvas.grabbing{cursor:grabbing}
+  .cube-stage canvas:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
+  .cube-hint{font-family:var(--px);font-size:8px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;text-align:center}
+  .cube-picks{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;width:100%;max-width:500px;margin-top:6px}
+  .cube-pick{display:block;padding:10px 0 10px 14px;border-left:4px solid var(--c)}
+  .cube-pick .t{display:block;font-family:var(--display);font-weight:800;font-size:16px;line-height:1.1;text-transform:uppercase;color:var(--ink)}
+  .cube-pick .sub{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+  .cube-pick:hover .sub{color:var(--type)}
+
   .view[hidden]{display:none}
   .preview-bar{background:var(--ink);color:var(--cream);font-family:var(--px);font-size:8px;letter-spacing:.06em;line-height:1.8;padding:9px 24px;text-align:center;text-transform:uppercase}
   .rawfile{margin-top:26px;padding:24px;border:2px solid var(--ink);background:var(--soft);font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-x:auto}
@@ -342,30 +360,18 @@
 <div class="wrap hero">
 <div>
 <p class="eyebrow">ASAP Assets — Content, solved</p>
-<h1><span>Stop</span><br><span class="hl">scrambling.</span></h1>
-<p class="lede"><span class="a1">A</span>.<span class="a2">S</span>.<span class="a3">A</span>.<span class="a4">P</span><span>. — we turn your content scramble into a system that grows the brand</span></p>
+<h1><span>Stop</span> <span class="hl">scrambling.</span><br><span>Start solving</span> <em class="asap-today">ASAP today.</em></h1>
+<p class="lede">If you can't solve our puzzle, fear not, we can help to solve yours. Whether you're a small business, brand or creator, you get boutique agency delivery without the boutique agency price: ready-to-film short-form video concepts, shoot guides, editing and strategy for Instagram, TikTok, Facebook and YouTube.</p>
+<p class="lede">We work as an extension of your business. Shop for your content the way you shop for anything else.</p>
 <div class="hero-actions">
 <a class="btn btn-go" href="#find-your-cube">Find your cube</a>
 <a class="btn js-book" data-pkg="Hero — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
 </div>
 </div>
-<div aria-label="The four ASAP cubes" class="faces crop"><span class="cm1"></span>
-<a aria-label="Cube 01 A — Small Business" class="face-card" href="/small-business" style="--c:var(--red);--ct:var(--red-t)">
-<span class="face"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span>
-<span class="face-meta"><span class="t">Small Business</span><span class="sub">3-month packages · from $1,000 →</span></span>
-</a>
-<a aria-label="Cube 02 S — Brands" class="face-card" href="/brands" style="--c:var(--blue);--ct:var(--blue-t)">
-<span class="face"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span>
-<span class="face-meta"><span class="t">Brands</span><span class="sub">Quarterly · from $4,000 →</span></span>
-</a>
-<a aria-label="Cube 03 A — Creators" class="face-card" href="/creators" style="--c:var(--green);--ct:var(--green-t)">
-<span class="face"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span>
-<span class="face-meta"><span class="t">Creators</span><span class="sub">Monthly · from $500 →</span></span>
-</a>
-<a aria-label="Cube 04 P — Personalised" class="face-card" href="/personalised" style="--c:var(--orange);--ct:var(--orange-t)">
-<span class="face"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span>
-<span class="face-meta"><span class="t">Personalised</span><span class="sub">Bespoke · shoot days from $3,000 →</span></span>
-</a>
+<div class="hero-cube">
+<div aria-label="The ASAP cube. Drag to rotate it, hover a tile to turn its slice." class="cube-stage" data-generated id="hero-cube" role="img"></div>
+<p class="cube-hint">Drag to spin it. Hover or swipe a tile to turn it.</p>
+<div class="cube-picks"><a class="cube-pick" href="/small-business" style="--c:var(--red);--ct:var(--red-t)"><span class="t">Small Business</span><span class="sub">3-month packages · from $1,000 →</span></a><a class="cube-pick" href="/brands" style="--c:var(--blue);--ct:var(--blue-t)"><span class="t">Brands</span><span class="sub">Quarterly · from $4,000 →</span></a><a class="cube-pick" href="/creators" style="--c:var(--green);--ct:var(--green-t)"><span class="t">Creators</span><span class="sub">Monthly · from $500 →</span></a><a class="cube-pick" href="/personalised" style="--c:var(--orange);--ct:var(--orange-t)"><span class="t">Personalised</span><span class="sub">Bespoke · shoot days from $3,000 →</span></a></div>
 </div>
 </div>
 </header>
@@ -1029,6 +1035,251 @@ Page: https://asapassets.com.au/personalised
 </div>
 </footer>
 <script data-src async src="https://assets.calendly.com/assets/external/widget.js"></script>
+<script data-src src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script data-src>
+/* ---------- 3D hero cube: drag to rotate, hover a tile to turn its slice, solves itself ---------- */
+(function(){
+  var stage = document.getElementById('hero-cube');
+  if(!stage) return;
+  if(!window.THREE){ stage.closest('.hero-cube').hidden = true; return; }
+
+  /* 1 = letter (white) tile, read left-to-right, top-to-bottom as you face that side */
+  var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
+  var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
+  var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
+  var Q = [0,1,1,1,0, 0,0,0,0,1, 0,0,1,1,0, 0,0,0,0,0, 0,0,1,0,0];   // ?
+  var X = [0,0,1,0,0, 0,0,1,0,0, 0,0,1,0,0, 0,0,0,0,0, 0,0,1,0,0];   // !
+  var WHITE = 0xFFFBFB, RED = 0xFF0000, BLUE = 0x0048FF, GREEN = 0x00C24A, ORANGE = 0xFF6A00, ACID = 0xF9FF2D, INK = 0x111116;
+  var N = 5, H = 2, GAP = 1.06, TURN_MS = 230, SOLVE_MS = 170, IDLE_MS = 1100, MAX_MOVES = 10;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 0, 21);
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  stage.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.72));
+  var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
+  var under = new THREE.DirectionalLight(0xffffff, 0.3); under.position.set(2, -8, 4); scene.add(under);   // so the ! underneath reads white
+
+  var cube = new THREE.Group();
+  var HOME = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.42, -0.62, 0));
+  var base = HOME.clone();             // where the viewer has rotated the cube to
+  cube.quaternion.copy(base);
+  scene.add(cube);
+
+  var bodyGeo = new THREE.BoxGeometry(1, 1, 1);
+  var bodyMat = new THREE.MeshLambertMaterial({color:0x050505});
+  var stickerGeo = new THREE.PlaneGeometry(0.84, 0.84);
+  var mats = {};
+  function mat(c){ return mats[c] || (mats[c] = new THREE.MeshLambertMaterial({color:c})); }
+
+  function sticker(cubie, normal, color){
+    var s = new THREE.Mesh(stickerGeo, mat(color));
+    s.position.copy(normal).multiplyScalar(0.502);
+    s.lookAt(normal.clone().multiplyScalar(2));
+    s.userData.sticker = true;
+    cubie.add(s);
+  }
+  function letterColour(pat, col, row, face){ return pat[row*5 + col] ? WHITE : face; }
+
+  var cubies = [], stickers = [];
+  for(var x=-H; x<=H; x++) for(var y=-H; y<=H; y++) for(var z=-H; z<=H; z++){
+    if(Math.max(Math.abs(x),Math.abs(y),Math.abs(z)) < H) continue;     // hidden core
+    var c = new THREE.Mesh(bodyGeo, bodyMat);
+    c.position.set(x*GAP, y*GAP, z*GAP);
+    var row = H - y;
+    if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  letterColour(A, x+H, row, RED));      // front
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  letterColour(S, H-z, row, BLUE));     // right
+    if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), letterColour(A, H-x, row, GREEN));    // back
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), letterColour(P, z+H, row, ORANGE));   // left
+    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  letterColour(Q, x+H, z+H, ACID));     // top: ? (tip the cube towards you)
+    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE);     // bottom: black ! on white (tip it away)
+    cube.add(c); cubies.push(c);
+  }
+  cubies.forEach(function(c){ c.children.forEach(function(s){ stickers.push(s); }); });
+
+  /* ---------- turning a slice ---------- */
+  var history = [], queue = [], turning = false, idleTimer = 0, solving = false;
+  var AX = ['x','y','z'];
+
+  function layerOf(c, axis){ return Math.round(c.position[axis] / GAP); }
+
+  function snap(c){
+    c.position.set(Math.round(c.position.x/GAP)*GAP, Math.round(c.position.y/GAP)*GAP, Math.round(c.position.z/GAP)*GAP);
+    c.updateMatrix();
+    var e = c.matrix.elements;
+    [0,1,2,4,5,6,8,9,10].forEach(function(i){ e[i] = Math.round(e[i]); });
+    c.matrix.decompose(c.position, c.quaternion, c.scale);
+  }
+
+  function runTurn(m, ms){
+    return new Promise(function(done){
+      var pivot = new THREE.Object3D(); cube.add(pivot);
+      var group = cubies.filter(function(c){ return layerOf(c, m.axis) === m.layer; });
+      group.forEach(function(c){ pivot.attach(c); });
+      var t0 = performance.now(), target = m.dir * Math.PI/2;
+      (function step(now){
+        var k = Math.min(1, (now - t0) / ms);
+        var e = k < 1 ? 1 - Math.pow(1 - k, 3) : 1;
+        pivot.rotation[m.axis] = target * e;
+        if(k < 1) return requestAnimationFrame(step);
+        pivot.updateMatrixWorld(true);
+        group.forEach(function(c){ cube.attach(c); snap(c); });
+        cube.remove(pivot); done();
+      })(t0);
+    });
+  }
+
+  function pump(){
+    if(turning || !queue.length) return;
+    turning = true;
+    var job = queue.shift();
+    runTurn(job.m, job.ms).then(function(){ turning = false; if(job.after) job.after(); pump(); });
+  }
+
+  function turn(m){
+    if(solving || turning || queue.length) return;      // one slice at a time, so a fast sweep can't pile up turns
+    history.push(m);
+    setStatus('Scrambled · ' + history.length + (history.length === 1 ? ' turn' : ' turns'));
+    queue.push({m:m, ms: reduce ? 1 : TURN_MS});
+    pump();
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(solve, history.length >= MAX_MOVES ? 250 : IDLE_MS);
+  }
+
+  function solve(){
+    clearTimeout(idleTimer);
+    if(solving || !history.length) return;
+    solving = true; setStatus('Solving…');
+    var moves = history.slice().reverse(); history = [];
+    moves.forEach(function(m, i){
+      queue.push({m:{axis:m.axis, layer:m.layer, dir:-m.dir}, ms: reduce ? 1 : SOLVE_MS,
+        after: i === moves.length - 1 ? function(){ solving = false; setStatus('Solved'); } : null});
+    });
+    pump();
+  }
+
+  function scramble(){
+    if(solving) return;
+    var last = null;
+    for(var i=0;i<6;i++){
+      var m; do { m = {axis:AX[Math.floor(Math.random()*3)], layer:Math.floor(Math.random()*N)-H, dir:Math.random()<.5?1:-1}; }
+      while(last && m.axis === last.axis && m.layer === last.layer);
+      last = m; history.push(m); queue.push({m:m, ms: reduce ? 1 : TURN_MS});
+    }
+    setStatus('Scrambled · ' + history.length + ' turns');
+    pump();
+    clearTimeout(idleTimer); idleTimer = setTimeout(solve, 6*TURN_MS + 700);
+  }
+
+  function setStatus(){}
+
+  /* ---------- pointer ----------
+     Mouse: hover a tile to turn its slice; press and drag anywhere to rotate the cube.
+     Touch: swipe from a tile to turn slices; drag from the background to rotate. */
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  var lastSticker = null, lastX = 0, lastY = 0, vx = 0, vy = 0;
+  var rotating = false, spinV = {x:0, y:0}, tilt = {x:0, y:0}, touchTurning = false;
+  var ROT = 0.009, X_AXIS = new THREE.Vector3(1,0,0), Y_AXIS = new THREE.Vector3(0,1,0);
+
+  function hit(e){
+    var r = renderer.domElement.getBoundingClientRect();
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    var h = ray.intersectObjects(stickers, false)[0];
+    return h || null;
+  }
+
+  function moveFor(h, dx, dy){
+    // face normal and screen drag, both in the cube's own frame
+    var inv = cube.quaternion.clone().invert();
+    var n = new THREE.Vector3(0,0,1).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).applyQuaternion(inv);
+    var drag = new THREE.Vector3(dx, -dy, 0).applyQuaternion(camera.quaternion).applyQuaternion(inv);
+    var axisV = new THREE.Vector3().crossVectors(n, drag);
+    var abs = [Math.abs(axisV.x), Math.abs(axisV.y), Math.abs(axisV.z)];
+    var i = abs.indexOf(Math.max.apply(null, abs)), axis = AX[i];
+    if(abs[i] < 1e-6) return null;
+    return {axis:axis, layer:layerOf(h.object.parent, axis), dir: axisV[axis] > 0 ? 1 : -1};
+  }
+
+  /* rotate around the screen's axes, so dragging always moves the cube the way your hand moves */
+  function rotateBy(dx, dy){
+    var q = new THREE.Quaternion().setFromAxisAngle(Y_AXIS, dx * ROT)
+      .multiply(new THREE.Quaternion().setFromAxisAngle(X_AXIS, dy * ROT));
+    base.premultiply(q).normalize();
+  }
+
+  var cvs = renderer.domElement;
+  cvs.tabIndex = 0;
+  cvs.setAttribute('aria-label', 'ASAP cube. Drag to rotate, arrow keys to rotate, hover tiles to turn them.');
+  cvs.addEventListener('pointerdown', function(e){
+    lastX = e.clientX; lastY = e.clientY; vx = vy = 0; spinV.x = spinV.y = 0;
+    var h = hit(e);
+    if(e.pointerType !== 'mouse' && h){ touchTurning = true; lastSticker = h.object; return; }
+    rotating = true; tilt.x = tilt.y = 0;
+    cvs.classList.add('grabbing'); cvs.setPointerCapture(e.pointerId);
+  });
+  function release(){
+    rotating = false; touchTurning = false; cvs.classList.remove('grabbing');
+  }
+  cvs.addEventListener('pointerup', release);
+  cvs.addEventListener('pointercancel', release);
+  cvs.addEventListener('pointerleave', function(){ if(!rotating){ lastSticker = null; tilt.x = tilt.y = 0; } });
+  cvs.addEventListener('pointermove', function(e){
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    vx = vx*0.6 + dx*0.4; vy = vy*0.6 + dy*0.4;
+    if(rotating){
+      rotateBy(dx, dy);
+      spinV.x = dx; spinV.y = dy;
+      return;
+    }
+    if(e.pointerType === 'mouse'){
+      var r = cvs.getBoundingClientRect();
+      tilt.x = ((e.clientY - r.top) / r.height - .5) * 0.18;
+      tilt.y = ((e.clientX - r.left) / r.width - .5) * 0.25;
+    } else if(!touchTurning) return;
+    var h = hit(e);
+    var s = h ? h.object : null;
+    // gaps between tiles hit nothing, so remember the last real tile
+    if(s && s !== lastSticker && (Math.abs(vx) + Math.abs(vy)) > 1.5){
+      var m = moveFor(h, vx, vy);
+      if(m) turn(m);
+    }
+    if(s) lastSticker = s;
+  });
+  cvs.addEventListener('keydown', function(e){
+    var k = {ArrowLeft:[-14,0], ArrowRight:[14,0], ArrowUp:[0,-14], ArrowDown:[0,14]}[e.key];
+    if(k){ e.preventDefault(); rotateBy(k[0], k[1]); }
+  });
+
+
+  /* ---------- render ---------- */
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if(!w || !h) return;                               // hero hidden on other pages
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  var onScreen = true;
+  if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen = es[0].isIntersecting; }).observe(stage);
+  var target = new THREE.Quaternion(), tiltQ = new THREE.Quaternion(), tiltE = new THREE.Euler();
+  (function loop(){
+    if(!rotating && !reduce && (Math.abs(spinV.x) + Math.abs(spinV.y)) > 0.05){
+      rotateBy(spinV.x, spinV.y);                        // a flick keeps spinning, then slows
+      spinV.x *= 0.92; spinV.y *= 0.92;
+    }
+    tiltQ.setFromEuler(tiltE.set(tilt.x, tilt.y, 0));
+    target.copy(base).premultiply(tiltQ);
+    if(reduce || rotating) cube.quaternion.copy(target);
+    else cube.quaternion.slerp(target, 0.12);
+    if(onScreen && stage.offsetWidth) renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
 <script data-src>
 /* ============================================================
    Calendly link used by every "Book a call" button.
@@ -1137,6 +1388,7 @@ document.querySelectorAll('.js-book').forEach(function(el){
       }
     });
     c.querySelectorAll('.view').forEach(function(v){ v.setAttribute('hidden',''); });  // router state
+    c.querySelectorAll('[data-generated]').forEach(function(g){ g.innerHTML = ''; });  // drawn by script (the 3D cube)
     return c;
   }
 
