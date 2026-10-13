@@ -56,7 +56,7 @@
 <section><div class="wrap">
   <p class="eyebrow" style="margin-bottom:20px">How the model works</p>
   <div class="how">
-    <div><h3>One cube, four letters</h3><p>A real 5×5×5 cube. Each side carries one cube of the logo: A on the front in red, S in blue on the right, A in green on the back, P in orange on the left. Turning a slice pulls the next letter round.</p></div>
+    <div><h3>One cube, four letters</h3><p>A real 5×5×5 cube. Each side carries one cube of the logo: A on the front in red, S in blue on the right, A in green on the back, P in orange on the left. A ? sits on top in yellow and a ! underneath in black. Turning a slice pulls the next letter round.</p></div>
     <div><h3>Inverted look</h3><p>The letter tiles are white and the rest of each face is the cube colour, on black plastic like a real puzzle.</p></div>
     <div><h3>Rotate and turn</h3><p>Click and drag anywhere to rotate the whole cube, all the way round, and flick it to spin. Hover a tile to turn its slice. On a phone, drag the background to rotate and swipe across tiles to turn them. Arrow keys rotate it too.</p></div>
     <div><h3>Solves itself</h3><p>After a second without a turn, it undoes every move in reverse until the logo is back.</p></div>
@@ -74,6 +74,8 @@
   var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
   var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
   var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
+  var Q = [0,1,1,1,0, 0,0,0,0,1, 0,0,1,1,0, 0,0,0,0,0, 0,0,1,0,0];   // ?
+  var X = [0,0,1,0,0, 0,0,1,0,0, 0,0,1,0,0, 0,0,0,0,0, 0,0,1,0,0];   // !
   var WHITE = 0xFFFBFB, RED = 0xFF0000, BLUE = 0x0048FF, GREEN = 0x00C24A, ORANGE = 0xFF6A00, ACID = 0xF9FF2D, INK = 0x111116;
   var N = 5, H = 2, GAP = 1.06, TURN_MS = 230, SOLVE_MS = 170, IDLE_MS = 1100, MAX_MOVES = 10;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -86,6 +88,7 @@
   stage.appendChild(renderer.domElement);
   scene.add(new THREE.AmbientLight(0xffffff, 0.72));
   var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
+  var under = new THREE.DirectionalLight(0xffffff, 0.3); under.position.set(2, -8, 4); scene.add(under);   // so the ! underneath reads white
 
   var cube = new THREE.Group();
   var HOME = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.42, -0.62, 0));
@@ -118,8 +121,8 @@
     if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  letterColour(S, H-z, row, BLUE));     // right
     if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), letterColour(A, H-x, row, GREEN));    // back
     if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), letterColour(P, z+H, row, ORANGE));   // left
-    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  ACID);                                // top
-    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), INK);                                 // bottom
+    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  letterColour(Q, x+H, z+H, ACID));     // top: ? (tip the cube towards you)
+    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), letterColour(X, x+H, H-z, INK));      // bottom: ! (tip it away)
     cube.add(c); cubies.push(c);
   }
   cubies.forEach(function(c){ c.children.forEach(function(s){ stickers.push(s); }); });
