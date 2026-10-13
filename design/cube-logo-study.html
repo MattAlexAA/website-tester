@@ -1,0 +1,284 @@
+<title>ASAP Cube Logo Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap">
+<style>
+  /* Layout: the site's own closing block, then each place the cube mark appears, all live. Single light brand look. */
+  :root{
+    color-scheme:light;
+    --paper:#FFFFFF; --ink:#000000; --type:#111116; --muted:#66666D; --rule:#E3E3DE; --soft:#F6F6F2;
+    --red:#FF0000; --blue:#0048FF; --green:#00C24A; --orange:#FF6A00; --acid:#F9FF2D; --cream:#FFFBFB;
+    --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --px:"Press Start 2P",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--type);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding-inline:24px}
+  .eyebrow{font-family:var(--px);font-size:10px;letter-spacing:.06em;color:var(--muted);line-height:1.8;text-transform:uppercase}
+  h1,h2{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.028em;color:var(--ink);text-wrap:balance}
+
+  .top{padding-block:48px 28px;border-bottom:2px solid var(--ink)}
+  .top h1{font-size:clamp(30px,5vw,48px);line-height:1;margin:10px 0 14px}
+  .top p{max-width:64ch;color:#3B3B44}
+  .controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:24px}
+  .seg{display:inline-flex;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);background:var(--paper)}
+  .seg button{font:600 13px/1 var(--body);padding:11px 14px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+  .seg button + button{border-left:2px solid var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--acid)}
+  .btn{font-family:var(--px);font-size:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);box-shadow:4px 4px 0 var(--ink);cursor:pointer;text-transform:uppercase}
+  .btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  .note{font-size:13px;color:var(--muted)}
+
+  /* ---------- the cube mark ---------- */
+  .cube5{--s:74px;--gp:3px;--bd:3px;position:relative;width:var(--s);height:var(--s);flex:0 0 auto;
+    display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:var(--gp);
+    border:var(--bd) solid var(--frame);background:var(--frame);perspective:520px;cursor:pointer;
+    box-shadow:6px 6px 0 var(--ink);transition:transform .16s,box-shadow .16s}
+  .cube5:hover,.cube5:focus-visible,.cube5.busy{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--acid)}
+  .cube5:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
+  .cube5 i,.prism i{display:block;background:var(--bg-t)}
+  .cube5 i.L,.prism i.L{background:var(--let-t)}
+  .cube5.sm{--s:34px;--gp:2px;--bd:2px;box-shadow:none}
+  .cube5.sm:hover,.cube5.sm.busy{transform:none;box-shadow:none}
+  .cube5.md{--s:80px;--gp:2px;--bd:3px}
+  .cube5.xl{--s:min(200px,38vw);--gp:3px;--bd:3px;padding:4px;box-shadow:10px 10px 0 var(--ink)}
+  .cube5.xl:hover,.cube5.xl.busy{transform:translate(-4px,-4px);box-shadow:16px 16px 0 var(--acid)}
+
+  /* three looks: tile roles map to colours per variant */
+  body.v-current .cube5{--frame:var(--ink);--let-t:var(--cream);--bg-t:var(--c)}
+  body.v-inverted .cube5{--frame:var(--c);--let-t:var(--cream);--bg-t:var(--c)}
+  body.v-colour .cube5{--frame:var(--ink);--let-t:var(--c);--bg-t:var(--cream)}
+  .cube5 .prism{--frame:inherit}
+
+  /* one slice turning: a 5-sticker strip and the neighbouring face it rotates in from */
+  .prism{position:absolute;transform-style:preserve-3d;pointer-events:none;z-index:2}
+  .prism .f{position:absolute;inset:0;display:grid;gap:var(--gp);background:var(--frame);backface-visibility:hidden}
+  .prism.row .f{grid-template-columns:repeat(5,1fr)}
+  .prism.col .f{grid-template-rows:repeat(5,1fr)}
+
+  /* ---------- sections ---------- */
+  section{padding-block:56px;border-bottom:2px solid var(--ink)}
+  section > .wrap > .eyebrow{margin-bottom:22px}
+  .final{position:relative;text-align:center;overflow:hidden}
+  .final::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .final .wrap{position:relative}
+  .row4{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-bottom:32px}
+  .final h2{font-size:clamp(38px,7.4vw,76px);line-height:.9}
+  .final p{color:var(--muted);margin:20px auto 0;max-width:44ch;font-size:16px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+  .spot{border:2px solid var(--ink);padding:22px;display:flex;flex-direction:column;gap:18px;min-width:0;background:var(--paper)}
+  .spot h3{font-family:var(--px);font-size:9px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.8}
+  .stage{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:90px}
+  .navmock{display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px;width:100%}
+  .navmock .logo{display:flex;gap:5px}
+  .wm{display:flex;flex-direction:column;gap:4px}
+  .wm b{font-family:var(--px);font-size:10px;font-weight:400;color:var(--ink)}
+  .wm span{font-family:var(--px);font-size:7px;letter-spacing:.14em;color:var(--muted)}
+  .hero2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .hero2 figure{display:flex;flex-direction:column;gap:16px}
+  .hero2 figcaption{font-family:var(--display);font-weight:800;font-size:17px;text-transform:uppercase;color:var(--ink);line-height:1.1}
+  .badge-row{display:flex;gap:16px;align-items:flex-start}
+  .badge-row .kbd{font-family:var(--px);font-size:9px;color:var(--muted);line-height:1.8}
+  .badge-row strong{display:block;font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase;line-height:1;color:var(--ink);margin-top:6px}
+
+  .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px 34px}
+  .how h3{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink);margin-bottom:6px}
+  .how p{font-size:14.5px;color:#2C2C34}
+  footer{padding-block:30px 120px}
+  @media (prefers-reduced-motion:reduce){.cube5{transition:none}}
+</style>
+
+<div class="top"><div class="wrap">
+  <p class="eyebrow">Design study · not live on the site</p>
+  <h1>Cube logo: inverted, with a Rubik's turn</h1>
+  <p>Hover, tap or tab to any cube. Each one scrambles with three slice turns, then solves itself back into its letter by undoing them in reverse, the way a Rubik's cube is solved. Switch looks to compare.</p>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Logo look">
+      <button type="button" data-v="inverted" aria-pressed="true">Inverted: white letters</button>
+      <button type="button" data-v="current" aria-pressed="false">Current</button>
+      <button type="button" data-v="colour" aria-pressed="false">Colour letters</button>
+    </div>
+    <button type="button" class="btn" id="play-all">Solve all ↻</button>
+  </div>
+</div></div>
+
+<section class="final"><div class="wrap">
+  <div class="row4" data-row></div>
+  <h2>Ready to<br>solve it?</h2>
+  <p>Tell us where you're stuck and we'll point you in the right direction.</p>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Everywhere the mark appears</p>
+  <div class="grid">
+    <div class="spot"><h3>Header logo</h3>
+      <div class="stage"><div class="navmock"><div class="logo" data-row="sm"></div><div class="wm"><b>ASAP</b><span>ASSETS</span></div></div></div>
+      <p class="note">Small size: the turn still reads, and the whole row solves together on hover.</p>
+    </div>
+    <div class="spot"><h3>Cube page badge</h3>
+      <div class="stage"><div class="badge-row"><div data-one="0" data-size="md"></div><div><span class="kbd">A — SMALL BUSINESS</span><strong>For small businesses ready to show up</strong></div></div></div>
+    </div>
+    <div class="spot"><h3>Footer</h3>
+      <div class="stage"><div class="logo" style="display:flex;gap:5px" data-row="sm"></div></div>
+      <p class="note">Same as the header.</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Homepage hero cubes</p>
+  <div class="hero2" data-hero></div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">What changes</p>
+  <div class="how">
+    <div><h3>Inverted look</h3><p>The grid lines and frame take the cube's colour instead of black, so the white tiles read as one solid letter: A, S, A, P.</p></div>
+    <div><h3>The turn</h3><p>A row or column of five tiles rotates in 3D like a cube slice, bringing in the next face. Three turns scramble it, three turns solve it. About a second in total.</p></div>
+    <div><h3>Where it goes</h3><p>Header logo, hero cubes, closing row, cube page badges, comparison table and footer. It replaces the current yellow flip.</p></div>
+    <div><h3>Reduced motion</h3><p>Visitors who've switched off animation on their device see the static logo with no turns.</p></div>
+  </div>
+</div></section>
+<footer><div class="wrap"><p class="note">ASAP Assets · cube logo study</p></div></footer>
+
+<script>
+(function(){
+  /* 1 = letter tile, 0 = background tile, row by row (from the live site's logo) */
+  var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
+  var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
+  var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
+  var CUBES = [
+    {name:'Small Business', pat:A, c:'var(--red)'},
+    {name:'Brands', pat:S, c:'var(--blue)'},
+    {name:'Creators', pat:A, c:'var(--green)'},
+    {name:'Personalised', pat:P, c:'var(--orange)'}
+  ];
+  var STEP = 190;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function makeCube(def, size){
+    var el = document.createElement('div');
+    el.className = 'cube5' + (size ? ' ' + size : '');
+    el.style.setProperty('--c', def.c);
+    el.tabIndex = size === 'sm' ? -1 : 0;
+    el.setAttribute('role', size === 'sm' ? 'presentation' : 'button');
+    if(size !== 'sm') el.setAttribute('aria-label', def.name + ' cube');
+    el._pat = def.pat.slice(); el._state = def.pat.slice();
+    for(var i=0;i<25;i++){ var t = document.createElement('i'); if(def.pat[i]) t.className = 'L'; el.appendChild(t); }
+    return el;
+  }
+
+  function tiles(el){ return Array.prototype.filter.call(el.children, function(n){ return n.tagName === 'I'; }); }
+  function sliceIdx(axis, k){ var a=[]; for(var j=0;j<5;j++) a.push(axis==='row' ? k*5+j : j*5+k); return a; }
+
+  function faceEl(axis, bits){
+    var f = document.createElement('div'); f.className = 'f';
+    bits.forEach(function(b){ var t = document.createElement('i'); if(b) t.className = 'L'; f.appendChild(t); });
+    return f;
+  }
+
+  /* Rotate one slice 90°, bringing `next` in from the neighbouring face. dir 1: from right/bottom, -1: from left/top. */
+  function turn(el, axis, k, next, dir){
+    return new Promise(function(done){
+      var ts = tiles(el), idx = sliceIdx(axis, k);
+      var a = ts[idx[0]], b = ts[idx[4]];
+      var x = a.offsetLeft, y = a.offsetTop;
+      var w = axis==='row' ? b.offsetLeft + b.offsetWidth - x : a.offsetWidth;
+      var h = axis==='row' ? a.offsetHeight : b.offsetTop + b.offsetHeight - y;
+      var depth = axis==='row' ? w : h;
+      var p = document.createElement('div');
+      p.className = 'prism ' + axis;
+      p.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+w+'px;height:'+h+'px;transform-origin:'+(w/2)+'px '+(h/2)+'px '+(-depth/2)+'px';
+      var front = faceEl(axis, idx.map(function(i){ return el._state[i]; }));
+      var side = faceEl(axis, next);
+      if(axis==='row'){
+        side.style.cssText = dir>0 ? 'left:'+w+'px;transform-origin:left center;transform:rotateY(90deg)'
+                                   : 'left:'+(-w)+'px;transform-origin:right center;transform:rotateY(-90deg)';
+      } else {
+        side.style.cssText = dir>0 ? 'top:'+h+'px;transform-origin:center top;transform:rotateX(-90deg)'
+                                   : 'top:'+(-h)+'px;transform-origin:center bottom;transform:rotateX(90deg)';
+      }
+      p.append(front, side); el.appendChild(p);
+      idx.forEach(function(i){ ts[i].style.visibility = 'hidden'; });
+      var rot = axis==='row' ? 'rotateY('+(dir>0?-90:90)+'deg)' : 'rotateX('+(dir>0?90:-90)+'deg)';
+      var ease = 'cubic-bezier(.55,.05,.3,1.15)';
+      p.animate([{transform:'none'},{transform:rot}], {duration:STEP, easing:ease, fill:'forwards'});
+      front.animate([{filter:'brightness(1)'},{filter:'brightness(.55)'}], {duration:STEP, fill:'forwards'});
+      side.animate([{filter:'brightness(.55)'},{filter:'brightness(1)'}], {duration:STEP, fill:'forwards'})
+        .onfinish = function(){
+          idx.forEach(function(i, j){ el._state[i] = next[j]; ts[i].className = next[j] ? 'L' : ''; ts[i].style.visibility = ''; });
+          p.remove(); done();
+        };
+    });
+  }
+
+  function shuffled(bits){
+    var out;
+    do { out = bits.map(function(){ return Math.random() < .5 ? 1 : 0; }); }
+    while(out.join('') === bits.join(''));
+    return out;
+  }
+
+  /* Scramble with three alternating slice turns, then undo them in reverse. */
+  function solve(el){
+    if(el._busy || reduce) return Promise.resolve();
+    el._busy = true; el.classList.add('busy');
+    var axes = Math.random() < .5 ? ['row','col','row'] : ['col','row','col'];
+    var used = {}, moves = [];
+    axes.forEach(function(ax){
+      var k; do { k = Math.floor(Math.random()*5); } while(used[ax+k]);
+      used[ax+k] = 1; moves.push({axis:ax, k:k, dir: Math.random()<.5 ? 1 : -1});
+    });
+    var chain = Promise.resolve(), undo = [];
+    moves.forEach(function(m){
+      chain = chain.then(function(){
+        var idx = sliceIdx(m.axis, m.k), prev = idx.map(function(i){ return el._state[i]; });
+        undo.unshift({axis:m.axis, k:m.k, dir:-m.dir, bits:prev});
+        return turn(el, m.axis, m.k, shuffled(prev), m.dir);
+      });
+    });
+    chain = chain.then(function(){ return new Promise(function(r){ setTimeout(r, 120); }); });
+    chain = chain.then(function(){
+      var c2 = Promise.resolve();
+      undo.forEach(function(u){ c2 = c2.then(function(){ return turn(el, u.axis, u.k, u.bits, u.dir); }); });
+      return c2;
+    });
+    return chain.then(function(){ el._busy = false; el.classList.remove('busy'); });
+  }
+
+  function wire(el, group){
+    var go = function(){ (group || [el]).forEach(function(c, i){ setTimeout(function(){ solve(c); }, group ? i*90 : 0); }); };
+    var host = group ? el.parentNode : el;
+    host.addEventListener('mouseenter', go);
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  }
+
+  document.querySelectorAll('[data-row]').forEach(function(host){
+    var size = host.getAttribute('data-row') || '';
+    var group = CUBES.map(function(d){ var c = makeCube(d, size); host.appendChild(c); return c; });
+    if(size === 'sm') wire(group[0], group); else group.forEach(function(c){ wire(c); });
+  });
+  document.querySelectorAll('[data-one]').forEach(function(host){
+    var c = makeCube(CUBES[+host.getAttribute('data-one')], host.getAttribute('data-size'));
+    host.replaceWith(c); wire(c);
+  });
+  var hero = document.querySelector('[data-hero]');
+  CUBES.forEach(function(d){
+    var f = document.createElement('figure'), c = makeCube(d, 'xl'), cap = document.createElement('figcaption');
+    cap.textContent = d.name; f.append(c, cap); hero.appendChild(f); wire(c);
+  });
+
+  document.querySelectorAll('.seg button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.body.className = 'v-' + b.dataset.v;
+      document.querySelectorAll('.seg button').forEach(function(o){ o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+  document.body.className = 'v-inverted';
+  document.getElementById('play-all').addEventListener('click', function(){
+    document.querySelectorAll('.cube5').forEach(function(c, i){ setTimeout(function(){ solve(c); }, (i % 4) * 90); });
+  });
+})();
+</script>
