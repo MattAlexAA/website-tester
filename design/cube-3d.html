@@ -1,0 +1,272 @@
+<title>ASAP 3D Cube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap">
+<style>
+  /* Layout: the homepage hero with a live 5x5x5 cube in place of the four flat cubes. Single light brand look. */
+  :root{
+    color-scheme:light;
+    --paper:#FFFFFF; --ink:#000000; --type:#111116; --muted:#66666D; --soft:#F6F6F2;
+    --acid:#F9FF2D; --blue:#0048FF;
+    --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --px:"Press Start 2P",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--type);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1160px;margin:0 auto;padding-inline:24px}
+  .eyebrow{font-family:var(--px);font-size:10px;letter-spacing:.06em;color:var(--muted);line-height:1.8;text-transform:uppercase}
+  header{position:relative;padding-block:56px 48px;overflow:hidden;border-bottom:2px solid var(--ink)}
+  header::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .hero{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .hero > *{min-width:0}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(50px,8vw,96px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink);margin-top:12px}
+  .lede{margin-top:22px;font-size:clamp(16px,2vw,19px);color:#3B3B44;max-width:40ch}
+  .stage{position:relative;aspect-ratio:1;width:100%;max-width:520px;justify-self:center;touch-action:none}
+  .stage canvas{display:block;width:100%;height:100%;cursor:grab}
+  .stage .fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:14px;padding:20px}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .btn{font-family:var(--px);font-size:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);box-shadow:4px 4px 0 var(--ink);cursor:pointer;text-transform:uppercase}
+  .btn.go{background:var(--acid)}
+  .btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  .status{font-family:var(--px);font-size:9px;color:var(--muted);margin-top:18px;line-height:1.8;text-transform:uppercase}
+  section{padding-block:48px}
+  .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 36px}
+  .how h3{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink);margin-bottom:6px}
+  .how p{font-size:14.5px;color:#2C2C34}
+  @media (max-width:860px){.hero{grid-template-columns:1fr}.stage{max-width:420px}}
+</style>
+
+<header><div class="wrap hero">
+  <div>
+    <p class="eyebrow">Prototype · 3D cube logo</p>
+    <h1>Stop<br>scrambling.</h1>
+    <p class="lede">Sweep your cursor across the tiles. Each tile you pass turns its slice the way you moved, like a Rubik's cube. Stop, and it solves itself back to the logo.</p>
+    <div class="controls">
+      <button type="button" class="btn go" id="scramble">Scramble</button>
+      <button type="button" class="btn" id="solve">Solve</button>
+    </div>
+    <p class="status" id="status" role="status">Solved</p>
+  </div>
+  <div class="stage" id="stage"><div class="fallback" id="fallback">Loading the 3D cube…</div></div>
+</div></header>
+
+<section><div class="wrap">
+  <p class="eyebrow" style="margin-bottom:20px">How the model works</p>
+  <div class="how">
+    <div><h3>One cube, four letters</h3><p>A real 5×5×5 cube. Each side carries one cube of the logo: A on the front in red, S in blue on the right, A in green on the back, P in orange on the left. Turning a slice pulls the next letter round.</p></div>
+    <div><h3>Inverted look</h3><p>The letter tiles are white and the rest of each face is the cube colour, on black plastic like a real puzzle.</p></div>
+    <div><h3>Hover to turn</h3><p>The tile under the cursor turns its row or column in the direction you're moving. On a phone, swipe across it. Drag on the background to spin the whole cube.</p></div>
+    <div><h3>Solves itself</h3><p>After a second without a turn, it undoes every move in reverse until the logo is back.</p></div>
+  </div>
+</div></section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var stage = document.getElementById('stage'), statusEl = document.getElementById('status');
+  if(!window.THREE){ document.getElementById('fallback').textContent = '3D could not load in this browser.'; return; }
+  document.getElementById('fallback').remove();
+
+  /* 1 = letter (white) tile, read left-to-right, top-to-bottom as you face that side */
+  var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
+  var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
+  var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
+  var WHITE = 0xFFFBFB, RED = 0xFF0000, BLUE = 0x0048FF, GREEN = 0x00C24A, ORANGE = 0xFF6A00, ACID = 0xF9FF2D, INK = 0x111116;
+  var N = 5, H = 2, GAP = 1.06, TURN_MS = 230, SOLVE_MS = 170, IDLE_MS = 1100, MAX_MOVES = 10;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 0, 21);
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  stage.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.72));
+  var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
+
+  var cube = new THREE.Group();
+  var BASE_X = 0.42, BASE_Y = -0.62;
+  cube.rotation.set(BASE_X, BASE_Y, 0);
+  scene.add(cube);
+
+  var bodyGeo = new THREE.BoxGeometry(1, 1, 1);
+  var bodyMat = new THREE.MeshLambertMaterial({color:0x050505});
+  var stickerGeo = new THREE.PlaneGeometry(0.84, 0.84);
+  var mats = {};
+  function mat(c){ return mats[c] || (mats[c] = new THREE.MeshLambertMaterial({color:c})); }
+
+  function sticker(cubie, normal, color){
+    var s = new THREE.Mesh(stickerGeo, mat(color));
+    s.position.copy(normal).multiplyScalar(0.502);
+    s.lookAt(normal.clone().multiplyScalar(2));
+    s.userData.sticker = true;
+    cubie.add(s);
+  }
+  function letterColour(pat, col, row, face){ return pat[row*5 + col] ? WHITE : face; }
+
+  var cubies = [], stickers = [];
+  for(var x=-H; x<=H; x++) for(var y=-H; y<=H; y++) for(var z=-H; z<=H; z++){
+    if(Math.max(Math.abs(x),Math.abs(y),Math.abs(z)) < H) continue;     // hidden core
+    var c = new THREE.Mesh(bodyGeo, bodyMat);
+    c.position.set(x*GAP, y*GAP, z*GAP);
+    var row = H - y;
+    if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  letterColour(A, x+H, row, RED));      // front
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  letterColour(S, H-z, row, BLUE));     // right
+    if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), letterColour(A, H-x, row, GREEN));    // back
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), letterColour(P, z+H, row, ORANGE));   // left
+    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  ACID);                                // top
+    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), INK);                                 // bottom
+    cube.add(c); cubies.push(c);
+  }
+  cubies.forEach(function(c){ c.children.forEach(function(s){ stickers.push(s); }); });
+
+  /* ---------- turning a slice ---------- */
+  var history = [], queue = [], turning = false, idleTimer = 0, solving = false;
+  var AX = ['x','y','z'];
+
+  function layerOf(c, axis){ return Math.round(c.position[axis] / GAP); }
+
+  function snap(c){
+    c.position.set(Math.round(c.position.x/GAP)*GAP, Math.round(c.position.y/GAP)*GAP, Math.round(c.position.z/GAP)*GAP);
+    c.updateMatrix();
+    var e = c.matrix.elements;
+    [0,1,2,4,5,6,8,9,10].forEach(function(i){ e[i] = Math.round(e[i]); });
+    c.matrix.decompose(c.position, c.quaternion, c.scale);
+  }
+
+  function runTurn(m, ms){
+    return new Promise(function(done){
+      var pivot = new THREE.Object3D(); cube.add(pivot);
+      var group = cubies.filter(function(c){ return layerOf(c, m.axis) === m.layer; });
+      group.forEach(function(c){ pivot.attach(c); });
+      var t0 = performance.now(), target = m.dir * Math.PI/2;
+      (function step(now){
+        var k = Math.min(1, (now - t0) / ms);
+        var e = k < 1 ? 1 - Math.pow(1 - k, 3) : 1;
+        pivot.rotation[m.axis] = target * e;
+        if(k < 1) return requestAnimationFrame(step);
+        pivot.updateMatrixWorld(true);
+        group.forEach(function(c){ cube.attach(c); snap(c); });
+        cube.remove(pivot); done();
+      })(t0);
+    });
+  }
+
+  function pump(){
+    if(turning || !queue.length) return;
+    turning = true;
+    var job = queue.shift();
+    runTurn(job.m, job.ms).then(function(){ turning = false; if(job.after) job.after(); pump(); });
+  }
+
+  function turn(m){
+    if(solving || turning || queue.length) return;      // one slice at a time, so a fast sweep can't pile up turns
+    history.push(m);
+    setStatus('Scrambled · ' + history.length + (history.length === 1 ? ' turn' : ' turns'));
+    queue.push({m:m, ms: reduce ? 1 : TURN_MS});
+    pump();
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(solve, history.length >= MAX_MOVES ? 250 : IDLE_MS);
+  }
+
+  function solve(){
+    clearTimeout(idleTimer);
+    if(solving || !history.length) return;
+    solving = true; setStatus('Solving…');
+    var moves = history.slice().reverse(); history = [];
+    moves.forEach(function(m, i){
+      queue.push({m:{axis:m.axis, layer:m.layer, dir:-m.dir}, ms: reduce ? 1 : SOLVE_MS,
+        after: i === moves.length - 1 ? function(){ solving = false; setStatus('Solved'); } : null});
+    });
+    pump();
+  }
+
+  function scramble(){
+    if(solving) return;
+    var last = null;
+    for(var i=0;i<6;i++){
+      var m; do { m = {axis:AX[Math.floor(Math.random()*3)], layer:Math.floor(Math.random()*N)-H, dir:Math.random()<.5?1:-1}; }
+      while(last && m.axis === last.axis && m.layer === last.layer);
+      last = m; history.push(m); queue.push({m:m, ms: reduce ? 1 : TURN_MS});
+    }
+    setStatus('Scrambled · ' + history.length + ' turns');
+    pump();
+    clearTimeout(idleTimer); idleTimer = setTimeout(solve, 6*TURN_MS + 700);
+  }
+
+  function setStatus(t){ statusEl.textContent = t; }
+
+  /* ---------- pointer: hover a tile to turn it, drag the background to spin ---------- */
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  var lastSticker = null, lastX = 0, lastY = 0, vx = 0, vy = 0;
+  var spin = {on:false, x:0, y:0, rx:BASE_X, ry:BASE_Y}, tilt = {x:0, y:0};
+
+  function hit(e){
+    var r = renderer.domElement.getBoundingClientRect();
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    var h = ray.intersectObjects(stickers, false)[0];
+    return h || null;
+  }
+
+  function moveFor(h, dx, dy){
+    // face normal and screen drag, both in the cube's own frame
+    var inv = cube.quaternion.clone().invert();
+    var n = new THREE.Vector3(0,0,1).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).applyQuaternion(inv);
+    var drag = new THREE.Vector3(dx, -dy, 0).applyQuaternion(camera.quaternion).applyQuaternion(inv);
+    var axisV = new THREE.Vector3().crossVectors(n, drag);
+    var abs = [Math.abs(axisV.x), Math.abs(axisV.y), Math.abs(axisV.z)];
+    var i = abs.indexOf(Math.max.apply(null, abs)), axis = AX[i];
+    if(abs[i] < 1e-6) return null;
+    return {axis:axis, layer:layerOf(h.object.parent, axis), dir: axisV[axis] > 0 ? 1 : -1};
+  }
+
+  var cvs = renderer.domElement;
+  cvs.addEventListener('pointerdown', function(e){
+    lastX = e.clientX; lastY = e.clientY; vx = vy = 0;
+    if(!hit(e)){ spin.on = true; spin.x = e.clientX; spin.y = e.clientY; spin.rx = cube.rotation.x; spin.ry = cube.rotation.y; cvs.setPointerCapture(e.pointerId); }
+  });
+  window.addEventListener('pointerup', function(){ spin.on = false; });
+  cvs.addEventListener('pointerleave', function(){ lastSticker = null; tilt.x = tilt.y = 0; });
+  cvs.addEventListener('pointermove', function(e){
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    vx = vx*0.6 + dx*0.4; vy = vy*0.6 + dy*0.4;
+    if(spin.on){
+      cube.rotation.y = spin.ry + (e.clientX - spin.x) * 0.01;
+      cube.rotation.x = Math.max(-1.2, Math.min(1.2, spin.rx + (e.clientY - spin.y) * 0.01));
+      BASE_X = cube.rotation.x; BASE_Y = cube.rotation.y;
+      return;
+    }
+    var r = cvs.getBoundingClientRect();
+    tilt.x = ((e.clientY - r.top) / r.height - .5) * 0.18;
+    tilt.y = ((e.clientX - r.left) / r.width - .5) * 0.25;
+    var h = hit(e);
+    var s = h ? h.object : null;
+    // gaps between tiles hit nothing, so remember the last real tile
+    if(s && s !== lastSticker && (Math.abs(vx) + Math.abs(vy)) > 1.5){
+      var m = moveFor(h, vx, vy);
+      if(m) turn(m);
+    }
+    if(s) lastSticker = s;
+  });
+
+  document.getElementById('scramble').addEventListener('click', scramble);
+  document.getElementById('solve').addEventListener('click', solve);
+
+  /* ---------- render ---------- */
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  (function loop(){
+    if(!spin.on && !reduce){
+      cube.rotation.x += (BASE_X + tilt.x - cube.rotation.x) * 0.06;
+      cube.rotation.y += (BASE_Y + tilt.y - cube.rotation.y) * 0.06;
+    }
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
