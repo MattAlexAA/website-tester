@@ -345,8 +345,14 @@
   .cube-story.no-3d .story-flow{margin-top:0}
   .cube-story.no-3d .panel-card{width:100%;max-width:640px}
   @media(max-width:880px){
-    .story-panel{align-items:flex-end;padding-bottom:6vh}
-    .panel-card{width:100%;background:rgba(255,255,255,.94);border:2px solid var(--ink);padding:22px}
+    /* phone: the cube holds the top of the screen, the text sits under it; the screen is the frame, so no box */
+    .story-panel{align-items:flex-start;padding-top:calc(min(50vw,25vh) + 102px);padding-bottom:24px}
+    .panel-card{width:100%}
+    .panel-card .kbd{font-size:12px}
+    .panel-card h2{font-size:clamp(22px,6.4vw,30px);margin:6px 0 10px}
+    .panel-card p{font-size:14px;line-height:1.45}
+    .panel-card .meta{margin:10px 0 14px}
+    .panel-card .btn{font-size:14px;padding:13px 16px}
   }
   .cube-overlay{position:fixed;inset:0;z-index:150;background:var(--paper)}
   .cube-overlay .cube-stage{filter:none!important;opacity:1!important}
@@ -374,7 +380,7 @@
 </a>
 <div class="nav-links">
 <a class="px nl" data-page="smb" href="/small-business">Small Business</a>
-<a class="px nl" data-page="brands" href="/brands">MARKETING</a>
+<a class="px nl" data-page="brands" href="/brands">Marketing</a>
 <a class="px nl" data-page="creators" href="/creators">Creators</a>
 <a class="px nl" data-page="ai" href="/personalised">Personalised</a>
 <a class="px nl" data-page="work" href="/work">Our work</a>
@@ -413,7 +419,7 @@
 <h2>The thinking and the concepts — you keep the hands</h2>
 <p>Brands is a quarterly strategy and concept package from ASAP Assets, from $4,000 per quarter, for brands with their own team, agency or creators ready to execute. We strategise and concept; your team, agency, creators, or customers execute. We don't edit, schedule, post, or run ads — we hand you the direction and ideas worth filming.</p>
 <p class="meta">Quarterly · from $4,000</p>
-<a class="btn btn-go" data-face="1" href="/brands">Brands packages →</a>
+<a class="btn btn-go" data-face="1" href="/brands">Marketing packages →</a>
 </div></div>
 </article>
 <article class="story-panel" data-href="/creators" style="--c:var(--green);--ct:var(--green-t)">
@@ -455,7 +461,7 @@
 <thead><tr><th scope="col">Cube</th><th scope="col">Who it's for</th><th scope="col">Term</th><th scope="col">Price</th><th scope="col">We do</th><th scope="col">You do</th></tr></thead>
 <tbody>
 <tr><th scope="row"><a class="cube-name" href="/small-business" style="--c:var(--red)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span></span><span>Small Business</span></a></th><td>Small businesses</td><td>3-month packages</td><td>$1,000, $2,000 or $4,500 one-off</td><td>40 concepts and shoot day guides. Editing, scheduling, posting and Meta ad management on the higher tiers</td><td>Film. On Base you also edit and post</td></tr>
-<tr><th scope="row"><a class="cube-name" href="/brands" style="--c:var(--blue)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span></span><span>MARKETING</span></a></th><td>Brands with their own team, agency or creators</td><td>Quarterly, renewable</td><td>$4,000 or $5,000 per quarter</td><td>3-month marketing direction and 20 brand-specific concepts. 8 influencer and customer brief packs on the Distribution package</td><td>Execute: film, edit, post and run ads</td></tr>
+<tr><th scope="row"><a class="cube-name" href="/brands" style="--c:var(--blue)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span></span><span>Marketing</span></a></th><td>Brands with their own team, agency or creators</td><td>Quarterly, renewable</td><td>$4,000 or $5,000 per quarter</td><td>3-month marketing direction and 20 brand-specific concepts. 8 influencer and customer brief packs on the Distribution package</td><td>Execute: film, edit, post and run ads</td></tr>
 <tr><th scope="row"><a class="cube-name" href="/creators" style="--c:var(--green)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span></span><span>Creators</span></a></th><td>Content creators</td><td>Monthly, cancel anytime</td><td>$500 or $1,300 per month</td><td>12 or 20 ready-to-film concepts and a shoot guide each month. Editing on Accelerated Growth</td><td>Film. On Sustainable Growth you also edit</td></tr>
 <tr><th scope="row"><a class="cube-name" href="/personalised" style="--c:var(--orange)"><span aria-hidden="true" class="logo"><span class="lc"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span></span><span>Personalised</span></a></th><td>Businesses and startups wanting something bespoke</td><td>Quoted per project</td><td>Shoot days from $3,000. Everything else quoted after a call</td><td>Shoot days with our videographer (Melbourne only), AI setup and training, custom agency retainers, startup content series</td><td>Tell us where you're at</td></tr>
 </tbody>
@@ -482,7 +488,7 @@
 </section>
 <section class="final">
 <div class="wrap final-in">
-<div aria-label="Jump to a cube" class="logo lg cube-links" role="group"><a aria-label="Small Business" class="lc" href="/small-business" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Brands" class="lc" href="/brands" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></a><a aria-label="Creators" class="lc" href="/creators" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Personalised" class="lc" href="/personalised" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></a></div>
+<div aria-label="Jump to a cube" class="logo lg cube-links" role="group"><a aria-label="Small Business" class="lc" href="/small-business" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Marketing" class="lc" href="/brands" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></a><a aria-label="Creators" class="lc" href="/creators" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Personalised" class="lc" href="/personalised" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></a></div>
 <h2><span>Ready to </span><span class="hl hl2">solve it?</span></h2>
 <p>Tell us where you're stuck and we'll point you in the right direction.</p>
 <a class="btn btn-go js-book" data-pkg="Closing — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
@@ -511,14 +517,14 @@
 <li>Shoot day guides</li>
 <li>Marketing strategy — your concept plan plus the ideal posting schedule, so you know what goes out and when</li>
 <li>We edit your raw footage into finished, ready-to-post videos</li>
-</ul><div class="split"><b>You handle:</b> filming, scheduling &amp; your own ads.</div><div class="bestfor"><b>Best for</b>Businesses filming consistently who don't want to touch the edit.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$2,000</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Middle ($2,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><div><span class="tier">— PREMIUM PACKAGE 3 MONTHS</span><h2>We run it</h2><p class="desc">The full engine. You film; we run the strategy, editing, scheduling and your Meta ads.</p><div class="feat-label">What you get</div><ul class="feat">
+</ul><div class="split"><b>You handle:</b> filming, scheduling &amp; your own ads.</div><div class="bestfor"><b>Best for</b>Businesses filming consistently who don't want to touch the edit.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$2,000</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Middle ($2,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><div><span class="tier">— PREMIUM PACKAGE 3 MONTHS</span><h2>We run it - THIS BECOMES DTM PACKAGE UPDATE***</h2><p class="desc">The full engine. You film; we run the strategy, editing, scheduling and your Meta ads.</p><div class="feat-label">What you get</div><ul class="feat">
 <li>40 social media concepts (Instagram, Facebook and TikTok)</li>
 <li>Shoot day guides</li>
 <li>Growth strategy — with data on what's working in your field</li>
 <li>We edit your footage into finished videos</li>
 <li>We schedule &amp; post everything for you</li>
 <li>We build &amp; manage your Meta ad campaigns. Meta ad spend is separate, paid by you directly at a budget we agree together</li>
-</ul><div class="split"><b>You handle:</b> filming. We run the rest.</div><div class="bestfor"><b>Best for</b>Businesses that want it handled end-to-end, hands-off.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$4,500</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Premium ($4,500)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div></div>
+</ul><div class="split"><b>You handle:</b> filming. We run the rest.</div><div class="bestfor"><b>Best for</b>Businesses that want it handled end-to-end, hands-off.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$5,500</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Premium ($4,500)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div></div>
 <p class="scope"><b>Delivery options:</b> all 40 concepts at once, within 7 days. Or four batches of 10, with the first batch within a couple of days and the rest on an agreed timeline, so filming feels less daunting.</p>
 <p class="scope"><b>Payment:</b> 50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.</p>
 <div class="sub-faq" id="faq">
@@ -536,7 +542,7 @@
 </div>
 <div class="pager">
 <a href="/">← HOME</a>
-<a href="/brands" style="--pc:var(--blue)">BRANDS<span class="chip"></span></a>
+<a href="/brands" style="--pc:var(--blue)">MARKETING<span class="chip"></span></a>
 </div>
 </div>
 </div>
@@ -567,9 +573,9 @@
 <p class="scope"><b>Term:</b> minimum one quarter. Renews each quarter unless cancelled 14 days before quarter end.</p>
 <div class="sub-faq" id="faq">
 <p class="eyebrow">FAQ</p>
-<h2 class="h2">Brands questions</h2>
+<h2 class="h2">Marketing questions</h2>
 <div class="faq">
-<div><h3>What is not included in the Brands packages?</h3><p>Editing, scheduling, posting, community management, ad account management, creator sourcing and reporting dashboards are out of scope by design. Brands is strategy and concepts only.</p></div>
+<div><h3>What is not included in the Marketing packages?</h3><p>Editing, scheduling, posting, community management, ad account management, creator sourcing and reporting dashboards are out of scope by design. Brands is strategy and concepts only.</p></div>
 <div><h3>What is the minimum term?</h3><p>One quarter. It renews each quarter unless cancelled 14 days before quarter end.</p></div>
 <div><h3>What is in the influencer and customer brief packs?</h3><p>Eight ready-to-send brief packs. Each contains the concept, the creator brief, what good looks like and the deliverable spec.</p></div>
 <div><h3>Do you work outside Melbourne?</h3><p>Yes. Concepts, shoot guides, editing and strategy are delivered Australia-wide. Shoot days are Melbourne only.</p></div>
@@ -775,7 +781,7 @@
 </ul>
 <h2>Our work</h2>
 <p>ASAP Assets planned and produced 44 short-form video concepts and a 3-month Instagram and TikTok content plan for MMO Mentone, a Melbourne osteopathy clinic, covering six practitioners.</p>
-<h2>details</h2>
+<h2>Contact us</h2>
 <ul>
 <li>Business name: ASAP Assets</li>
 <li>Location: Melbourne, Victoria, Australia</li>
@@ -955,8 +961,6 @@
 <li>Shoot days with our videographer: Melbourne only.</li>
 <li>Concepts, shoot guides, editing, strategy and AI setup: Australia-wide, delivered remotely.</li>
 </ul>
-<h2>Business details</h2>
-<p>ASAP Assets, ABN 69 359 785 929.</p>
 </div>
 <div class="pager">
 <a href="/">← HOME</a>
@@ -975,7 +979,7 @@
 <h1>Privacy policy</h1>
 </div>
 <div class="prose">
-<p>This policy explains what personal information ASAP Assets (ABN 69 359 785 929, Melbourne, Australia) handles, why, and which tools are involved. Last updated October 2026.</p>
+<p>This policy explains what personal information ASAP Assets (Melbourne, Australia) handles, why, and which tools are involved. Last updated October 2026.</p>
 <h2>What we collect</h2>
 <ul>
 <li>Booking details. When you book a call, you enter your details into Calendly, such as your name, email address and anything you choose to tell us about your business.</li>
@@ -1038,15 +1042,15 @@ Delivery options: all 40 concepts at once, within 7 days. Or four batches of 10,
 
 Payment: 50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.
 
-## 2. Brands (quarterly, renewable)
+## 2. Marketing (quarterly, renewable)
 Page: https://asapassets.com.au/brands
 For brands with their own team, agency or creators ready to execute. Strategy and concepts only.
 
-### Brands — Consulting + Concepts
+### Marketing — Consulting + Concepts
 - Price: $4,000 per quarter
 - Includes: 3-month marketing direction (demand moments, channel priorities, biggest untapped opportunities, order to attack them) plus 20 brand-specific concepts, each with strategic rationale, audience and shoot direction clear enough for a videographer, agency or creator to film.
 
-### Brands — Consulting + Concepts + Distribution
+### Marketing — Consulting + Concepts + Distribution
 - Price: $5,000 per quarter
 - Includes: Everything in Consulting + Concepts, plus 8 ready-to-send influencer and customer brief packs (concept, creator brief, what good looks like, deliverable spec). Refreshed direction each quarter informed by what worked.
 
@@ -1088,7 +1092,7 @@ Page: https://asapassets.com.au/personalised
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="19" rx="5" width="19" x="2.5" y="2.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" fill="currentColor" r="1.25" stroke="none"></circle></svg>
 </a>
 </div>
-<div class="foot-links"><a href="/small-business">Small Business</a><a href="/brands">Brands</a><a href="/creators">Creators</a><a href="/personalised">Personalised</a><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/work">Our work</a><a href="/faq">FAQ</a><a href="/compare">Compare</a><a href="/can-i-use-chatgpt-for-content-ideas">ChatGPT or us?</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/pricing.md">Pricing (plain text)</a><a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a></div>
+<div class="foot-links"><a href="/small-business">Small Business</a><a href="/brands">Marketing</a><a href="/creators">Creators</a><a href="/personalised">Personalised</a><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/work">Our work</a><a href="/faq">FAQ</a><a href="/compare">Compare</a><a href="/can-i-use-chatgpt-for-content-ideas">ChatGPT or us?</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/pricing.md">Pricing (plain text)</a><a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a></div>
 <div class="legal">ASAP ASSETS — MELBOURNE, AUSTRALIA<br>ABN 69 359 785 929<br>LAST UPDATED <time datetime="2026-10-10">OCTOBER 2026</time></div>
 </div>
 <a class="foot-cta js-book" data-pkg="Footer — general" href="https://calendly.com/asapassetsau/30min">Book a call →</a>
@@ -1100,7 +1104,7 @@ Page: https://asapassets.com.au/personalised
 (function(){
   /* ---------- homepage cube story ----------
      Intro: the cube tumbles slowly, blurred, behind "Stop scrambling."
-     Scroll: it sharpens, slides left and turns to each face (A, S, A, P) as that cube's panel scrolls past.
+     Scroll: it sharpens and squares up to one flat face, then turns to the right, one wall at a time (A, S, A, P), as each panel scrolls past.
      Click a face or a panel button: a quick solve sequence, then a dive into one tile of that face, which opens the page. */
   var stage = document.getElementById('hero-cube');
   var story = document.getElementById('cube-story');
@@ -1153,9 +1157,9 @@ Page: https://asapassets.com.au/personalised
     c.position.set(x*GAP, y*GAP, z*GAP);
     var row = H - y;
     if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  tile(A, x+H, row, RED), 0);        // front: A, Small Business
-    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(S, H-z, row, BLUE), 1);       // right: S, Brands
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(S, z+H, row, BLUE), 1);      // left:  S, Marketing (turning right brings it round next)
     if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), tile(A, H-x, row, GREEN), 2);      // back:  A, Creators
-    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(P, z+H, row, ORANGE), 3);     // left:  P, Personalised
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(P, H-z, row, ORANGE), 3);     // right: P, Personalised
     if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  tile(Q, x+H, z+H, ACID), 4);       // top: ?
     if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE, 5); // bottom: !
     cube.add(c); cubies.push(c);
@@ -1167,10 +1171,10 @@ Page: https://asapassets.com.au/personalised
   var TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3, -0.42, 0));
   var SPIN_AXIS = new THREE.Vector3(0.35, 1, 0.2).normalize();
   function faceQ(i, tilted){
-    var q = new THREE.Quaternion().setFromAxisAngle(Y, -i * Math.PI/2);
+    var q = new THREE.Quaternion().setFromAxisAngle(Y, i * Math.PI/2);   // each step turns the cube to the right
     return tilted ? q.premultiply(TILT) : q;
   }
-  var FACE_TILTED = [0,1,2,3].map(function(i){ return faceQ(i, true); });
+  var FACE_FLAT = [0,1,2,3].map(function(i){ return faceQ(i, false); });
   cube.quaternion.copy(ISO); cube.scale.setScalar(1.2);       // first view: classic isometric
 
   /* ---------- slice turns (used by the click transition) ---------- */
@@ -1209,9 +1213,11 @@ Page: https://asapassets.com.au/personalised
   function readScroll(){
     var s = -story.getBoundingClientRect().top;
     var introH = intro.offsetHeight || innerHeight;
-    var panelH = (panels[0] && panels[0].offsetHeight) || innerHeight;
     w = smooth(0, introH * 0.85, s);
-    var fp = clamp((s - introH) / panelH, 0, panels.length - 1);
+    // which panel we're in, and how far through it (panels can differ in height on phones)
+    var fp = 0;
+    panels.forEach(function(p, i){ var r = p.getBoundingClientRect(); if(r.top <= 0) fp = i + Math.min(1, -r.top / (r.height || innerHeight)); });
+    fp = clamp(fp, 0, panels.length - 1);
     var i0 = Math.floor(fp);
     facePos = Math.min(i0 + smooth(0.25, 0.75, fp - i0), panels.length - 1);
     var a = w > 0.6 ? Math.round(fp) : -1;
@@ -1313,12 +1319,20 @@ Page: https://asapassets.com.au/personalised
       var t = reduce ? 0 : (now - t0) / 1000;
       qIdle.copy(ISO).premultiply(qSpin.setFromAxisAngle(SPIN_AXIS, t * 0.35));
       var i0 = Math.floor(facePos), i1 = Math.min(i0 + 1, 3);
-      qFace.copy(FACE_TILTED[i0]).slerp(FACE_TILTED[i1], facePos - i0);
+      qFace.copy(FACE_FLAT[i0]).slerp(FACE_FLAT[i1], facePos - i0);
       goal.copy(qIdle).slerp(qFace, w);
       var visH = 2 * CAM_Z * Math.tan(Math.PI / 12), visW = visH * camera.aspect;
-      var narrow = innerWidth < 880;
-      pos.set(narrow ? 0 : -visW * 0.22 * w, narrow ? visH * 0.2 * w : 0, 0);
-      var sc = 1.2 + ((narrow ? 0.7 : 0.88) - 1.2) * w;
+      var narrow = innerWidth < 880, sc;
+      if(narrow){
+        // phone: the cube sits in the top of the screen, sized so the panel text fits underneath
+        var sh = stage.clientHeight, cubePx = Math.min(stage.clientWidth * 0.5, sh * 0.25);
+        var top = 70 + 16 + cubePx * 0.55;               // nav, a gap, then half the cube (its front face sits nearer the camera)
+        pos.set(0, (0.5 - top / sh) * visH * w, 0);
+        sc = 0.85 + (cubePx / sh * visH / 5.3 / 1.1 - 0.85) * w;
+      } else {
+        pos.set(-visW * 0.22 * w, 0, 0);
+        sc = 1.2 + (0.88 - 1.2) * w;
+      }
       var k = reduce ? 1 : 0.14;
       cube.quaternion.slerp(goal, k);
       cube.position.lerp(pos, k);

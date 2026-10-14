@@ -1,7 +1,7 @@
 (function(){
   /* ---------- homepage cube story ----------
      Intro: the cube tumbles slowly, blurred, behind "Stop scrambling."
-     Scroll: it sharpens, slides left and turns to each face (A, S, A, P) as that cube's panel scrolls past.
+     Scroll: it sharpens and squares up to one flat face, then turns to the right, one wall at a time (A, S, A, P), as each panel scrolls past.
      Click a face or a panel button: a quick solve sequence, then a dive into one tile of that face, which opens the page. */
   var stage = document.getElementById('hero-cube');
   var story = document.getElementById('cube-story');
@@ -54,9 +54,9 @@
     c.position.set(x*GAP, y*GAP, z*GAP);
     var row = H - y;
     if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  tile(A, x+H, row, RED), 0);        // front: A, Small Business
-    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(S, H-z, row, BLUE), 1);       // right: S, Brands
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(S, z+H, row, BLUE), 1);      // left:  S, Marketing (turning right brings it round next)
     if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), tile(A, H-x, row, GREEN), 2);      // back:  A, Creators
-    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(P, z+H, row, ORANGE), 3);     // left:  P, Personalised
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(P, H-z, row, ORANGE), 3);     // right: P, Personalised
     if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  tile(Q, x+H, z+H, ACID), 4);       // top: ?
     if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE, 5); // bottom: !
     cube.add(c); cubies.push(c);
@@ -68,10 +68,10 @@
   var TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3, -0.42, 0));
   var SPIN_AXIS = new THREE.Vector3(0.35, 1, 0.2).normalize();
   function faceQ(i, tilted){
-    var q = new THREE.Quaternion().setFromAxisAngle(Y, -i * Math.PI/2);
+    var q = new THREE.Quaternion().setFromAxisAngle(Y, i * Math.PI/2);   // each step turns the cube to the right
     return tilted ? q.premultiply(TILT) : q;
   }
-  var FACE_TILTED = [0,1,2,3].map(function(i){ return faceQ(i, true); });
+  var FACE_FLAT = [0,1,2,3].map(function(i){ return faceQ(i, false); });
   cube.quaternion.copy(ISO); cube.scale.setScalar(1.2);       // first view: classic isometric
 
   /* ---------- slice turns (used by the click transition) ---------- */
@@ -110,9 +110,11 @@
   function readScroll(){
     var s = -story.getBoundingClientRect().top;
     var introH = intro.offsetHeight || innerHeight;
-    var panelH = (panels[0] && panels[0].offsetHeight) || innerHeight;
     w = smooth(0, introH * 0.85, s);
-    var fp = clamp((s - introH) / panelH, 0, panels.length - 1);
+    // which panel we're in, and how far through it (panels can differ in height on phones)
+    var fp = 0;
+    panels.forEach(function(p, i){ var r = p.getBoundingClientRect(); if(r.top <= 0) fp = i + Math.min(1, -r.top / (r.height || innerHeight)); });
+    fp = clamp(fp, 0, panels.length - 1);
     var i0 = Math.floor(fp);
     facePos = Math.min(i0 + smooth(0.25, 0.75, fp - i0), panels.length - 1);
     var a = w > 0.6 ? Math.round(fp) : -1;
@@ -214,12 +216,20 @@
       var t = reduce ? 0 : (now - t0) / 1000;
       qIdle.copy(ISO).premultiply(qSpin.setFromAxisAngle(SPIN_AXIS, t * 0.35));
       var i0 = Math.floor(facePos), i1 = Math.min(i0 + 1, 3);
-      qFace.copy(FACE_TILTED[i0]).slerp(FACE_TILTED[i1], facePos - i0);
+      qFace.copy(FACE_FLAT[i0]).slerp(FACE_FLAT[i1], facePos - i0);
       goal.copy(qIdle).slerp(qFace, w);
       var visH = 2 * CAM_Z * Math.tan(Math.PI / 12), visW = visH * camera.aspect;
-      var narrow = innerWidth < 880;
-      pos.set(narrow ? 0 : -visW * 0.22 * w, narrow ? visH * 0.2 * w : 0, 0);
-      var sc = 1.2 + ((narrow ? 0.7 : 0.88) - 1.2) * w;
+      var narrow = innerWidth < 880, sc;
+      if(narrow){
+        // phone: the cube sits in the top of the screen, sized so the panel text fits underneath
+        var sh = stage.clientHeight, cubePx = Math.min(stage.clientWidth * 0.5, sh * 0.25);
+        var top = 70 + 16 + cubePx * 0.55;               // nav, a gap, then half the cube (its front face sits nearer the camera)
+        pos.set(0, (0.5 - top / sh) * visH * w, 0);
+        sc = 0.85 + (cubePx / sh * visH / 5.3 / 1.1 - 0.85) * w;
+      } else {
+        pos.set(-visW * 0.22 * w, 0, 0);
+        sc = 1.2 + (0.88 - 1.2) * w;
+      }
       var k = reduce ? 1 : 0.14;
       cube.quaternion.slerp(goal, k);
       cube.position.lerp(pos, k);
