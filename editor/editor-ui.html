@@ -49,7 +49,7 @@
       }
     });
     c.querySelectorAll('.view').forEach(function(v){ v.setAttribute('hidden',''); });  // router state
-    c.querySelectorAll('[data-generated]').forEach(function(g){ g.innerHTML = ''; });  // drawn by script (the 3D cube)
+    c.querySelectorAll('[data-generated]').forEach(function(g){ g.innerHTML = ''; g.removeAttribute('style'); });  // drawn by script (the 3D cube)
     return c;
   }
 
