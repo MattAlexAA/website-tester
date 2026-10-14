@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="noindex" name="robots">
+<title>ASAP Transition Options</title>
+<script>document.documentElement.className='js'</script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&amp;family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,800;1,6..96,700&amp;family=Inter:wght@400;500;600;700&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<style>
+  :root{
+    /* --- palette lifted straight off the Aa logo --- */
+    --paper:#FFFFFF;
+    --ink:#000000;
+    --type:#111116;
+    --muted:#66666D;
+    --rule:#E3E3DE;
+    --soft:#F6F6F2;
+
+    --red:#FF0000;    --red-t:#DE0011;
+    --blue:#0048FF;   --blue-t:#0040E0;
+    --green:#00C24A;  --green-t:#007034;
+    --orange:#FF6A00; --orange-t:#B34200;
+    --acid:#F9FF2D;   /* logo yellow — accent only, never type colour */
+    --cream:#FFFBFB;  /* logo off-white */
+
+    --display:"Bricolage Grotesque",sans-serif;
+    --serif:"Bodoni Moda",Georgia,serif;
+    --body:"Inter",sans-serif;
+    --px:"Press Start 2P",monospace;
+    --maxw:1160px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--type);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .px{font-family:var(--px);text-transform:uppercase}
+  .eyebrow{font-family:var(--px);font-size:10px;letter-spacing:.06em;color:var(--muted);line-height:1.8}
+
+  /* ---------- crop marks (from the logo presentation sheet) ---------- */
+  .crop{position:relative}
+  .crop::before,.crop::after,
+  .crop > .cm1{position:absolute;inset:0;pointer-events:none}
+  .crop > .cm1::before,.crop > .cm1::after{content:"";position:absolute;width:22px;height:22px;pointer-events:none}
+  .crop::before{top:-14px;left:-14px;border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
+  .crop::after{top:-14px;right:-14px;border-top:2px solid var(--ink);border-right:2px solid var(--ink)}
+  .crop > .cm1::before{bottom:-14px;left:-14px;border-bottom:2px solid var(--ink);border-left:2px solid var(--ink)}
+  .crop > .cm1::after{bottom:-14px;right:-14px;border-bottom:2px solid var(--ink);border-right:2px solid var(--ink)}
+
+
+  /* ---------- ASAP cube logo: four mini cubes, 5x5 matrix each ---------- */
+  .logo{--s:34px;--gp:2px;--bd:2px;display:flex;align-items:center;gap:calc(var(--s)*.15);flex:0 0 auto}
+  .logo .lc{width:var(--s);height:var(--s);background:var(--ink);border:var(--bd) solid var(--ink);
+    display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:var(--gp)}
+  .logo .lc i{background:var(--c)}
+  .logo .lc i.k{background:var(--cream)}
+  .logo.lg{--s:74px;--gp:3px;--bd:3px}
+  .logo.md{--s:28px;--gp:2px;--bd:2px}
+  @media(max-width:520px){.logo{--s:27px;--gp:1px}.logo.lg{--s:52px;--gp:2px}}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:2px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px;gap:18px}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand .wordmark{display:flex;flex-direction:column;gap:4px}
+  .brand .wm1{font-family:var(--px);font-size:10px;letter-spacing:.02em;color:var(--ink)}
+  .brand .wm2{font-family:var(--px);font-size:7px;letter-spacing:.14em;color:var(--muted)}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a.px{font-size:9px;color:var(--muted);transition:color .12s;position:relative;padding:4px 0}
+  .nav-links a.px:hover{color:var(--ink)}
+  .nav-links a.px.on{color:var(--ink)}
+  .nav-links a.px.on::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:4px;background:var(--acid)}
+  .nav-cta{font-family:var(--px);font-size:9px;color:var(--ink)!important;background:var(--green);padding:12px 14px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s;cursor:pointer}
+  .nav-cta:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  @media(max-width:820px){.nav-links{gap:14px}.nav-links a.px:not(.nav-cta){display:none}.brand .wm2{display:none}}
+
+  /* ---------- page routing ---------- */
+  .page{display:block;animation:pin .34s ease both}
+  @keyframes pin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- hero ---------- */
+  header{position:relative;padding:76px 0 74px;overflow:hidden}
+  header::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .hero{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+  .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(50px,8.6vw,100px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink)}
+  .hl{position:relative;display:inline-block;z-index:1;padding:0 .06em}
+  .hl::before{content:"";position:absolute;left:-.09em;right:-.15em;top:.11em;bottom:-.01em;z-index:-1;
+    background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M2,13 C64,3 128,21 194,10 C256,0 318,17 379,6 L383,58 C322,71 256,53 195,65 C131,77 66,59 4,69 Z' fill='%23F9FF2D' fill-opacity='.60'/><path d='M17,39 C89,28 157,47 231,36 C290,28 345,44 396,31 L399,87 C345,100 295,82 239,93 C167,106 91,87 19,95 Z' fill='%23F9FF2D' fill-opacity='.60'/><path d='M391,28 C405,23 411,41 403,59 C400,47 399,38 389,39 Z' fill='%23F9FF2D' fill-opacity='.45'/></svg>");
+    background-size:100% 100%;background-repeat:no-repeat;
+    transform:rotate(-1.15deg) translate(5px,5px)}
+  .hl.hl2::before{transform:rotate(.9deg) scaleX(-1) translate(4px,4px)}
+  /* the highlight scrawls itself on, fast and slightly past the mark */
+  header .hl::before{animation:scrawl .5s cubic-bezier(.5,.05,.35,1.2) .25s both}
+  @keyframes scrawl{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @media(max-width:520px){.hl::before{transform:translate(4px,4px)}}
+  .hero .lede{margin-top:26px;font-size:clamp(16px,2vw,19px);color:#3B3B44;max-width:36ch}
+  .lede .a1{color:var(--red-t);font-weight:700}
+  .lede .a2{color:var(--blue-t);font-weight:700}
+  .lede .a3{color:var(--green-t);font-weight:700}
+  .lede .a4{color:var(--orange-t);font-weight:700}
+  .hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+
+  .btn{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;padding:15px 20px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;transition:transform .1s,box-shadow .1s;box-shadow:5px 5px 0 var(--ink)}
+  .btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+  .btn:active{transform:translate(5px,5px);box-shadow:0 0 0}
+  .btn-go{background:var(--acid)}
+
+
+  /* ---------- the four faces ---------- */
+  .faces{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .face-card{cursor:pointer;background:none;border:0;padding:0;text-align:left;font-family:inherit;display:block}
+  .face{position:relative;aspect-ratio:1;background:var(--ink);padding:7px;border:3px solid var(--ink);
+    display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:3px;
+    box-shadow:10px 10px 0 var(--ink);transition:transform .16s,box-shadow .16s}
+  .face i{background:var(--c)}
+  .face i.k{background:var(--cream)}
+  .face-card:hover .face,.face-card:focus-visible .face{transform:translate(-4px,-4px);box-shadow:16px 16px 0 var(--acid)}
+  .face-card:active .face{transform:translate(3px,3px);box-shadow:5px 5px 0 var(--acid)}
+  .face-meta{display:block;margin-top:30px}
+  .face-meta .n{font-family:var(--px);font-size:9px;color:var(--ct);display:block;margin-bottom:7px}
+  .face-meta .t{font-family:var(--display);font-weight:800;font-size:19px;display:block;line-height:1.1;color:var(--ink);text-transform:uppercase;letter-spacing:-.015em}
+  .face-meta .sub{font-size:12.5px;color:var(--muted);display:block;margin-top:5px}
+  .face-card:hover .face-meta .sub{color:var(--type)}
+  .face-card:focus-visible{outline:none}
+  .face-card:focus-visible .face{outline:3px solid var(--ink);outline-offset:6px}
+  @media(max-width:880px){.hero{grid-template-columns:1fr;gap:46px}.faces{max-width:440px}}
+
+  /* ---------- cube pages ---------- */
+  .cube{padding:66px 0 84px;position:relative}
+  .cube-head{display:flex;gap:24px;align-items:flex-start;margin-bottom:44px;flex-wrap:wrap}
+  .badge{flex:0 0 auto;width:80px;height:80px;background:var(--ink);padding:4px;border:3px solid var(--ink);
+    display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:2px;box-shadow:6px 6px 0 var(--ink);position:relative}
+  .badge i{background:var(--c)}
+  .badge i.k{background:var(--cream)}
+  .cube-titles{flex:1;min-width:260px}
+  .cube-titles .kbd{font-family:var(--px);font-size:10px;color:var(--ct);line-height:1.8}
+  .cube-titles h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,4.6vw,48px);line-height:1;letter-spacing:-.028em;margin:12px 0 14px;text-transform:uppercase;color:var(--ink)}
+  .cube-titles p{color:#3B3B44;max-width:62ch;font-size:16px}
+  .stamp{flex:0 0 auto;text-align:right;padding:2px 4px 0 0}
+  .stamp .num{font-family:var(--serif);font-weight:800;font-size:92px;line-height:.8;color:var(--acid);
+    -webkit-text-stroke:2.5px var(--ink);paint-order:stroke fill;display:block;letter-spacing:-.02em}
+  .stamp .term{font-family:var(--px);font-size:9px;color:var(--muted);line-height:1.9;margin-top:10px;display:block}
+  @media(max-width:900px){.stamp .num{display:none}.stamp{text-align:left}}
+
+  .price{font-family:var(--display);font-weight:800;font-size:42px;letter-spacing:-.025em;line-height:1;color:var(--ink)}
+  .price .per{font-family:var(--px);font-size:11px;color:var(--muted);margin-left:6px}
+  .price .note{display:block;font-family:var(--body);font-weight:500;font-size:12px;color:var(--muted);margin-top:8px}
+  .feat-label{font-family:var(--px);font-size:8px;color:var(--ct);letter-spacing:.04em;margin-bottom:15px}
+  ul.feat{list-style:none;display:flex;flex-direction:column;gap:13px}
+  ul.feat li{position:relative;padding-left:32px;font-size:14.5px;color:#2C2C34}
+  ul.feat li b{font-weight:700;color:var(--ink)}
+  ul.feat li::before{content:"";position:absolute;left:4px;top:9px;width:3px;height:3px;color:var(--ct);
+    box-shadow:3px 3px 0,6px 6px 0,9px 3px 0,12px 0 0,15px -3px 0,18px -6px 0}
+  .split{margin-top:18px;font-size:13px;color:var(--muted)}
+  .split b{color:var(--ink);font-weight:700}
+  .bestfor{margin-top:16px;flex:1;font-size:13px;color:#3B3B44;line-height:1.5}
+  .bestfor b{font-family:var(--px);font-size:8px;color:var(--ct);display:block;margin-bottom:8px;letter-spacing:.04em}
+  .tag{position:absolute;top:-13px;right:16px;font-family:var(--px);font-size:8px;background:var(--acid);color:var(--ink);padding:6px 8px;border:2px solid var(--ink)}
+
+  .scope{margin-top:26px;font-size:13px;color:var(--muted);max-width:790px;border-top:2px solid var(--rule);padding-top:18px}
+  .scope b{color:var(--ink)}
+
+
+  /* ---------- package rows (matches the cube 04 panel format) ---------- */
+  .rows{display:flex;flex-direction:column;gap:30px}
+  .row{position:relative;background:var(--paper);border:2px solid var(--ink);box-shadow:10px 10px 0 var(--c);
+    padding:36px 34px;display:grid;grid-template-columns:1.45fr 1fr;gap:38px;align-items:center}
+  .row .tier{font-family:var(--px);font-size:9px;color:var(--muted);line-height:1.8}
+  .row h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.2vw,31px);text-transform:uppercase;
+    letter-spacing:-.028em;line-height:1.02;margin:11px 0 9px;color:var(--ink)}
+  .row .desc{color:var(--muted);font-size:14px;line-height:1.55;max-width:62ch}
+  .row .feat-label{margin:22px 0 15px}
+  .row ul.feat{display:grid;grid-template-columns:1fr 1fr;gap:13px 32px;align-items:start}
+  .row ul.feat.single{grid-template-columns:1fr}
+  .row .split{max-width:none}
+  .buy{text-align:center;border-left:2px solid var(--rule);padding-left:36px;align-self:center}
+  .buy .pill{font-family:var(--px);font-size:9px;color:var(--ct)}
+  .buy .price{margin:12px 0 20px}
+  .buy .price .note{margin-top:9px}
+  .buy .btn{width:100%;justify-content:center}
+  .row .tag{top:-13px;right:26px}
+  @media(max-width:900px){
+    .row{grid-template-columns:1fr;gap:26px;padding:28px 24px}
+    .row ul.feat{grid-template-columns:1fr}
+    .buy{border-left:0;border-top:2px solid var(--ink);padding-left:0;padding-top:26px;text-align:left}
+    .buy .btn{width:auto}
+  }
+
+  /* cube 4 panel */
+  .panel4{background:var(--paper);border:2px solid var(--ink);box-shadow:10px 10px 0 var(--orange);padding:36px 34px;display:grid;grid-template-columns:1.45fr 1fr;gap:38px;align-items:center}
+  .panel4 h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.4vw,32px);letter-spacing:-.025em;line-height:1.05;text-transform:uppercase;color:var(--ink)}
+  .panel4 .p4list{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:12px}
+  .panel4 .p4list li{position:relative;padding-left:30px;font-size:14px;color:#2C2C34}
+  .panel4 .p4list li::before{content:"";position:absolute;left:4px;top:8px;width:3px;height:3px;color:var(--orange-t);box-shadow:3px 3px 0,6px 6px 0,9px 3px 0,12px 0 0,15px -3px 0,18px -6px 0}
+  .panel4 .right{text-align:center;border-left:2px solid var(--rule);padding-left:36px}
+  .panel4 .pill{font-family:var(--px);font-size:9px;color:var(--orange-t)}
+  .panel4 .quote{font-family:var(--display);font-weight:800;font-size:32px;margin:12px 0 20px;text-transform:uppercase;color:var(--ink);letter-spacing:-.02em}
+  @media(max-width:900px){.panel4{grid-template-columns:1fr;gap:26px;padding:28px 24px}.panel4 .right{border-left:0;border-top:2px solid var(--ink);padding-left:0;padding-top:26px;text-align:left}}
+
+  /* ---------- page-to-page pager ---------- */
+  .pager{border-top:2px solid var(--ink);margin-top:60px;padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .pager a{font-family:var(--px);font-size:9px;color:var(--muted);transition:color .12s;display:inline-flex;align-items:center;gap:8px}
+  .pager a:hover{color:var(--ink)}
+  .pager .chip{width:14px;height:14px;background:var(--pc);border:2px solid var(--ink);display:inline-block}
+
+  /* ---------- closing ---------- */
+  .final{position:relative;padding:92px 0;border-top:2px solid var(--ink);text-align:center;overflow:hidden}
+  .final::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .final-in{position:relative;z-index:1}
+  .final .logo{justify-content:center;margin:0 auto 32px}
+  .final h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,7.4vw,76px);line-height:.9;letter-spacing:-.032em;text-transform:uppercase;color:var(--ink)}
+  .final p{color:var(--muted);margin:20px auto 32px;max-width:44ch;font-size:16px}
+
+  /* clickable A·S·A·P cubes in the closing block */
+  .cube-links{gap:26px;flex-wrap:wrap}
+  .cube-links .lc{cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .16s,box-shadow .16s;perspective:340px}
+  .cube-links .lc:hover,.cube-links .lc:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--acid)}
+  .cube-links .lc:active{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--acid)}
+  .cube-links .lc:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
+  @media(max-width:520px){.cube-links{gap:18px}.cube-links .lc{box-shadow:4px 4px 0 var(--ink)}}
+
+  /* split-flap: only the cream tiles flip, revealing an acid underside */
+  .cube-links .lc i.k{position:relative;transform-style:preserve-3d;backface-visibility:hidden;
+    transition:transform .34s cubic-bezier(.36,.02,.24,1.06)}
+  .cube-links .lc i.k::after{content:"";position:absolute;inset:0;background:var(--acid);
+    transform:rotateX(180deg);backface-visibility:hidden}
+  .cube-links .lc:hover i.k,.cube-links .lc:focus-visible i.k{transform:rotateX(180deg)}
+  /* stagger column by column, left to right, like a departures board */
+  .cube-links .lc i.k:nth-child(5n+1){transition-delay:0s}
+  .cube-links .lc i.k:nth-child(5n+2){transition-delay:.055s}
+  .cube-links .lc i.k:nth-child(5n+3){transition-delay:.11s}
+  .cube-links .lc i.k:nth-child(5n+4){transition-delay:.165s}
+  .cube-links .lc i.k:nth-child(5n+5){transition-delay:.22s}
+
+  /* ---------- footer ---------- */
+  footer{border-top:2px solid var(--ink);padding:54px 0 62px;background:var(--soft)}
+  .foot{display:flex;justify-content:space-between;gap:34px;flex-wrap:wrap;align-items:flex-end}
+  .foot .foot-h{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,44px);letter-spacing:-.03em;line-height:.95;text-transform:uppercase;color:var(--ink)}
+  .foot .sub{color:var(--muted);font-size:14px;margin-top:10px;max-width:44ch}
+  .foot .legal{font-family:var(--px);font-size:8px;color:#7A7A80;line-height:2.2;margin-top:20px}
+  .foot-cta{font-family:var(--px);font-size:11px;background:var(--acid);color:var(--ink)!important;padding:15px 20px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);display:inline-block;cursor:pointer;transition:transform .1s,box-shadow .1s}
+  .foot-cta:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+  .foot .logo{margin-bottom:22px}
+  .foot .social{display:flex;align-items:center;gap:10px;margin-top:20px}
+  .social-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--ink);color:var(--ink);transition:transform .1s,box-shadow .1s,background .1s}
+  .social-btn svg{width:20px;height:20px;display:block}
+  .social-btn:hover{background:var(--acid);transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .social-btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+  /* only hidden when JS is running, so crawlers and no-JS agents always see the content */
+  .js .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+  .js .reveal.in{opacity:1;transform:none}
+  :focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  @media(prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto!important}
+    .js .reveal{opacity:1;transform:none;transition:none}
+    .page{animation:none}
+    header .hl::before{animation:none}
+    .face,.card,.btn,.nav-cta,.foot-cta,.cube-links .lc{transition:none!important}
+    .face-card:hover .face{transform:none}
+    .cube-links .lc:hover{transform:none}
+    .cube-links .lc i.k{transition:none!important;transition-delay:0s!important}
+    .cube-links .lc:hover i.k,.cube-links .lc:focus-visible i.k{transform:none}
+    .card:hover,.btn:hover{transform:none}
+  }
+
+  /* ---------- info sections: about / compare / faq ---------- */
+  .info{padding:76px 0;border-top:2px solid var(--ink)}
+  .info.soft{background:var(--soft)}
+  .h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.4vw,46px);line-height:1;letter-spacing:-.028em;text-transform:uppercase;color:var(--ink);margin:12px 0 18px}
+  .lead{font-size:clamp(16px,1.9vw,19px);color:#3B3B44;max-width:68ch}
+  .lead + .lead{margin-top:14px}
+  .lead a,.more a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+  .more{margin-top:26px;font-size:14.5px;color:#2C2C34}
+  .tbl-wrap{margin-top:30px;overflow-x:auto;border:2px solid var(--ink);box-shadow:10px 10px 0 var(--ink);background:var(--paper)}
+  table.cmp{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
+  .cmp th,.cmp td{padding:15px 16px;text-align:left;vertical-align:top;border-bottom:2px solid var(--rule);color:#2C2C34}
+  .cmp thead th{font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink);line-height:1.8}
+  .cmp tbody th{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:15px;line-height:1.15;color:var(--ink)}
+  .cmp tbody th a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+  .cmp tbody th a.cube-name{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .cmp .cube-name .logo{--s:40px;--gp:2px;--bd:2px}
+  .cmp .cube-name .lc{box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .cmp .cube-name > span:last-child{white-space:nowrap;text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:3px;text-underline-offset:4px}
+  .cmp .cube-name:hover .lc{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--acid)}
+  .cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:0}
+  .cmp tbody tr.us th,.cmp tbody tr.us td{background:rgba(249,255,45,.28)}
+  .faq{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:30px 46px}
+  .faq h3{font-family:var(--display);font-weight:800;font-size:19px;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
+  .faq p{font-size:14.5px;color:#2C2C34;max-width:60ch}
+  .sub-faq{margin-top:64px;border-top:2px solid var(--ink);padding-top:44px}
+  .two{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:30px 46px}
+  .two h3{font-family:var(--px);font-size:9px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.8;margin-bottom:10px}
+  .two ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .two li{font-size:15px;color:#2C2C34;padding-left:18px;position:relative}
+  .two li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--ink)}
+  @media(max-width:820px){.faq,.two{grid-template-columns:1fr}.info{padding:58px 0}}
+  .foot-links{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:13px;color:var(--muted);max-width:640px}
+  .foot-links a{text-decoration:underline;text-underline-offset:3px}
+  .foot-links a:hover{color:var(--ink)}
+  .prose{margin-top:8px}
+  .prose > p,.prose > ul,.prose > ol,.prose > h2,.prose > h3,.prose > blockquote{max-width:72ch}
+  .prose h2{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1;letter-spacing:-.02em;text-transform:uppercase;color:var(--ink);margin:40px 0 12px}
+  .prose h3{font-family:var(--display);font-weight:800;font-size:18px;line-height:1.15;color:var(--ink);margin:24px 0 8px}
+  .prose p,.prose li{font-size:16px;color:#2C2C34}
+  .prose p + p{margin-top:12px}
+  .prose ul,.prose ol{padding-left:22px;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .prose p + ul,.prose p + ol{margin-top:12px}
+  .prose ul + p,.prose ol + p{margin-top:14px}
+  .prose a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+  .prose blockquote{margin:22px 0 6px;padding:20px 24px;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--acid);background:var(--paper);font-family:var(--display);font-weight:700;font-size:19px;line-height:1.35;color:var(--ink)}
+  .prose blockquote + p{margin-top:16px;font-size:14px;color:var(--muted)}
+  .prose .tbl-wrap{margin:26px 0 30px}
+
+  /* ---------- homepage cube story: blurred cube behind the headline, then one face per panel ---------- */
+  .cube-story{position:relative;border-bottom:2px solid var(--ink)}
+  .cube-story::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .cube-sticky{position:sticky;top:0;height:100vh;z-index:0}
+  .cube-stage{width:100%;height:100%;will-change:filter}
+  .cube-stage canvas{display:block;width:100%;height:100%;outline:none}
+  .story-flow{position:relative;z-index:1;margin-top:-100vh;pointer-events:none}
+  .story-flow .wrap > *{pointer-events:auto}
+  .story-intro{min-height:calc(100vh - 70px);display:flex;align-items:center;text-align:center;padding-block:40px 60px}
+  .story-intro .wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+  .story-intro h1{font-family:var(--display);font-weight:800;font-size:clamp(44px,11.5vw,150px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink);margin-top:14px;text-wrap:balance}
+  .story-intro .lede{margin-top:28px;font-size:clamp(17px,2vw,20px);color:#2C2C34;max-width:44ch;font-weight:500}
+  .story-intro .hero-actions{justify-content:center}
+  .scroll-cue{margin-top:46px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .scroll-cue::after{content:"";display:block;width:2px;height:34px;background:var(--ink);margin:10px auto 0;animation:cue 1.6s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+  .story-panel{min-height:100vh;display:flex;align-items:center}
+  .story-panel .wrap{width:100%;display:flex;justify-content:flex-end}
+  .panel-card{width:min(470px,46%);transition:opacity .35s ease,transform .35s ease}
+  .js .cube-story:not(.no-3d) .story-panel:not(.on) .panel-card{opacity:.12;transform:translateY(18px)}
+  .panel-card .kbd{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.08em;color:var(--ct)}
+  .panel-card h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,3.6vw,46px);line-height:1;letter-spacing:-.028em;text-transform:uppercase;color:var(--ink);margin:12px 0 16px;text-wrap:balance}
+  .panel-card p{font-size:16px;color:#2C2C34}
+  .panel-card .meta{margin:16px 0 24px;font-weight:700;color:var(--ink);padding-left:12px;border-left:4px solid var(--c)}
+  .cube-story.no-3d .cube-sticky{display:none}
+  .cube-story.no-3d .story-flow{margin-top:0}
+  .cube-story.no-3d .panel-card{width:100%;max-width:640px}
+  @media(max-width:880px){
+    /* phone: the cube holds the top of the screen, the text sits under it; the screen is the frame, so no box */
+    .story-panel{align-items:flex-start;padding-top:calc(min(50vw,25vh) + 102px);padding-bottom:24px}
+    .panel-card{width:100%}
+    .panel-card .kbd{font-size:12px}
+    .panel-card h2{font-size:clamp(22px,6.4vw,30px);margin:6px 0 10px}
+    .panel-card p{font-size:14px;line-height:1.45}
+    .panel-card .meta{margin:10px 0 14px}
+    .panel-card .btn{font-size:14px;padding:13px 16px}
+  }
+  .cube-overlay{position:fixed;inset:0;z-index:150;background:var(--paper)}
+  .cube-overlay .cube-stage{filter:none!important}
+  html.cube-zoom .story-flow{opacity:0;transition:opacity .25s}
+  .cube-flood{position:fixed;inset:0;z-index:300;opacity:0;pointer-events:none;transition:opacity .38s ease-in}
+  .cube-flood.in{opacity:1}
+  .cube-flood.out{opacity:0;transition:opacity .55s ease-out}
+  @media(prefers-reduced-motion:reduce){.scroll-cue::after{animation:none}.panel-card{transition:none}}
+
+  html.kb-nav .page{animation:none}
+  .tx-pick{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:400;display:flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:calc(100% - 32px);padding:8px;background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--acid);font:600 12px/1.2 var(--body)}
+  .tx-pick span{padding:0 6px;color:#B9B9C0}
+  .tx-pick button{font:700 12px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;padding:9px 11px;border:1.5px solid #4A4A52;background:transparent;color:var(--paper);cursor:pointer}
+  .tx-pick button[aria-pressed="true"]{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+  .tx-pick button:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+  .view[hidden]{display:none}
+  .preview-bar{background:var(--ink);color:var(--cream);font-family:var(--px);font-size:8px;letter-spacing:.06em;line-height:1.8;padding:9px 24px;text-align:center;text-transform:uppercase}
+  .rawfile{margin-top:26px;padding:24px;border:2px solid var(--ink);background:var(--soft);font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="preview-bar">Transition demo · scroll to a package and click its button or cube face · not the live site</div>
+<div class="tx-pick" role="group" aria-label="Package transition"><span>Transition</span><button type="button" data-tx="land">A · Land on the badge</button><button type="button" data-tx="pull">B · Pull back from the badge</button></div>
+<nav>
+<div class="wrap nav-in">
+<a aria-label="ASAP Assets home" class="brand" href="/">
+<span aria-hidden="true" class="logo"><span class="lc" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span><span class="lc" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span></span>
+<span class="wordmark">
+<span class="wm1">ASAP</span>
+<span class="wm2">ASSETS</span>
+</span>
+</a>
+<div class="nav-links">
+<a class="px nl" data-page="smb" href="/small-business">Small Business</a>
+<a class="px nl" data-page="marketing" href="/marketing">Marketing</a>
+<a class="px nl" data-page="creators" href="/creators">Creators</a>
+<a class="px nl" data-page="ai" href="/personalised">Personalised</a>
+<a class="px nl" data-page="work" href="/work">Our work</a>
+<a class="px nav-cta js-book" data-pkg="Nav — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
+</div>
+</div>
+</nav>
+<main id="top">
+<div class="view" data-view="home" hidden>
+<section class="page" id="p-home">
+<section class="cube-story" id="cube-story">
+<div class="cube-sticky"><div aria-hidden="true" class="cube-stage" data-generated="" id="hero-cube"></div></div>
+<div class="story-flow">
+<div class="story-intro">
+<div class="wrap">
+<p class="eyebrow"><br></p>
+<h1><span>Stop</span><br><span class="hl">scrambling.</span></h1>
+<p class="lede">A.S.A.P. — we turn your content scramble into a system that grows the brand</p><p class="lede"><a class="btn btn-go" href="#find-your-cube" style="display: inline !important;">Find your cube</a></p><div class="hero-actions">
+<a class="btn js-book" data-pkg="Hero — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
+</div>
+<p class="scroll-cue">Scroll to turn the cube</p>
+</div>
+</div>
+<article class="story-panel" data-href="/small-business" style="--c:var(--red);--ct:var(--red-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">A — SMALL BUSINESS</p>
+<h2>For small businesses ready to show up</h2>
+<p>Small Business is a three-month short-form video content package from ASAP Assets, from $1,000. Every tier includes 40 social media concepts for Instagram, Facebook and TikTok plus shoot day guides. You film. Start where your time and budget sit today.</p>
+<p class="meta">3-month packages · from $1,000</p>
+<a class="btn btn-go" data-face="0" href="/small-business">Small Business packages →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/marketing" style="--c:var(--blue);--ct:var(--blue-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">S — MARKETING</p>
+<h2>The thinking and the concepts — you keep the hands</h2>
+<p>Brands is a quarterly strategy and concept package from ASAP Assets, from $4,000 per quarter, for brands with their own team, agency or creators ready to execute. We strategise and concept; your team, agency, creators, or customers execute. We don't edit, schedule, post, or run ads — we hand you the direction and ideas worth filming.</p>
+<p class="meta">Quarterly · from $4,000</p>
+<a class="btn btn-go" data-face="1" href="/marketing">Marketing packages →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/creators" style="--c:var(--green);--ct:var(--green-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">A — CREATORS</p>
+<h2>For creators who want to grow</h2>
+<p>Creators is a monthly concept plan from ASAP Assets, from $500 a month, cancel anytime. Ready-to-film concepts and a shoot guide every month. Pick the level based on how much of the edit you want to own.</p>
+<p class="meta">Monthly · from $500</p>
+<a class="btn btn-go" data-face="2" href="/creators">Creator plans →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/personalised" style="--c:var(--orange);--ct:var(--orange-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">P — PERSONALISED</p>
+<h2>For businesses that want something bespoke</h2>
+<p>Personalised is the bespoke cube from ASAP Assets, quoted per project: shoot days with our videographer, AI setup and training, custom agency retainers and content series for startups. Scoped to your business, not a template.</p>
+<p class="meta">Bespoke · shoot days from $3,000</p>
+<a class="btn btn-go" data-face="3" href="/personalised">Personalised options →</a>
+</div></div>
+</article>
+</div>
+</section>
+<section class="info" id="what-is-asap-assets">
+<div class="wrap">
+<p class="eyebrow">What we do</p>
+<h2 class="h2">What is ASAP Assets?</h2>
+<p class="lead">We're a Melbourne-based content strategy studio giving small businesses, brands and creators boutique agency delivery without the boutique agency price: ready-to-film short-form video concepts, shoot guides, editing and strategy for Instagram, TikTok and Facebook.</p>
+<p class="lead">We work as an extension of your business. Every price is published. Shop for content the way you shop for anything else.</p>
+<p class="more"><a href="/how-it-works">How it works</a> · <a href="/about">About Matt and Alex</a> · <a href="/compare">How we compare</a></p>
+</div>
+</section>
+<section class="info soft" id="find-your-cube">
+<div class="wrap">
+<p class="eyebrow">Find your cube</p>
+<h2 class="h2">Packages and prices</h2>
+<p class="lead">Four cubes, one for each kind of client.</p>
+<div class="tbl-wrap">
+<table class="cmp">
+<thead><tr><th scope="col">Cube</th><th scope="col">Who it's for</th><th scope="col">Term</th><th scope="col">Price</th><th scope="col">We do</th><th scope="col">You do</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a class="cube-name" href="/small-business" style="--c:var(--red)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span></span><span>Small Business</span></a></th><td>Small businesses</td><td>3-month packages</td><td>$1,000, $2,000 or $4,500 one-off</td><td>40 concepts and shoot day guides. Editing, scheduling, posting and Meta ad management on the higher tiers</td><td>Film. On Base you also edit and post</td></tr>
+<tr><th scope="row"><a class="cube-name" href="/marketing" style="--c:var(--blue)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span></span><span>Marketing</span></a></th><td>Brands with their own team, agency or creators</td><td>Quarterly, renewable</td><td>$4,000 or $5,000 per quarter</td><td>3-month marketing direction and 20 brand-specific concepts. 8 influencer and customer brief packs on the Distribution package</td><td>Execute: film, edit, post and run ads</td></tr>
+<tr><th scope="row"><a class="cube-name" href="/creators" style="--c:var(--green)"><span aria-hidden="true" class="logo"><span class="lc"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span></span><span>Creators</span></a></th><td>Content creators</td><td>Monthly, cancel anytime</td><td>$500 or $1,300 per month</td><td>12 or 20 ready-to-film concepts and a shoot guide each month. Editing on Accelerated Growth</td><td>Film. On Sustainable Growth you also edit</td></tr>
+<tr><th scope="row"><a class="cube-name" href="/personalised" style="--c:var(--orange)"><span aria-hidden="true" class="logo"><span class="lc"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span></span><span>Personalised</span></a></th><td>Businesses and startups wanting something bespoke</td><td>Quoted per project</td><td>Shoot days from $3,000. Everything else quoted after a call</td><td>Shoot days with our videographer (Melbourne only), AI setup and training, custom agency retainers, startup content series</td><td>Tell us where you're at</td></tr>
+</tbody>
+</table>
+</div>
+<p class="more">50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.</p>
+</div>
+</section>
+<section class="info" id="who-we-work-with">
+<div class="wrap">
+<p class="eyebrow">Who we work with</p>
+<h2 class="h2">Small businesses, brands and creators across Australia</h2>
+<div class="two" style="grid-template-columns:1fr">
+<div>
+<ul>
+<li>Proven: allied health clinics (osteopaths, physiotherapists).</li>
+<li>Built for: trades, cafes, bars, hotels and hospitality, and any small business that wants to show up on social and cares about its brand.</li>
+<li>Creators and influencers, through the <a href="/creators">Creators</a> cube.</li>
+<li>Startups, through <a href="/personalised">Personalised</a>, with content series shot by our videographer.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="final">
+<div class="wrap final-in">
+<div aria-label="Jump to a cube" class="logo lg cube-links" role="group"><a aria-label="Small Business" class="lc" href="/small-business" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Marketing" class="lc" href="/marketing" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></a><a aria-label="Creators" class="lc" href="/creators" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></a><a aria-label="Personalised" class="lc" href="/personalised" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></a></div>
+<h2><span>Ready to </span><span class="hl hl2">solve it?</span></h2>
+<p>Tell us where you're stuck and we'll point you in the right direction.</p>
+<a class="btn btn-go js-book" data-pkg="Closing — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
+</div>
+</section>
+</section>
+</div>
+<div class="view" data-view="small-business" hidden>
+<section class="page" id="p-small-business">
+<div class="cube" style="--c:var(--red);--ct:var(--red-t)">
+<div class="wrap">
+<div class="cube-head reveal">
+<div class="badge"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></div>
+<div class="cube-titles">
+<div class="kbd">A — SMALL BUSINESS</div>
+<h1>For small businesses ready to show up</h1>
+<p>Small Business is a three-month short-form video content package from ASAP Assets, from $1,000. Every tier includes 40 social media concepts for Instagram, Facebook and TikTok plus shoot day guides. You film. Start where your time and budget sit today.</p>
+</div>
+<div class="stamp"><span class="num"><br></span><span class="term"><br></span></div>
+</div>
+<div class="rows reveal"><div class="row"><div><span class="tier">— BASE PACKAGE 3 MONTHS</span><h2>Get rolling</h2><p class="desc">The concept engine and a shoot plan. You run the cameras, the editing and the posting yourself.</p><div class="feat-label">What you get</div><ul class="feat single">
+<li>40 social media concepts (Instagram, Facebook and TikTok) — a full quarter of short-form video ideas, delivered all at once within 7 days, or in four batches of 10</li>
+<li>Shoot day guides — a shot-by-shot plan for every concept with timings and voiceover lines, the on-screen hook, a caption line and the post caption</li>
+</ul><div class="split"><b>You handle:</b> filming, editing, posting &amp; your own ads.</div><div class="bestfor"><b>Best for</b>Hands-on owners who want the direction but are happy doing the doing.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$1,000</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Intro ($1,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><span class="tag">Most popular</span><div><span class="tier">— MIDDLE PACKAGE 3 MONTHS</span><h2>We take the edit</h2><p class="desc">We add a posting strategy and take editing off your plate. You film, we make it post-ready.</p><div class="feat-label">What you get</div><ul class="feat">
+<li>40 social media concepts (Instagram, Facebook and TikTok)</li>
+<li>Shoot day guides</li>
+<li>Marketing strategy — your concept plan plus the ideal posting schedule, so you know what goes out and when</li>
+<li>We edit your raw footage into finished, ready-to-post videos</li>
+</ul><div class="split"><b>You handle:</b> filming, scheduling &amp; your own ads.</div><div class="bestfor"><b>Best for</b>Businesses filming consistently who don't want to touch the edit.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$2,000</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Middle ($2,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><div><span class="tier">— PREMIUM PACKAGE 3 MONTHS</span><h2>We run it - THIS BECOMES DTM PACKAGE UPDATE***</h2><p class="desc">The full engine. You film; we run the strategy, editing, scheduling and your Meta ads.</p><div class="feat-label">What you get</div><ul class="feat">
+<li>40 social media concepts (Instagram, Facebook and TikTok)</li>
+<li>Shoot day guides</li>
+<li>Growth strategy — with data on what's working in your field</li>
+<li>We edit your footage into finished videos</li>
+<li>We schedule &amp; post everything for you</li>
+<li>We build &amp; manage your Meta ad campaigns. Meta ad spend is separate, paid by you directly at a budget we agree together</li>
+</ul><div class="split"><b>You handle:</b> filming. We run the rest.</div><div class="bestfor"><b>Best for</b>Businesses that want it handled end-to-end, hands-off.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$5,500</span><span class="note">One-off · covers 3 months</span></div><a class="btn btn-go js-book" data-pkg="Cube 1 — Premium ($4,500)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div></div>
+<p class="scope"><b>Delivery options:</b> all 40 concepts at once, within 7 days. Or four batches of 10, with the first batch within a couple of days and the rest on an agreed timeline, so filming feels less daunting.</p>
+<p class="scope"><b>Payment:</b> 50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.</p>
+<div class="sub-faq" id="faq">
+<p class="eyebrow">FAQ</p>
+<h2 class="h2">Small business questions</h2>
+<div class="faq">
+<div><h3>I don't have time to film 40 videos. What then?</h3><p>Take them in batches of 10. Shoot guides group concepts you can film together in one setup.</p></div>
+<div><h3>Will it look good shot on an iPhone?</h3><p>Yes. Every concept is designed to be shot on a phone, and the guides tell you exactly how to frame each shot. Our own content is shot on iPhone too.</p></div>
+<div><h3>How fast will I get my concepts?</h3><p>All 40 within 7 days, or the first 10 within a couple of days if you choose batches.</p></div>
+<div><h3>How long does editing take?</h3><p>A batch of 10 videos in 5–7 days. A full 40 in about 2 weeks.</p></div>
+<div><h3>Is Meta ad spend included in Premium?</h3><p>No. Ad spend is paid by you directly, at a budget we agree together. Premium covers building and managing the campaigns.</p></div>
+<div><h3>How do payments work?</h3><p>50% to start, balance on concept delivery. Creator plans are monthly and you can cancel anytime.</p></div>
+</div>
+<p class="more">More answers on the <a href="/faq">FAQ page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a href="/marketing" style="--pc:var(--blue)">MARKETING<span class="chip"></span></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="marketing" hidden>
+<section class="page" id="p-marketing">
+<div class="cube" style="--c:var(--blue);--ct:var(--blue-t)">
+<div class="wrap">
+<div class="cube-head reveal">
+<div class="badge"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></div>
+<div class="cube-titles">
+<div class="kbd">S — MARKETING</div>
+<h1>The thinking and the concepts — you keep the hands</h1>
+<p>Brands is a quarterly strategy and concept package from ASAP Assets, from $4,000 per quarter, for brands with their own team, agency or creators ready to execute. We strategise and concept; your team, agency, creators, or customers execute. We don't edit, schedule, post, or run ads — we hand you the direction and ideas worth filming.</p>
+</div>
+<div class="stamp"><span class="num"><br></span></div>
+</div>
+<div class="rows reveal"><div class="row"><div><span class="tier">— CONSULTING + CONCEPTS</span><h2>Direction + concepts</h2><p class="desc">A full quarter of marketing direction, plus the concepts to bring it to life — ready for your team to execute.</p><div class="feat-label">What you get</div><ul class="feat single">
+<li><b>3-month marketing direction</b> — the demand moments to build around, your channel priorities, the biggest untapped opportunities and the order to attack them</li>
+<li><b>20 brand-specific concepts</b> — each with its strategic rationale, the audience it's for, and a shoot direction clear enough for a videographer, agency or creator to film</li>
+</ul><div class="bestfor"><b>Best for</b>Brands with their own team, agency or creators ready to execute.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$4,000</span><span class="note">Per quarter · renewable</span></div><a class="btn btn-go js-book" data-pkg="Cube 2 — Core ($4,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><span class="tag">+ Distribution</span><div><span class="tier">— CONSULTING + CONCEPTS + DISTRIBUTION</span><h2>Concepts + a way to film them</h2><p class="desc">Everything in Consulting + Concepts, plus ready-to-send briefs so creators and customers can shoot the concepts for you.</p><div class="feat-label">What you get</div><ul class="feat">
+<li>Everything in Consulting + Concepts</li>
+<li><b>8 influencer &amp; customer brief packs</b> — ready to send, each with the concept, creator brief, what good looks like, and the deliverable spec</li>
+<li>Refreshed direction each quarter, informed by what worked</li>
+</ul><div class="bestfor"><b>Best for</b>Brands who want concepts filmed by others, without a crew.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$5,000</span><span class="note">Per quarter · renewable</span></div><a class="btn btn-go js-book" data-pkg="Cube 2 — Core + Distribution ($5,000)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div></div>
+<p class="scope"><b>Out of scope (by design):</b> editing, scheduling, posting, community management, ad account management, creator sourcing, and reporting dashboards. This is the strategy and the concepts.</p>
+<p class="scope"><b>Term:</b> minimum one quarter. Renews each quarter unless cancelled 14 days before quarter end.</p>
+<div class="sub-faq" id="faq">
+<p class="eyebrow">FAQ</p>
+<h2 class="h2">Marketing questions</h2>
+<div class="faq">
+<div><h3>What is not included in the Marketing packages?</h3><p>Editing, scheduling, posting, community management, ad account management, creator sourcing and reporting dashboards are out of scope by design. Brands is strategy and concepts only.</p></div>
+<div><h3>What is the minimum term?</h3><p>One quarter. It renews each quarter unless cancelled 14 days before quarter end.</p></div>
+<div><h3>What is in the influencer and customer brief packs?</h3><p>Eight ready-to-send brief packs. Each contains the concept, the creator brief, what good looks like and the deliverable spec.</p></div>
+<div><h3>Do you work outside Melbourne?</h3><p>Yes. Concepts, shoot guides, editing and strategy are delivered Australia-wide. Shoot days are Melbourne only.</p></div>
+</div>
+<p class="more">More answers on the <a href="/faq">FAQ page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a href="/creators" style="--pc:var(--green)">CREATORS<span class="chip"></span></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="creators" hidden>
+<section class="page" id="p-creators">
+<div class="cube" style="--c:var(--green);--ct:var(--green-t)">
+<div class="wrap">
+<div class="cube-head reveal">
+<div class="badge"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></div>
+<div class="cube-titles">
+<div class="kbd">A — CREATORS</div>
+<h1>For creators who want to grow</h1>
+<p>Creators is a monthly concept plan from ASAP Assets, from $500 a month, cancel anytime. Ready-to-film concepts and a shoot guide every month. Pick the level based on how much of the edit you want to own.</p>
+</div>
+<div class="stamp"><span class="num"><br></span><span class="term"><br></span></div>
+</div>
+<div class="rows reveal"><div class="row"><div><span class="tier">— SUSTAINABLE GROWTH</span><h2>You film &amp; edit</h2><p class="desc">A steady stream of ready-to-film concepts you shoot and edit yourself.</p><div class="feat-label">What you get each month</div><ul class="feat">
+<li>12 ready-to-film concepts + shoot guide</li>
+<li>You film and edit</li>
+<li>Roughly 24 posts a month across Instagram and TikTok once repurposed</li>
+</ul><div class="bestfor"><b>Best for</b>Creators comfortable editing their own footage.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$500</span><span class="per">/mo</span><span class="note">Monthly · cancel anytime</span></div><a class="btn btn-go js-book" data-pkg="Cube 3 — Sustainable ($500/mo)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div><div class="row"><span class="tag">We edit</span><div><span class="tier">— ACCELERATED GROWTH</span><h2>You just film</h2><p class="desc">More concepts, and we cut your footage — you only point the camera.</p><div class="feat-label">What you get each month</div><ul class="feat">
+<li>20 ready-to-film concepts + shoot guide</li>
+<li>We edit your footage</li>
+<li>You just film</li>
+<li>Roughly 40 posts a month across platforms</li>
+</ul><div class="bestfor"><b>Best for</b>Creators who want more volume without doing the editing.</div></div><div class="buy"><div class="pill">Pricing</div><div class="price"><span class="price-amt">$1,300</span><span class="per">/mo</span><span class="note">Monthly · cancel anytime</span></div><a class="btn btn-go js-book" data-pkg="Cube 3 — Accelerated ($1,300/mo)" href="https://calendly.com/asapassetsau/30min">Book a call</a></div></div></div>
+<p class="scope"><b>Term:</b> creator plans are monthly and you can cancel anytime.</p>
+<div class="sub-faq" id="faq">
+<p class="eyebrow">FAQ</p>
+<h2 class="h2">Creator questions</h2>
+<div class="faq">
+<div><h3>Do I have to be on camera?</h3><p>No. Concepts can use your staff, your hands, or voiceover over footage of your business. Talking to camera can work, but it's not mandatory.</p></div>
+<div><h3>Will it look good shot on an iPhone?</h3><p>Yes. Every concept is designed to be shot on a phone, and the guides tell you exactly how to frame each shot. Our own content is shot on iPhone too.</p></div>
+<div><h3>How long does editing take?</h3><p>A batch of 10 videos in 5–7 days. A full 40 in about 2 weeks.</p></div>
+<div><h3>Can I cancel a creator plan?</h3><p>Yes. Creator plans are monthly and you can cancel anytime.</p></div>
+</div>
+<p class="more">More answers on the <a href="/faq">FAQ page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a href="/personalised" style="--pc:var(--orange)">PERSONALISED<span class="chip"></span></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="personalised" hidden>
+<section class="page" id="p-personalised">
+<div class="cube" style="--c:var(--orange);--ct:var(--orange-t)">
+<div class="wrap">
+<div class="cube-head reveal">
+<div class="badge"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></div>
+<div class="cube-titles">
+<div class="kbd">P — PERSONALISED</div>
+<h1>For businesses that want something bespoke</h1>
+<p>Personalised is the bespoke cube from ASAP Assets, quoted per project: shoot days with our videographer, AI setup and training, custom agency retainers and content series for startups. Scoped to your business, not a template.</p>
+</div>
+<div class="stamp"><span class="num"><br></span><span class="term"><br></span></div>
+</div>
+<div class="panel4 reveal">
+<div>
+<h2>Tell us where you're at</h2>
+<ul class="p4list">
+<li><b>Shoot days with our videographer</b> — from $3,000 for a single shoot day covering 20–30 concepts. Melbourne only</li>
+<li><b>AI setup and training</b> — helping you understand and set up AI systems in your business</li>
+<li><b>Custom agency retainer</b> — an ongoing arrangement where we run more of your marketing</li>
+<li><b>Content series for startups</b> — shot with our videographer</li>
+<li>Priced after a call, once we've scoped what you need</li>
+</ul>
+</div>
+<div class="right buy">
+<div class="pill">Shoot days</div>
+<div class="price"><span class="price-amt">From $3,000</span><span class="note">Melbourne only · everything else quoted after a call</span></div>
+<a class="btn btn-go js-book" data-pkg="Cube 4 — Personalised" href="https://calendly.com/asapassetsau/30min">Book a call</a>
+</div>
+</div>
+<p class="scope"><b>Service area:</b> shoot days with our videographer are Melbourne only. AI setup and training and custom retainers are delivered Australia-wide, remotely.</p>
+<div class="sub-faq" id="faq">
+<p class="eyebrow">FAQ</p>
+<h2 class="h2">Personalised questions</h2>
+<div class="faq">
+<div><h3>Do you film for us?</h3><p>On Personalised shoot days, yes: our videographer films 20–30 concepts in a day, from $3,000, Melbourne only. On all other packages, you film using our shoot guides.</p></div>
+<div><h3>Do you work outside Melbourne?</h3><p>Yes. Concepts, shoot guides, editing and strategy are delivered Australia-wide. Shoot days are Melbourne only.</p></div>
+<div><h3>How much does ASAP Assets cost?</h3><p>Every price is published. Small business packages start at $1,000 for 3 months, creator plans from $500 a month, brand strategy from $4,000 a quarter, and Melbourne shoot days from $3,000.</p></div>
+</div>
+<p class="more">More answers on the <a href="/faq">FAQ page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a href="/small-business" style="--pc:var(--red)">SMALL BUSINESS<span class="chip"></span></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="how-it-works" hidden>
+<section class="page" id="p-how-it-works">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>How it works</h1>
+</div>
+<!-- TO ADD (brief s4): one-page 'filming basics' section (lighting, phone settings, sound). -->
+<div class="prose">
+<p>Here is how working with ASAP Assets runs, from the first call to finished videos.</p>
+<h2>The steps</h2>
+<ol>
+<li>Book a <a href="https://calendly.com/asapassetsau/30min">30-minute call</a>.</li>
+<li>We send a proposal. Take your time to review it.</li>
+<li>Sign the agreement.</li>
+<li>Pay a 50% deposit to start.</li>
+<li>Your concepts and shoot guides are delivered: all 40 within 7 days, or in batches of 10.</li>
+<li>The 50% balance is due on concept delivery. On the batch option, the balance is due with the second batch.</li>
+<li>You film using the shoot guides and send your footage through a shared Google Drive folder.</li>
+<li>On Middle, Premium and Accelerated Growth, we edit your footage: a batch of 10 videos in 5–7 days, or a full 40 in about 2 weeks.</li>
+<li>On Premium only, we schedule, post and run your Meta ads.</li>
+</ol>
+<h2>Two ways to receive your 40 concepts</h2>
+<ul>
+<li>All 40 at once, within 7 days.</li>
+<li>Four batches of 10, with the first batch within a couple of days and the rest on an agreed timeline, so filming feels less daunting.</li>
+</ul>
+<h2>What a shoot day guide contains</h2>
+<p>Each concept includes the concept name and length, a 2–3 sentence positioning summary, a shot-by-shot plan with timings and voiceover lines, the on-screen hook, a caption line and the post caption. Guides group concepts that can be filmed together in one setup.</p>
+<h2>An example concept</h2>
+<p>This is an anonymised entry from a real client guide, written for a Melbourne sports and health clinic.</p>
+<h3>Concept 8: Car Boot to First Tee (35s)</h3>
+<p>Positioning: Golfers go straight from the car to a full swing. A 60-second follow-along warm-up filmed on the footpath outside the clinic: saveable, practical, with a summer hook.</p>
+<ul>
+<li>Shot 1 (0–3s): The clinician lifts a golf bag out of a car boot and goes straight into a full swing. Voiceover: "Straight out of the car and into a full swing? Do this first."</li>
+<li>Shot 2 (3–10s): Club held along the spine, hinging at the hips. Voiceover: "One. Club along your back. Hinge at the hips, ten times."</li>
+<li>Shot 3 (10–17s): Club across the shoulders, slow rotations. Voiceover: "Two. Slow turns each way, let your hips come with you."</li>
+<li>Shot 4 (17–24s): Lunge and turn toward the front leg, swap sides. Voiceover: "Three. Step into a lunge and turn. Swap sides."</li>
+<li>Shot 5 (24–35s): Half swings, then a full swing, turn to camera. Voiceover: "Sixty seconds. Tag the mate who tees off straight out of the car."</li>
+</ul>
+<p>On-screen hook: Do this before your first tee shot</p>
+<p>Caption line: Quick golf warm up before tee off</p>
+<h2>Payment</h2>
+<p>50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.</p>
+<h2>Next step</h2>
+<p><a href="https://calendly.com/asapassetsau/30min">Book a 30-minute call</a>, or compare the four cubes and their prices on the <a href="/#find-your-cube">home page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="How it works — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="about" hidden>
+<section class="page" id="p-about">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>About ASAP</h1>
+</div>
+<!-- TO CONFIRM (brief s16): 'Founded in 2025' wording. MMO Mentone testimonial goes under 'Our work' once wording and permission are confirmed. -->
+<div class="prose">
+<p>We're a Melbourne-based content strategy studio delivering small businesses, brands and creators boutique agency quality without the boutique agency price: ready-to-film short-form video concepts, shoot guides, editing and strategy from digital to desktop.</p>
+<h2>The founders</h2>
+<p>Matt and Alex make up the ASAP Assets team, with help from our friends when needed. We're Melbourne based and online always.</p>
+<p>With 5+ years in marketing, media and production, Matt &amp; Alex have worked with production teams behind household-name health, wellness and personal care brands in Australian retail, including large-scale production shoots. Both hold a Bachelor of Marketing. They started ASAP Assets to bring big-brand marketing thinking to small-business budgets.</p>
+<ul>
+<li>Matt — Co-founder. Marketing and brand strategy.</li>
+<li>Alex — Co-founder. Creative and production.</li>
+</ul>
+<p>Matt and Alex handle marketing and editing. Our videographer, a Melbourne contractor, films shoot days.</p>
+<blockquote>"Business owners wear every hat: the service, the staff, the finances, the admin. Marketing ends up last, and that's when the late-night content scramble starts. We work as an extension of your business, giving you boutique agency delivery without the boutique agency price."</blockquote>
+<p>Matt and Alex, Co-founders, ASAP Assets</p>
+<h2>Why ASAP Assets exists</h2>
+<p>Melbourne is full of agencies charging boutique prices for a lot of glitz. Meanwhile small businesses still need strategy and content, but in a cost-of-living crunch it's the first thing they cut. Most agencies also hide their pricing behind a discovery call.</p>
+<p>ASAP Assets brings big-brand marketing thinking to small-business budgets, publishes every price, and delivers fast. It is a low-to-mid cost alternative to boutique agencies and to hiring a social media strategist. Every price is published. Shop for content the way you shop for anything else.</p>
+<h2>What we believe</h2>
+<ul>
+<li>Premium, properly shot video cuts through AI-generated noise.</li>
+<li>Talking to camera can work, but it's not mandatory. Strong visuals and a good voiceover can sell just as well, so no one should skip social because they're camera-shy.</li>
+<li>Be wary of anyone promising followers or bookings in X days.</li>
+<li>A hook is only worth it if the video pays it off.</li>
+<li>Premium-looking content shouldn't cost a premium.</li>
+</ul>
+<p>What we've seen work: the first 3–5 seconds decide everything. A hook that sets up a stake, a reason to keep watching, then a story that pays it off. Without the hook, no one sees the story.</p>
+<p>Social is where brand consistency starts: your story should line up across social, your website, LinkedIn and every channel you use.</p>
+<h2>Who we work with</h2>
+<ul>
+<li>Proven: allied health clinics (osteopaths, physiotherapists).</li>
+<li>Built for: trades, cafes, bars, hotels and hospitality, and any small business that wants to show up on social and cares about its brand.</li>
+<li>Creators and influencers, through the <a href="/creators">Creators</a> cube.</li>
+<li>Startups, through <a href="/personalised">Personalised</a>, with content series shot by our videographer.</li>
+</ul>
+<h2>Our work</h2>
+<p>ASAP Assets planned and produced 44 short-form video concepts and a 3-month Instagram and TikTok content plan for MMO Mentone, a Melbourne osteopathy clinic, covering six practitioners.</p>
+<h2>Contact us</h2>
+<ul>
+<li>Business name: ASAP Assets</li>
+<li>Location: Melbourne, Victoria, Australia</li>
+<li>Service area: shoot days with our videographer are Melbourne only. Concepts, shoot guides, editing, strategy and AI setup are delivered Australia-wide, remotely.</li>
+<li>Email: <a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a></li>
+</ul>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="About ASAP Assets — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="faq" hidden>
+<section class="page" id="p-faq">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>Common questions</h1>
+</div>
+<div class="prose">
+<p>Common questions about working with ASAP Assets, a Melbourne content strategy studio for short-form social video.</p>
+<h2>How much does ASAP Assets cost?</h2>
+<p>Every price is published. Small business packages start at $1,000 for 3 months, creator plans from $500 a month, brand strategy from $4,000 a quarter, and Melbourne shoot days from $3,000.</p>
+<h2>Do I have to be on camera?</h2>
+<p>No. Concepts can use your staff, your hands, or voiceover over footage of your business. Talking to camera can work, but it's not mandatory.</p>
+<h2>I don't have time to film 40 videos. What then?</h2>
+<p>Take them in batches of 10. Shoot guides group concepts you can film together in one setup.</p>
+<h2>Will it look good shot on an iPhone?</h2>
+<p>Yes. Every concept is designed to be shot on a phone, and the guides tell you exactly how to frame each shot. Our own content is shot on iPhone too.</p>
+<h2>Will this get me bookings?</h2>
+<p>We don't promise bookings in a set number of days, because nobody honestly can. We build consistent, premium content that tells your story across every channel, and we track the early signals from day one: saves, shares, profile visits, DMs and booking comments.</p>
+<h2>How fast will I get my concepts?</h2>
+<p>All 40 within 7 days, or the first 10 within a couple of days if you choose batches.</p>
+<h2>How long does editing take?</h2>
+<p>A batch of 10 videos in 5–7 days. A full 40 in about 2 weeks.</p>
+<h2>Is Meta ad spend included in Premium?</h2>
+<p>No. Ad spend is paid by you directly, at a budget we agree together. Premium covers building and managing the campaigns.</p>
+<h2>Do you film for us?</h2>
+<p>On Personalised shoot days, yes: our videographer films 20–30 concepts in a day, from $3,000, Melbourne only. On all other packages, you film using our shoot guides.</p>
+<h2>Do you work outside Melbourne?</h2>
+<p>Yes. Concepts, shoot guides, editing and strategy are delivered Australia-wide. Shoot days are Melbourne only.</p>
+<h2>How do payments work?</h2>
+<p>50% to start, balance on concept delivery. Creator plans are monthly and you can cancel anytime.</p>
+<h2>How is this different from a normal agency?</h2>
+<p>Every price is published, there's no retainer lock-in on small business packages, and you get boutique agency delivery without the boutique agency price.</p>
+<h2>Can I just use ChatGPT for content ideas?</h2>
+<p>Yes, AI tools are great for brainstorming. Where they fall short is knowing your brand, your audience, your local market and what's actually working in your industry, then turning ideas into a shoot plan you can film in a day. ASAP Assets gives you that, refined by marketers with five years of big-brand experience, for less than a typical agency.</p>
+<p>Read the full answer: <a href="/can-i-use-chatgpt-for-content-ideas">Can I just use ChatGPT for content ideas?</a></p>
+<h2>Still have a question?</h2>
+<p>Email <a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a> or <a href="https://calendly.com/asapassetsau/30min">book a 30-minute call</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="Common questions — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="compare" hidden>
+<section class="page" id="p-compare">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>How ASAP Assets compares</h1>
+</div>
+<div class="prose">
+<p>There is more than one way to get short-form video content made. Here is what you typically get from each option, and who it suits.</p>
+<div class="tbl-wrap"><table class="cmp">
+<thead><tr><th scope="col">Alternative</th><th scope="col">What you typically get</th><th scope="col">Who it suits</th></tr></thead>
+<tbody>
+<tr><th scope="row">Boutique content agencies</th><td>Full service, usually with prices hidden behind a discovery call and a retainer</td><td>Larger budgets wanting a fully managed retainer</td></tr>
+<tr><th scope="row">Freelancers (Fiverr, Airtasker)</th><td>Individual tasks: an edit, some captions, a one-off video</td><td>One-off jobs with a clear brief already written</td></tr>
+<tr><th scope="row">DIY with AI tools (ChatGPT etc.)</th><td>Fast generic ideas, no shoot plan, no brand or local market context</td><td>Brainstorming and owners with time to refine and plan</td></tr>
+<tr><th scope="row">Hiring in-house</th><td>A dedicated person, plus salary, super and management time</td><td>Businesses with steady volume and budget for a full-time role</td></tr>
+<tr><th scope="row">Doing it yourself</th><td>Full control, at the cost of your time</td><td>Owners who love marketing and have hours to spare</td></tr>
+<tr class="us"><th scope="row">ASAP Assets</th><td>Published prices, 40 concepts + shoot guides in 7 days, optional editing, scheduling and Meta ads</td><td>Small businesses and creators wanting a plan and premium-looking content without boutique agency pricing</td></tr>
+</tbody>
+</table></div>
+<h2>Where ASAP Assets sits</h2>
+<p>ASAP Assets is a low-to-mid cost alternative to boutique agencies and to hiring a social media strategist. Every price is published, there's no retainer lock-in on small business packages, and you get boutique agency delivery without the boutique agency price.</p>
+<h2>When another option is the better fit</h2>
+<p>If you already have a full in-house social media and marketing team covering strategy and concepts, you may not need us. If your team needs fresh direction and concepts to execute, the <a href="/marketing">Brands</a> package is built for that.</p>
+<p>If you mainly want to brainstorm and have time to plan the filming yourself, AI tools can be enough. We cover that fairly here: <a href="/can-i-use-chatgpt-for-content-ideas">Can I just use ChatGPT for content ideas?</a></p>
+<h2>See the prices</h2>
+<p>Every package and price is on the <a href="/#find-your-cube">home page</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="How ASAP Assets compares — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="can-i-use-chatgpt-for-content-ideas" hidden>
+<section class="page" id="p-can-i-use-chatgpt-for-content-ideas">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>Can I just use ChatGPT for content ideas?</h1>
+</div>
+<div class="prose">
+<p>Yes, AI tools are great for brainstorming. Where they fall short is knowing your brand, your audience, your local market and what's actually working in your industry, then turning ideas into a shoot plan you can film in a day. ASAP Assets gives you that, refined by marketers with five years of big-brand experience, for less than a typical agency.</p>
+<h2>What are AI tools good at for content ideas?</h2>
+<p>AI tools such as ChatGPT are fast. They are useful for brainstorming a long list of ideas, getting unstuck when you don't know what to post, and drafting variations of a hook or caption. For an owner with time to refine and plan, that is a good starting point.</p>
+<h2>Where do AI tools fall short?</h2>
+<p>AI tools fall short in four places: brand context, local market knowledge, shoot planning, and consistency over 3 months. They give fast generic ideas with no shoot plan and no brand or local market context.</p>
+<ul>
+<li>Brand context. An AI tool doesn't know your brand, your audience or how you sound unless you explain it every time.</li>
+<li>Local market. It doesn't know your area, your customers or what's actually working in your industry.</li>
+<li>Shoot planning. A list of ideas is not a shoot plan. You still need a shot-by-shot plan with timings, voiceover lines, hooks and captions, grouped so you can film in a day.</li>
+<li>Consistency over 3 months. One good idea is easy. Holding one brand story together across a full quarter of posts is the hard part.</li>
+</ul>
+<h2>When is doing it yourself enough?</h2>
+<p>If you love marketing, have hours to spare and are happy to refine the ideas and plan the filming yourself, AI tools plus your own time can be enough. You keep full control, at the cost of your time.</p>
+<h2>When should I bring in ASAP Assets?</h2>
+<p>When you want a plan and premium-looking content without boutique agency pricing. Small Business packages include 40 concepts plus shoot day guides within 7 days, with optional editing, scheduling and Meta ads, refined by marketers with five years of big-brand experience.</p>
+<p>Every price is published. See the <a href="/#find-your-cube">packages and prices</a>, read <a href="/how-it-works">how it works</a>, or <a href="https://calendly.com/asapassetsau/30min">book a 30-minute call</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="Can I just use ChatGPT for content ideas? — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="work" hidden>
+<section class="page" id="p-work">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>Our work</h1>
+<p>Short-form video concepts, shoot guides and content plans we've made for Melbourne businesses.</p>
+</div>
+<div class="prose">
+<h2>MMO Mentone</h2>
+<p>ASAP Assets planned and produced 44 short-form video concepts and a 3-month Instagram and TikTok content plan for MMO Mentone, a Melbourne osteopathy clinic, covering six practitioners.</p>
+<p>On Small Business packages, 40 concepts are delivered within 7 days.</p>
+<!-- TO CONFIRM (brief s7/s16): MMO Mentone testimonial goes here once wording and permission are confirmed. Do not write one. -->
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="Our work — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="contact" hidden>
+<section class="page" id="p-contact">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>Contact ASAP Assets</h1>
+</div>
+<div class="prose">
+<p>The fastest way to reach ASAP Assets is to book a 30-minute call. Tell us where you're stuck and we'll point you in the right direction.</p>
+<h2>Book a call</h2>
+<p><a href="https://calendly.com/asapassetsau/30min">Pick a time on Calendly</a>. Calls are available weekday evenings and Saturday mornings, built around business owners' hours.</p>
+<h2>Email</h2>
+<p>Write to <a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a>. Email anytime. It helps to tell us what kind of business or channel you run, which platforms you post on and which cube you are looking at.</p>
+<h2>Instagram</h2>
+<p>Find us at <a href="https://www.instagram.com/asapassetsau/">@asapassetsau</a>.</p>
+<h2>Where we work</h2>
+<p>ASAP Assets is based in Melbourne, Victoria, Australia.</p>
+<ul>
+<li>Shoot days with our videographer: Melbourne only.</li>
+<li>Concepts, shoot guides, editing, strategy and AI setup: Australia-wide, delivered remotely.</li>
+</ul>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="Contact ASAP Assets — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="privacy" hidden>
+<section class="page" id="p-privacy">
+<div class="cube" style="--c:var(--ink);--ct:var(--muted)">
+<div class="wrap">
+<div class="cube-titles">
+<div class="kbd">— ASAP ASSETS</div>
+<h1>Privacy policy</h1>
+</div>
+<div class="prose">
+<p>This policy explains what personal information ASAP Assets (Melbourne, Australia) handles, why, and which tools are involved. Last updated October 2026.</p>
+<h2>What we collect</h2>
+<ul>
+<li>Booking details. When you book a call, you enter your details into Calendly, such as your name, email address and anything you choose to tell us about your business.</li>
+<li>Emails. If you email us, we keep that correspondence and your contact details.</li>
+<li>Payment details. Payments are processed by Stripe. Your card details go to Stripe, not to us.</li>
+<li>Client material. If you become a client, we hold the information and footage you send us so we can deliver your package.</li>
+<li>Website usage. We use Google Analytics to understand how the website is used, such as which pages are visited.</li>
+</ul>
+<h2>The tools we use</h2>
+<ul>
+<li>Google Analytics, for website usage statistics.</li>
+<li>Stripe, for payments.</li>
+<li>Calendly, for booking calls.</li>
+<li>Microsoft Outlook, for email.</li>
+<li>Google Drive, for sharing concepts, shoot guides and footage with clients.</li>
+</ul>
+<p>This website also loads fonts from Google Fonts and is served by a hosting provider. These services receive standard technical information, such as your IP address and browser type, when your browser requests their files. Some of these providers store data outside Australia.</p>
+<h2>How we use information</h2>
+<p>We use personal information to reply to you, run booked calls, take payment, deliver the work you have engaged us for, and keep business records.</p>
+<h2>Access, correction and deletion</h2>
+<p>You can ask to see, correct or delete the personal information we hold about you by emailing <a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a>.</p>
+<h2>Complaints</h2>
+<p>If you have a concern about how we have handled your information, email us first so we can fix it. You can also contact the Office of the Australian Information Commissioner at <a href="https://www.oaic.gov.au/">oaic.gov.au</a>.</p>
+</div>
+<div class="pager">
+<a href="/">← HOME</a>
+<a class="js-book" data-pkg="Privacy policy — pager" href="https://calendly.com/asapassetsau/30min">BOOK A CALL →</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="view" data-view="pricing.md" hidden><div class="cube"><div class="wrap"><div class="cube-titles"><div class="kbd">— PLAIN-TEXT FILE</div><h1>pricing.md</h1><p>This is the plain-text pricing file AI tools read. Visitors normally never see it.</p></div><pre class="rawfile"># Pricing — ASAP Assets
+
+ASAP Assets is a Melbourne content strategy studio giving small businesses, brands and creators boutique agency delivery without the boutique agency price: ready-to-film short-form video concepts, shoot guides, editing and strategy for Instagram, TikTok and Facebook.
+
+Last updated: 2026-10-10.
+
+- Book a 30-minute call: https://calendly.com/asapassetsau/30min
+- Email: agency@asapassets.com.au
+- Payment: 50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.
+
+## 1. Small Business (3-month packages, one-off price)
+Page: https://asapassets.com.au/small-business
+All tiers include 40 social media concepts (Instagram, Facebook and TikTok) plus shoot day guides. You film.
+
+### Small Business — Base
+- Price: $1,000 one-off (covers 3 months)
+- Includes: 40 social media concepts (Instagram, Facebook and TikTok) plus shoot day guides. You handle filming, editing, posting and ads.
+
+### Small Business — Middle (most popular)
+- Price: $2,000 one-off (covers 3 months)
+- Includes: Everything in Base, plus a marketing strategy with an ideal posting schedule, and we edit your raw footage into finished videos. You handle filming, scheduling and ads.
+
+### Small Business — Premium
+- Price: $4,500 one-off (covers 3 months)
+- Includes: Everything in Middle, plus growth strategy with data on what's working in your field, scheduling and posting, and building and managing Meta ad campaigns. Meta ad spend is separate, paid by you directly at a budget agreed together. You handle filming only.
+
+Delivery options: all 40 concepts at once, within 7 days. Or four batches of 10, with the first batch within a couple of days and the rest on an agreed timeline, so filming feels less daunting.
+
+Payment: 50% to start, balance on concept delivery. Creator plans are monthly, cancel anytime. Full terms in your agreement.
+
+## 2. Marketing (quarterly, renewable)
+Page: https://asapassets.com.au/marketing
+For brands with their own team, agency or creators ready to execute. Strategy and concepts only.
+
+### Marketing — Consulting + Concepts
+- Price: $4,000 per quarter
+- Includes: 3-month marketing direction (demand moments, channel priorities, biggest untapped opportunities, order to attack them) plus 20 brand-specific concepts, each with strategic rationale, audience and shoot direction clear enough for a videographer, agency or creator to film.
+
+### Marketing — Consulting + Concepts + Distribution
+- Price: $5,000 per quarter
+- Includes: Everything in Consulting + Concepts, plus 8 ready-to-send influencer and customer brief packs (concept, creator brief, what good looks like, deliverable spec). Refreshed direction each quarter informed by what worked.
+
+Out of scope by design: editing, scheduling, posting, community management, ad account management, creator sourcing, reporting dashboards.
+
+Minimum term: one quarter. Renews each quarter unless cancelled 14 days before quarter end.
+
+## 3. Creators (monthly, cancel anytime)
+Page: https://asapassets.com.au/creators
+
+### Creators — Sustainable Growth
+- Price: $500 per month
+- Includes: 12 ready-to-film concepts plus shoot guide each month. You film and edit. Roughly 24 posts a month across Instagram and TikTok once repurposed.
+
+### Creators — Accelerated Growth
+- Price: $1,300 per month
+- Includes: 20 ready-to-film concepts plus shoot guide each month. ASAP Assets edits the footage. Roughly 40 posts a month across platforms.
+
+Creator plans are monthly, cancel anytime.
+
+## 4. Personalised (bespoke, quoted per project)
+Page: https://asapassets.com.au/personalised
+
+- Shoot days with our videographer: from $3,000 for a single shoot day covering 20–30 concepts. Melbourne only.
+- AI setup and training: helping businesses understand and set up AI systems in their business.
+- Custom agency retainer: an ongoing arrangement where ASAP Assets runs more of a business's marketing.
+- Content series for startups, shot with our videographer.
+- Priced after a call once requirements are scoped.
+</pre><div class="pager"><a href="/">← HOME</a></div></div></div></div>
+</main>
+<footer>
+<div class="wrap foot">
+<div>
+<span aria-hidden="true" class="logo md"><span class="lc" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span><span class="lc" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span></span>
+<p class="foot-h">Solve it ASAP.</p>
+<div class="sub">Tell us where you're stuck and we'll find the right one.</div>
+<div class="social">
+<a aria-label="ASAP Assets on Instagram" class="social-btn" href="https://www.instagram.com/asapassetsau/" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="19" rx="5" width="19" x="2.5" y="2.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" fill="currentColor" r="1.25" stroke="none"></circle></svg>
+</a>
+</div>
+<div class="foot-links"><a href="/small-business">Small Business</a><a href="/marketing">Marketing</a><a href="/creators">Creators</a><a href="/personalised">Personalised</a><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/work">Our work</a><a href="/faq">FAQ</a><a href="/compare">Compare</a><a href="/can-i-use-chatgpt-for-content-ideas">ChatGPT or us?</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/pricing.md">Pricing (plain text)</a><a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a></div>
+<div class="legal">ASAP ASSETS — MELBOURNE, AUSTRALIA<br>ABN 69 359 785 929<br>LAST UPDATED <time datetime="2026-10-10">OCTOBER 2026</time></div>
+</div>
+<a class="foot-cta js-book" data-pkg="Footer — general" href="https://calendly.com/asapassetsau/30min">Book a call →</a>
+</div>
+</footer>
+<script async="" src="https://assets.calendly.com/assets/external/widget.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  /* ---------- homepage cube story ----------
+     Intro: the cube tumbles slowly, blurred, behind "Stop scrambling."
+     Scroll: it sharpens and squares up to one flat face, then turns to the right, one wall at a time (A, S, A, P), as each panel scrolls past.
+     Click a face or a panel button: a quick solve sequence, then a dive into one tile of that face, which opens the page. */
+  var stage = document.getElementById('hero-cube');
+  var story = document.getElementById('cube-story');
+  if(!stage || !story) return;
+  if(!window.THREE){ story.classList.add('no-3d'); return; }
+  var panels = Array.prototype.slice.call(story.querySelectorAll('.story-panel'));
+  var intro = story.querySelector('.story-intro');
+
+  /* 1 = letter tile, read left-to-right, top-to-bottom as you face that side */
+  var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
+  var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
+  var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
+  var Q = [0,1,1,1,0, 0,0,0,0,1, 0,0,1,1,0, 0,0,0,0,0, 0,0,1,0,0];   // ?
+  var X = [0,0,1,0,0, 0,0,1,0,0, 0,0,1,0,0, 0,0,0,0,0, 0,0,1,0,0];   // !
+  var WHITE = 0xFFFBFB, RED = 0xFF0000, BLUE = 0x0048FF, GREEN = 0x00C24A, ORANGE = 0xFF6A00, ACID = 0xF9FF2D, INK = 0x111116;
+  var FACE_COLOUR = [RED, BLUE, GREEN, ORANGE];
+  var H = 2, GAP = 1.06, TURN_MS = 115;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  var CAM_Z = 21;
+  camera.position.set(0, 0, CAM_Z);
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  stage.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.72));
+  var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
+  var under = new THREE.DirectionalLight(0xffffff, 0.3); under.position.set(2, -8, 4); scene.add(under);
+
+  var cube = new THREE.Group();
+  scene.add(cube);
+  var bodyGeo = new THREE.BoxGeometry(1, 1, 1);
+  var bodyMat = new THREE.MeshLambertMaterial({color:0x050505});
+  var stickerGeo = new THREE.PlaneGeometry(0.84, 0.84);
+  var mats = {};
+  function mat(c){ return mats[c] || (mats[c] = new THREE.MeshLambertMaterial({color:c})); }
+  var stickers = [], cubies = [];
+  function sticker(cubie, normal, color, face){
+    var s = new THREE.Mesh(stickerGeo, mat(color));
+    s.position.copy(normal).multiplyScalar(0.502);
+    s.lookAt(normal.clone().multiplyScalar(2));
+    s.userData.face = face; s.userData.colour = color;
+    cubie.add(s); stickers.push(s);
+  }
+  function tile(pat, col, row, face){ return pat[row*5 + col] ? WHITE : face; }
+  for(var x=-H; x<=H; x++) for(var y=-H; y<=H; y++) for(var z=-H; z<=H; z++){
+    if(Math.max(Math.abs(x),Math.abs(y),Math.abs(z)) < H) continue;
+    var c = new THREE.Mesh(bodyGeo, bodyMat);
+    c.position.set(x*GAP, y*GAP, z*GAP);
+    var row = H - y;
+    if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  tile(A, x+H, row, RED), 0);        // front: A, Small Business
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(S, z+H, row, BLUE), 1);      // left:  S, Marketing (turning right brings it round next)
+    if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), tile(A, H-x, row, GREEN), 2);      // back:  A, Creators
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(P, H-z, row, ORANGE), 3);     // right: P, Personalised
+    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  tile(Q, x+H, z+H, ACID), 4);       // top: ?
+    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE, 5); // bottom: !
+    cube.add(c); cubies.push(c);
+  }
+
+  /* ---------- orientations ---------- */
+  var Y = new THREE.Vector3(0,1,0);
+  var ISO = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.atan(1/Math.SQRT2), -Math.PI/4, 0));
+  var TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3, -0.42, 0));
+  var SPIN_AXIS = new THREE.Vector3(0.35, 1, 0.2).normalize();
+  function faceQ(i, tilted){
+    var q = new THREE.Quaternion().setFromAxisAngle(Y, i * Math.PI/2);   // each step turns the cube to the right
+    return tilted ? q.premultiply(TILT) : q;
+  }
+  var FACE_FLAT = [0,1,2,3].map(function(i){ return faceQ(i, false); });
+  cube.quaternion.copy(ISO); cube.scale.setScalar(1.2);       // first view: classic isometric
+
+  /* ---------- slice turns (used by the click transition) ---------- */
+  function layerOf(c, axis){ return Math.round(c.position[axis] / GAP); }
+  function snap(c){
+    c.position.set(Math.round(c.position.x/GAP)*GAP, Math.round(c.position.y/GAP)*GAP, Math.round(c.position.z/GAP)*GAP);
+    c.updateMatrix();
+    var e = c.matrix.elements;
+    [0,1,2,4,5,6,8,9,10].forEach(function(i){ e[i] = Math.round(e[i]); });
+    c.matrix.decompose(c.position, c.quaternion, c.scale);
+  }
+  function runTurn(m, ms){
+    return new Promise(function(done){
+      var pivot = new THREE.Object3D(); cube.add(pivot);
+      var group = cubies.filter(function(c){ return layerOf(c, m.axis) === m.layer; });
+      group.forEach(function(c){ pivot.attach(c); });
+      var t0 = performance.now(), target = m.dir * Math.PI/2;
+      (function step(now){
+        var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+        pivot.rotation[m.axis] = target * e;
+        if(k < 1) return requestAnimationFrame(step);
+        pivot.updateMatrixWorld(true);
+        group.forEach(function(c){ cube.attach(c); snap(c); });
+        cube.remove(pivot); done();
+      })(t0);
+    });
+  }
+  function runAll(moves){
+    return moves.reduce(function(p, m){ return p.then(function(){ return runTurn(m, TURN_MS); }); }, Promise.resolve());
+  }
+
+  /* ---------- scroll state ---------- */
+  function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+  function smooth(a, b, v){ var t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+  var w = 0, facePos = 0, active = -1;
+  function readScroll(){
+    var s = -story.getBoundingClientRect().top;
+    var introH = intro.offsetHeight || innerHeight;
+    w = smooth(0, introH * 0.85, s);
+    // which panel we're in, and how far through it (panels can differ in height on phones)
+    var fp = 0;
+    panels.forEach(function(p, i){ var r = p.getBoundingClientRect(); if(r.top <= 0) fp = i + Math.min(1, -r.top / (r.height || innerHeight)); });
+    fp = clamp(fp, 0, panels.length - 1);
+    var i0 = Math.floor(fp);
+    facePos = Math.min(i0 + smooth(0.25, 0.75, fp - i0), panels.length - 1);
+    var a = w > 0.6 ? Math.round(fp) : -1;
+    if(a !== active){
+      active = a;
+      panels.forEach(function(p, i){ p.classList.toggle('on', i === a); });
+    }
+    var blur = ((1 - w) * 12).toFixed(1);
+    if(stage._blur !== blur){ stage._blur = blur; stage.style.filter = blur > 0 ? 'blur(' + blur + 'px)' : ''; stage.style.opacity = (0.55 + 0.45 * w).toFixed(2); }
+  }
+
+  /* ---------- click a face: solve sequence, then dive into a tile ---------- */
+  var mode = 'scroll', busy = false, zoom = null, overlay = null, home = stage.parentNode;
+  var flood = null;
+  function goTo(i){
+    var href = panels[i] && panels[i].getAttribute('data-href');
+    if(!href || busy) return;
+    if(reduce){ location.hash = '#' + href; return; }
+    busy = true; mode = 'zoom';
+    document.documentElement.classList.add('cube-zoom');
+    // lift the canvas into a full-screen layer (the page's own animation would trap a fixed element)
+    overlay = document.createElement('div'); overlay.className = 'cube-overlay';
+    document.body.appendChild(overlay); overlay.appendChild(stage);
+    stage.style.opacity = '1';
+    zoom = {t0: performance.now(), q0: cube.quaternion.clone(), q1: faceQ(i, true), flat: faceQ(i, false),
+            p0: cube.position.clone(), s0: cube.scale.x, dive: null};
+    // R U R' U' F, then undo it: a quick, recognisable solve that ends on the logo
+    var seq = [['x',2,1],['y',2,1],['x',2,-1],['y',2,-1],['z',2,1],['x',0,-1]].map(function(m){ return {axis:m[0], layer:m[1], dir:m[2]}; });
+    var undo = seq.slice().reverse().map(function(m){ return {axis:m.axis, layer:m.layer, dir:-m.dir}; });
+    runAll(seq.concat(undo)).then(function(){ (TRANSITION === 'pull' ? pullBack : landOnBadge)(i, href); });
+  }
+
+  /* ---------- Ken Burns transitions (demo: two options to compare) ---------- */
+  var TRANSITION = 'land';
+  try{ TRANSITION = localStorage.getItem('asap-transition') || 'land'; }catch(e){}
+  window.setCubeTransition = function(t){ TRANSITION = t; try{ localStorage.setItem('asap-transition', t); }catch(e){} };
+
+  function openPage(href){
+    document.documentElement.classList.add('kb-nav');          // no slide-in: the Ken Burns is the entrance
+    location.hash = '#' + href;
+  }
+  function liveBadge(){
+    var v = document.querySelector('.view:not([hidden])');
+    return v && v.querySelector('.badge');
+  }
+  function finish(){
+    mode = 'scroll'; zoom = null; busy = false;
+    camera.position.set(0, 0, CAM_Z); camera.lookAt(0, 0, 0);
+    stage.style.opacity = ''; stage.style.transition = '';
+    document.documentElement.classList.remove('cube-zoom', 'kb-nav');
+    home.appendChild(stage); if(overlay){ overlay.remove(); overlay = null; }
+  }
+
+  /* Option A: the page drifts in around the badge while the cube face glides down and settles onto it */
+  function landOnBadge(i, href){
+    openPage(href);
+    setTimeout(function(){
+      var view = document.querySelector('.view:not([hidden])'), badge = liveBadge();
+      if(!badge){ finish(); return; }
+      var vr = view.getBoundingClientRect(), br = badge.getBoundingClientRect();
+      view.style.transformOrigin = (br.left + br.width/2 - vr.left) + 'px ' + (br.top + br.height/2 - vr.top) + 'px';
+      view.animate([{transform:'scale(1.16)', opacity:0}, {transform:'scale(1)', opacity:1}],
+                   {duration:1700, easing:'cubic-bezier(.2,.7,.2,1)'});
+      overlay.style.transition = 'background-color .7s ease';
+      overlay.style.backgroundColor = 'rgba(255,255,255,0)';
+      zoom.land = {t0: performance.now(), q: cube.quaternion.clone(), p: cube.position.clone(), s: cube.scale.x, badge: badge};
+      setTimeout(function(){ stage.style.transition = 'opacity .35s ease'; stage.style.opacity = '0'; }, 1450);
+      setTimeout(finish, 1850);
+    }, 60);
+  }
+
+  /* Option B: a slow push in on the face, then the page pulls back out of the badge */
+  function pullBack(i, href){
+    zoom.push = {t0: performance.now()};
+    setTimeout(function(){
+      openPage(href);
+      setTimeout(function(){
+        var view = document.querySelector('.view:not([hidden])'), badge = liveBadge();
+        if(badge){
+          var vr = view.getBoundingClientRect(), br = badge.getBoundingClientRect();
+          view.style.transformOrigin = (br.left + br.width/2 - vr.left) + 'px ' + (br.top + br.height/2 - vr.top) + 'px';
+        }
+        view.animate([{transform:'scale(3.2)', opacity:0, offset:0}, {opacity:1, offset:.35}, {transform:'scale(1)', opacity:1}],
+                     {duration:1900, easing:'cubic-bezier(.16,.8,.24,1)'});
+        overlay.style.transition = 'background-color .5s ease';
+        overlay.style.backgroundColor = 'rgba(255,255,255,0)';
+        stage.style.transition = 'opacity .3s ease'; stage.style.opacity = '0';
+        setTimeout(finish, 1950);
+      }, 60);
+    }, 900);
+  }
+
+  /* where the cube must sit, at this scale, for its front face to cover a screen rectangle */
+  var FACE_W = 4 * 1.06 + 1;                                    // five cubies across, outer edge to outer edge
+  function fitFace(rect, out){
+    var sh = stage.clientHeight, sw = stage.clientWidth, t = Math.tan(Math.PI / 12);
+    var px = rect.width - 6;                                      // inside the badge's border
+    var s = px * 2 * t * CAM_Z / (FACE_W * sh + px * 2 * t * (H * GAP + 0.5));
+    var zf = (H * GAP + 0.5) * s, d = CAM_Z - zf;
+    var nx = ((rect.left + rect.width / 2) / sw) * 2 - 1, ny = 1 - ((rect.top + rect.height / 2) / sh) * 2;
+    out.x = nx * t * camera.aspect * d; out.y = ny * t * d; out.s = s;
+    return out;
+  }
+
+  function dive(i, href){
+    // find the tile with the cube squared up to the camera, then put the tilt back for the turn-in
+    var keepQ = cube.quaternion.clone(), keepP = cube.position.clone(), keepS = cube.scale.x;
+    cube.quaternion.copy(zoom.flat); cube.position.set(0, 0, 0); cube.scale.setScalar(1);
+    cube.updateMatrixWorld(true);
+    // the coloured tile of that face nearest its centre
+    var best = null, bestD = 1e9, wp = new THREE.Vector3();
+    stickers.forEach(function(s){
+      if(s.userData.face !== i || s.userData.colour === WHITE) return;
+      s.getWorldPosition(wp);
+      var d = wp.x * wp.x + wp.y * wp.y;
+      if(d < bestD){ bestD = d; best = wp.clone(); }
+    });
+    cube.quaternion.copy(keepQ); cube.position.copy(keepP); cube.scale.setScalar(keepS);
+    zoom.dive = {t0: performance.now(), qFrom: keepQ, from: camera.position.clone(), to: best.clone().add(new THREE.Vector3(0, 0, 0.75)), look: best};
+    flood = document.createElement('div');
+    flood.className = 'cube-flood';
+    flood.style.background = '#' + FACE_COLOUR[i].toString(16).padStart(6, '0');
+    document.body.appendChild(flood);
+    setTimeout(function(){ flood.classList.add('in'); }, 380);
+    setTimeout(function(){
+      location.hash = '#' + href;
+      mode = 'scroll'; zoom = null; busy = false;
+      camera.position.set(0, 0, CAM_Z); camera.lookAt(0, 0, 0);
+      document.documentElement.classList.remove('cube-zoom');
+      home.appendChild(stage); overlay.remove(); overlay = null;
+      requestAnimationFrame(function(){ flood.classList.remove('in'); flood.classList.add('out'); });
+      setTimeout(function(){ if(flood){ flood.remove(); flood = null; } }, 700);
+    }, 900);
+  }
+
+  /* ---------- pointer: point at a face, click to open it ---------- */
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), cvs = renderer.domElement;
+  function faceAt(e){
+    var r = cvs.getBoundingClientRect();
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    var h = ray.intersectObjects(stickers, false)[0];
+    return h && h.object.userData.face < 4 ? h.object.userData.face : -1;
+  }
+  cvs.addEventListener('pointermove', function(e){ if(e.pointerType === 'mouse') cvs.style.cursor = !busy && faceAt(e) >= 0 ? 'pointer' : ''; });
+  cvs.addEventListener('click', function(e){ var f = faceAt(e); if(f >= 0) goTo(f); });
+  story.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[data-face]');
+    if(!a || reduce) return;
+    e.preventDefault(); e.stopPropagation();
+    goTo(+a.getAttribute('data-face'));
+  });
+
+  /* ---------- render ---------- */
+  var onScreen = true;
+  function resize(){
+    var w2 = stage.clientWidth, h2 = stage.clientHeight;
+    if(!w2 || !h2) return;
+    renderer.setSize(w2, h2, false); camera.aspect = w2 / h2; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen = es[0].isIntersecting; }).observe(story);
+
+  var qIdle = new THREE.Quaternion(), qFace = new THREE.Quaternion(), qSpin = new THREE.Quaternion(), goal = new THREE.Quaternion();
+  var pos = new THREE.Vector3(), t0 = performance.now();
+  function ease(k){ return k < .5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3) / 2; }
+  (function loop(now){
+    requestAnimationFrame(loop);
+    if(!(onScreen || busy) || !stage.offsetWidth) return;
+    if(mode === 'scroll'){
+      readScroll();
+      var t = reduce ? 0 : (now - t0) / 1000;
+      qIdle.copy(ISO).premultiply(qSpin.setFromAxisAngle(SPIN_AXIS, t * 0.35));
+      var i0 = Math.floor(facePos), i1 = Math.min(i0 + 1, 3);
+      qFace.copy(FACE_FLAT[i0]).slerp(FACE_FLAT[i1], facePos - i0);
+      goal.copy(qIdle).slerp(qFace, w);
+      var visH = 2 * CAM_Z * Math.tan(Math.PI / 12), visW = visH * camera.aspect;
+      var narrow = innerWidth < 880, sc;
+      if(narrow){
+        // phone: the cube sits in the top of the screen, sized so the panel text fits underneath
+        var sh = stage.clientHeight, cubePx = Math.min(stage.clientWidth * 0.5, sh * 0.25);
+        var top = 70 + 16 + cubePx * 0.55;               // nav, a gap, then half the cube (its front face sits nearer the camera)
+        pos.set(0, (0.5 - top / sh) * visH * w, 0);
+        sc = 0.85 + (cubePx / sh * visH / 5.3 / 1.1 - 0.85) * w;
+      } else {
+        pos.set(-visW * 0.22 * w, 0, 0);
+        sc = 1.2 + (0.88 - 1.2) * w;
+      }
+      var k = reduce ? 1 : 0.14;
+      cube.quaternion.slerp(goal, k);
+      cube.position.lerp(pos, k);
+      cube.scale.setScalar(cube.scale.x + (sc - cube.scale.x) * k);
+    } else if(zoom){
+      var kz = ease(Math.min(1, (now - zoom.t0) / 700));
+      if(zoom.land){ /* handled below */ }
+      else if(zoom.dive) cube.quaternion.copy(zoom.dive.qFrom).slerp(zoom.flat, ease(Math.min(1, (now - zoom.dive.t0) / 320)));
+      else cube.quaternion.copy(zoom.q0).slerp(zoom.q1, kz);
+      if(!zoom.land){
+        cube.position.copy(zoom.p0).lerp(pos.set(0, 0, 0), kz);
+        cube.scale.setScalar(zoom.s0 + (1 - zoom.s0) * kz);
+      }
+      if(zoom.land){
+        var kl = ease(Math.min(1, (now - zoom.land.t0) / 1400)), f = fitFace(zoom.land.badge.getBoundingClientRect(), {});
+        cube.quaternion.copy(zoom.land.q).slerp(zoom.flat, kl);
+        cube.position.set(zoom.land.p.x + (f.x - zoom.land.p.x) * kl, zoom.land.p.y + (f.y - zoom.land.p.y) * kl, 0);
+        cube.scale.setScalar(zoom.land.s + (f.s - zoom.land.s) * kl);
+      } else if(zoom.push){
+        var kp = Math.min(1, (now - zoom.push.t0) / 1400);
+        cube.quaternion.copy(cube.quaternion).slerp(zoom.flat, 0.08);
+        camera.position.set(0, 0, CAM_Z - 7 * (1 - Math.pow(1 - kp, 2)));   // slow push in, Ken Burns style
+      }
+    }
+    renderer.render(scene, camera);
+  })(t0);
+})();
+</script>
+<script>
+/* ============================================================
+   Calendly link used by every "Book a call" button.
+   Each button is a normal link to this URL; when the Calendly
+   widget has loaded, the click opens the popup instead.
+   ============================================================ */
+var CALENDLY_URL = "https://calendly.com/asapassetsau/30min";
+
+/* old single-page links (asapassets.com.au/#/smb) -> the real pages */
+(function(){
+  var LEGACY = {smb:'/small-business',cube1:'/small-business',brands:'/marketing',cube2:'/marketing',
+    creators:'/creators',cube3:'/creators',ai:'/personalised',cube4:'/personalised'};
+  var h = location.hash.replace(/^#\/?/,'').toLowerCase();
+  if(location.pathname === '/' && LEGACY.hasOwnProperty(h)) location.replace(LEGACY[h]);
+})();
+
+/* ---------- reveals ---------- */
+document.querySelectorAll('.reveal').forEach(function(el,i){
+  setTimeout(function(){ el.classList.add('in'); }, 60 + i*90);
+});
+
+/* ---------- booking ---------- */
+document.querySelectorAll('.js-book').forEach(function(el){
+  el.addEventListener('click', function(e){
+    if(!window.Calendly) return; // fall through to the plain Calendly link
+    e.preventDefault();
+    var pkg = el.getAttribute('data-pkg') || '';
+    var sep = CALENDLY_URL.indexOf('?') > -1 ? '&' : '?';
+    Calendly.initPopupWidget({ url: CALENDLY_URL + sep + 'utm_content=' + encodeURIComponent(pkg) });
+  });
+});
+
+
+/* ---------- demo: choose which transition to preview ---------- */
+(function(){
+  var cur = 'land'; try{ cur = localStorage.getItem('asap-transition') || 'land'; }catch(e){}
+  var btns = document.querySelectorAll('.tx-pick button');
+  function mark(){ btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.tx === cur)); }); }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ cur = b.dataset.tx; if(window.setCubeTransition) setCubeTransition(cur); mark(); }); });
+  mark();
+})();
+
+/* ---------- single-file preview router ---------- */
+(function(){
+  var TITLES = {"home": "ASAP Assets — Melbourne content strategy studio for short-form video", "small-business": "Small business social media content packages, Melbourne — ASAP Assets", "marketing": "Short-form video strategy and concepts for brands — ASAP Assets, Melbourne", "creators": "Monthly content concepts and reel editing for creators — ASAP Assets, Melbourne", "personalised": "Shoot days, AI setup and custom retainers, Melbourne — ASAP Assets", "how-it-works": "How ASAP Assets works — from first call to concepts in 7 days, Melbourne", "about": "About ASAP Assets — Matt and Alex, Melbourne content strategy studio", "faq": "ASAP Assets FAQ — prices, filming, editing and delivery, Melbourne", "compare": "ASAP Assets vs agencies, freelancers and DIY — Melbourne content options compared", "can-i-use-chatgpt-for-content-ideas": "Can I just use ChatGPT for content ideas? — ASAP Assets, Melbourne", "work": "Our work — ASAP Assets, Melbourne", "contact": "Contact ASAP Assets — Melbourne content strategy studio", "privacy": "Privacy policy — ASAP Assets, Melbourne", "pricing.md": "pricing.md — ASAP Assets"}, NAV = {'small-business':'smb', marketing:'marketing', creators:'creators', personalised:'ai', work:'work'};
+  function route(){
+    var h = location.hash.slice(1);
+    if(h && h.charAt(0) !== '/') return;               // plain in-page anchor
+    var parts = (h || '/').split('#'), key = parts[0].replace(/^\/|\/$/g,'') || 'home';
+    if(key === 'brands') key = 'marketing';             // old address
+    if(!TITLES[key]) key = 'home';
+    document.querySelectorAll('.view').forEach(function(v){ v.hidden = v.getAttribute('data-view') !== key; });
+    document.querySelectorAll('.nl').forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-page') === NAV[key]); });
+    document.title = TITLES[key] + ' (preview)';
+    var target = parts[1] && document.querySelector('.view:not([hidden]) #' + parts[1]);
+    if(target) target.scrollIntoView(); else window.scrollTo(0,0);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a'); if(!a) return;
+    var href = a.getAttribute('href');
+    if(!href || href.charAt(0) !== '/') return;
+    e.preventDefault(); location.hash = '#' + href;
+  });
+  window.addEventListener('hashchange', route); route();
+})();
+
+</script>
+</body>
+</html>
