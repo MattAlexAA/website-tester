@@ -393,7 +393,7 @@
 <p class="lede">A.S.A.P. — we turn your content scramble into a system that grows the brand</p><p class="lede"><a class="btn btn-go" href="#find-your-cube" style="display: inline !important;">Find your cube</a></p><div class="hero-actions">
 <a class="btn js-book" data-pkg="Hero — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
 </div>
-<p class="scroll-cue">Scroll to turn the cube</p>
+<p class="scroll-cue">Scroll to solve</p>
 </div>
 </div>
 <article class="story-panel" data-href="/small-business" style="--c:var(--red);--ct:var(--red-t)">
@@ -1096,7 +1096,7 @@ Page: https://asapassets.com.au/personalised
 (function(){
   /* ---------- homepage cube story ----------
      Intro: the cube tumbles slowly, blurred, behind "Stop scrambling."
-     Scroll: it sharpens and squares up to one flat face, then turns to the right, one wall at a time (A, S, A, P), as each panel scrolls past.
+     Scroll: it sharpens and squares up to one flat face, then turns clockwise, one wall at a time (A, S, A, P), as each panel scrolls past.
      Click a face or a panel button: a quick solve sequence, then a dive into one tile of that face, which opens the page. */
   var stage = document.getElementById('hero-cube');
   var story = document.getElementById('cube-story');
@@ -1149,9 +1149,9 @@ Page: https://asapassets.com.au/personalised
     c.position.set(x*GAP, y*GAP, z*GAP);
     var row = H - y;
     if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  tile(A, x+H, row, RED), 0);        // front: A, Small Business
-    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(S, z+H, row, BLUE), 1);      // left:  S, Marketing (turning right brings it round next)
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(S, H-z, row, BLUE), 1);       // right: S, Marketing (a clockwise turn brings it round next)
     if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), tile(A, H-x, row, GREEN), 2);      // back:  A, Creators
-    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(P, H-z, row, ORANGE), 3);     // right: P, Personalised
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(P, z+H, row, ORANGE), 3);     // left:  P, Personalised
     if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  tile(Q, x+H, z+H, ACID), 4);       // top: ?
     if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE, 5); // bottom: !
     cube.add(c); cubies.push(c);
@@ -1163,7 +1163,7 @@ Page: https://asapassets.com.au/personalised
   var TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3, -0.42, 0));
   var SPIN_AXIS = new THREE.Vector3(0.35, 1, 0.2).normalize();
   function faceQ(i, tilted){
-    var q = new THREE.Quaternion().setFromAxisAngle(Y, i * Math.PI/2);   // each step turns the cube to the right
+    var q = new THREE.Quaternion().setFromAxisAngle(Y, -i * Math.PI/2);  // each step turns the cube clockwise, seen from above
     return tilted ? q.premultiply(TILT) : q;
   }
   var FACE_FLAT = [0,1,2,3].map(function(i){ return faceQ(i, false); });
