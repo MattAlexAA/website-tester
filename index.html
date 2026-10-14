@@ -105,7 +105,7 @@
   .lede .a4{color:var(--orange-t);font-weight:700}
   .hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
 
-  .btn{font-family:var(--px);font-size:11px;display:inline-flex;align-items:center;gap:8px;padding:15px 20px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;transition:transform .1s,box-shadow .1s;box-shadow:5px 5px 0 var(--ink)}
+  .btn{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;padding:15px 20px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;transition:transform .1s,box-shadow .1s;box-shadow:5px 5px 0 var(--ink)}
   .btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
   .btn:active{transform:translate(5px,5px);box-shadow:0 0 0}
   .btn-go{background:var(--acid)}
@@ -280,7 +280,7 @@
   .tbl-wrap{margin-top:30px;overflow-x:auto;border:2px solid var(--ink);box-shadow:10px 10px 0 var(--ink);background:var(--paper)}
   table.cmp{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
   .cmp th,.cmp td{padding:15px 16px;text-align:left;vertical-align:top;border-bottom:2px solid var(--rule);color:#2C2C34}
-  .cmp thead th{font-family:var(--px);font-size:8px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink);line-height:1.8}
+  .cmp thead th{font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink);line-height:1.8}
   .cmp tbody th{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:15px;line-height:1.15;color:var(--ink)}
   .cmp tbody th a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
   .cmp tbody th a.cube-name{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -317,23 +317,44 @@
   .prose blockquote + p{margin-top:16px;font-size:14px;color:var(--muted)}
   .prose .tbl-wrap{margin:26px 0 30px}
 
-  /* ---------- hero: headline accent + 3D cube ---------- */
-  .hero h1{font-size:clamp(40px,5.2vw,72px)}
-  .hero h1 .asap-today{font-family:var(--serif);font-style:italic;font-weight:800;text-transform:none;letter-spacing:-.01em;color:var(--red-t);
-    text-decoration:underline;text-decoration-thickness:.07em;text-underline-offset:.12em;white-space:nowrap}
-  .hero .lede{max-width:46ch}
-  .hero .lede + .lede{margin-top:14px}
-  .hero-cube{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
-  .cube-stage{width:100%;max-width:500px;aspect-ratio:1;touch-action:pan-y}
-  .cube-stage canvas{display:block;width:100%;height:100%;cursor:grab;outline:none}
-  .cube-stage canvas.grabbing{cursor:grabbing}
-  .cube-stage canvas:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
-  .cube-hint{font-family:var(--px);font-size:8px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;text-align:center}
-  .cube-picks{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;width:100%;max-width:500px;margin-top:6px}
-  .cube-pick{display:block;padding:10px 0 10px 14px;border-left:4px solid var(--c)}
-  .cube-pick .t{display:block;font-family:var(--display);font-weight:800;font-size:16px;line-height:1.1;text-transform:uppercase;color:var(--ink)}
-  .cube-pick .sub{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
-  .cube-pick:hover .sub{color:var(--type)}
+  /* ---------- homepage cube story: blurred cube behind the headline, then one face per panel ---------- */
+  .cube-story{position:relative;border-bottom:2px solid var(--ink)}
+  .cube-story::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .cube-sticky{position:sticky;top:0;height:100vh;z-index:0}
+  .cube-stage{width:100%;height:100%;will-change:filter}
+  .cube-stage canvas{display:block;width:100%;height:100%;outline:none}
+  .story-flow{position:relative;z-index:1;margin-top:-100vh;pointer-events:none}
+  .story-flow .wrap > *{pointer-events:auto}
+  .story-intro{min-height:calc(100vh - 70px);display:flex;align-items:center;text-align:center;padding-block:40px 60px}
+  .story-intro .wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+  .story-intro h1{font-family:var(--display);font-weight:800;font-size:clamp(44px,11.5vw,150px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink);margin-top:14px;text-wrap:balance}
+  .story-intro .lede{margin-top:28px;font-size:clamp(17px,2vw,20px);color:#2C2C34;max-width:44ch;font-weight:500}
+  .story-intro .hero-actions{justify-content:center}
+  .scroll-cue{margin-top:46px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .scroll-cue::after{content:"";display:block;width:2px;height:34px;background:var(--ink);margin:10px auto 0;animation:cue 1.6s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+  .story-panel{min-height:100vh;display:flex;align-items:center}
+  .story-panel .wrap{width:100%;display:flex;justify-content:flex-end}
+  .panel-card{width:min(470px,46%);transition:opacity .35s ease,transform .35s ease}
+  .js .cube-story:not(.no-3d) .story-panel:not(.on) .panel-card{opacity:.12;transform:translateY(18px)}
+  .panel-card .kbd{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.08em;color:var(--ct)}
+  .panel-card h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,3.6vw,46px);line-height:1;letter-spacing:-.028em;text-transform:uppercase;color:var(--ink);margin:12px 0 16px;text-wrap:balance}
+  .panel-card p{font-size:16px;color:#2C2C34}
+  .panel-card .meta{margin:16px 0 24px;font-weight:700;color:var(--ink);padding-left:12px;border-left:4px solid var(--c)}
+  .cube-story.no-3d .cube-sticky{display:none}
+  .cube-story.no-3d .story-flow{margin-top:0}
+  .cube-story.no-3d .panel-card{width:100%;max-width:640px}
+  @media(max-width:880px){
+    .story-panel{align-items:flex-end;padding-bottom:6vh}
+    .panel-card{width:100%;background:rgba(255,255,255,.94);border:2px solid var(--ink);padding:22px}
+  }
+  .cube-overlay{position:fixed;inset:0;z-index:150;background:var(--paper)}
+  .cube-overlay .cube-stage{filter:none!important;opacity:1!important}
+  html.cube-zoom .story-flow{opacity:0;transition:opacity .25s}
+  .cube-flood{position:fixed;inset:0;z-index:300;opacity:0;pointer-events:none;transition:opacity .38s ease-in}
+  .cube-flood.in{opacity:1}
+  .cube-flood.out{opacity:0;transition:opacity .55s ease-out}
+  @media(prefers-reduced-motion:reduce){.scroll-cue::after{animation:none}.panel-card{transition:none}}
 
   .view[hidden]{display:none}
   .preview-bar{background:var(--ink);color:var(--cream);font-family:var(--px);font-size:8px;letter-spacing:.06em;line-height:1.8;padding:9px 24px;text-align:center;text-transform:uppercase}
@@ -364,25 +385,59 @@
 <main id="top">
 <div class="view" data-view="home" hidden>
 <section class="page" id="p-home">
-<header>
-<div class="wrap hero">
-<div>
+<section class="cube-story" id="cube-story">
+<div class="cube-sticky"><div aria-hidden="true" class="cube-stage" data-generated id="hero-cube"></div></div>
+<div class="story-flow">
+<div class="story-intro">
+<div class="wrap">
 <p class="eyebrow">ASAP Assets — Content, solved</p>
-<h1><span>Stop</span> <span class="hl">scrambling.</span><br><span>Start solving</span> <em class="asap-today">ASAP today.</em></h1>
-<p class="lede">If you can't solve our puzzle, fear not, we can help to solve yours. Whether you're a small business, brand or creator, you get boutique agency delivery without the boutique agency price: ready-to-film short-form video concepts, shoot guides, editing and strategy for Instagram, TikTok, Facebook and YouTube.</p>
+<h1><span>Stop</span><br><span class="hl">scrambling.</span></h1>
 <p class="lede">We work as an extension of your business. Shop for your content the way you shop for anything else.</p>
 <div class="hero-actions">
 <a class="btn btn-go" href="#find-your-cube">Find your cube</a>
 <a class="btn js-book" data-pkg="Hero — general" href="https://calendly.com/asapassetsau/30min">Book a call</a>
 </div>
-</div>
-<div class="hero-cube">
-<div aria-label="The ASAP cube. Drag to rotate it, hover a tile to turn its slice." class="cube-stage" data-generated id="hero-cube" role="img"></div>
-<p class="cube-hint">Drag to spin it. Hover or swipe a tile to turn it.</p>
-<div class="cube-picks"><a class="cube-pick" href="/small-business" style="--c:var(--red);--ct:var(--red-t)"><span class="t">Small Business</span><span class="sub">3-month packages · from $1,000 →</span></a><a class="cube-pick" href="/brands" style="--c:var(--blue);--ct:var(--blue-t)"><span class="t">Brands</span><span class="sub">Quarterly · from $4,000 →</span></a><a class="cube-pick" href="/creators" style="--c:var(--green);--ct:var(--green-t)"><span class="t">Creators</span><span class="sub">Monthly · from $500 →</span></a><a class="cube-pick" href="/personalised" style="--c:var(--orange);--ct:var(--orange-t)"><span class="t">Personalised</span><span class="sub">Bespoke · shoot days from $3,000 →</span></a></div>
+<p class="scroll-cue">Scroll to turn the cube</p>
 </div>
 </div>
-</header>
+<article class="story-panel" data-href="/small-business" style="--c:var(--red);--ct:var(--red-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">A — SMALL BUSINESS</p>
+<h2>For small businesses ready to show up</h2>
+<p>Small Business is a three-month short-form video content package from ASAP Assets, from $1,000. Every tier includes 40 social media concepts for Instagram, Facebook and TikTok plus shoot day guides. You film. Start where your time and budget sit today.</p>
+<p class="meta">3-month packages · from $1,000</p>
+<a class="btn btn-go" data-face="0" href="/small-business">Small Business packages →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/brands" style="--c:var(--blue);--ct:var(--blue-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">S — BRANDS</p>
+<h2>The thinking and the concepts — you keep the hands</h2>
+<p>Brands is a quarterly strategy and concept package from ASAP Assets, from $4,000 per quarter, for brands with their own team, agency or creators ready to execute. We strategise and concept; your team, agency, creators, or customers execute. We don't edit, schedule, post, or run ads — we hand you the direction and ideas worth filming.</p>
+<p class="meta">Quarterly · from $4,000</p>
+<a class="btn btn-go" data-face="1" href="/brands">Brands packages →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/creators" style="--c:var(--green);--ct:var(--green-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">A — CREATORS</p>
+<h2>For creators who want to grow</h2>
+<p>Creators is a monthly concept plan from ASAP Assets, from $500 a month, cancel anytime. Ready-to-film concepts and a shoot guide every month. Pick the level based on how much of the edit you want to own.</p>
+<p class="meta">Monthly · from $500</p>
+<a class="btn btn-go" data-face="2" href="/creators">Creator plans →</a>
+</div></div>
+</article>
+<article class="story-panel" data-href="/personalised" style="--c:var(--orange);--ct:var(--orange-t)">
+<div class="wrap"><div class="panel-card">
+<p class="kbd">P — PERSONALISED</p>
+<h2>For businesses that want something bespoke</h2>
+<p>Personalised is the bespoke cube from ASAP Assets, quoted per project: shoot days with our videographer, AI setup and training, custom agency retainers and content series for startups. Scoped to your business, not a template.</p>
+<p class="meta">Bespoke · shoot days from $3,000</p>
+<a class="btn btn-go" data-face="3" href="/personalised">Personalised options →</a>
+</div></div>
+</article>
+</div>
+</section>
 <section class="info" id="what-is-asap-assets">
 <div class="wrap">
 <p class="eyebrow">What we do</p>
@@ -1045,75 +1100,84 @@ Page: https://asapassets.com.au/personalised
 <script async src="https://assets.calendly.com/assets/external/widget.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ---------- 3D hero cube: drag to rotate, hover a tile to turn its slice, solves itself ---------- */
 (function(){
+  /* ---------- homepage cube story ----------
+     Intro: the cube tumbles slowly, blurred, behind "Stop scrambling."
+     Scroll: it sharpens, slides left and turns to each face (A, S, A, P) as that cube's panel scrolls past.
+     Click a face or a panel button: a quick solve sequence, then a dive into one tile of that face, which opens the page. */
   var stage = document.getElementById('hero-cube');
-  if(!stage) return;
-  if(!window.THREE){ stage.closest('.hero-cube').hidden = true; return; }
+  var story = document.getElementById('cube-story');
+  if(!stage || !story) return;
+  if(!window.THREE){ story.classList.add('no-3d'); return; }
+  var panels = Array.prototype.slice.call(story.querySelectorAll('.story-panel'));
+  var intro = story.querySelector('.story-intro');
 
-  /* 1 = letter (white) tile, read left-to-right, top-to-bottom as you face that side */
+  /* 1 = letter tile, read left-to-right, top-to-bottom as you face that side */
   var A = [0,1,1,1,0, 1,0,0,0,1, 1,1,1,1,1, 1,0,0,0,1, 1,0,0,0,1];
   var S = [0,1,1,1,1, 1,0,0,0,0, 0,1,1,1,0, 0,0,0,0,1, 1,1,1,1,0];
   var P = [1,1,1,1,0, 1,0,0,0,1, 1,1,1,1,0, 1,0,0,0,0, 1,0,0,0,0];
   var Q = [0,1,1,1,0, 0,0,0,0,1, 0,0,1,1,0, 0,0,0,0,0, 0,0,1,0,0];   // ?
   var X = [0,0,1,0,0, 0,0,1,0,0, 0,0,1,0,0, 0,0,0,0,0, 0,0,1,0,0];   // !
   var WHITE = 0xFFFBFB, RED = 0xFF0000, BLUE = 0x0048FF, GREEN = 0x00C24A, ORANGE = 0xFF6A00, ACID = 0xF9FF2D, INK = 0x111116;
-  var N = 5, H = 2, GAP = 1.06, TURN_MS = 230, SOLVE_MS = 170, IDLE_MS = 1100, MAX_MOVES = 10;
+  var FACE_COLOUR = [RED, BLUE, GREEN, ORANGE];
+  var H = 2, GAP = 1.06, TURN_MS = 115;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-  camera.position.set(0, 0, 21);
+  var CAM_Z = 21;
+  camera.position.set(0, 0, CAM_Z);
   var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   stage.appendChild(renderer.domElement);
   scene.add(new THREE.AmbientLight(0xffffff, 0.72));
   var key = new THREE.DirectionalLight(0xffffff, 0.45); key.position.set(-4, 8, 10); scene.add(key);
-  var under = new THREE.DirectionalLight(0xffffff, 0.3); under.position.set(2, -8, 4); scene.add(under);   // so the ! underneath reads white
+  var under = new THREE.DirectionalLight(0xffffff, 0.3); under.position.set(2, -8, 4); scene.add(under);
 
   var cube = new THREE.Group();
-  var HOME = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.42, -0.62, 0));
-  var base = HOME.clone();             // where the viewer has rotated the cube to
-  cube.quaternion.copy(base);
   scene.add(cube);
-
   var bodyGeo = new THREE.BoxGeometry(1, 1, 1);
   var bodyMat = new THREE.MeshLambertMaterial({color:0x050505});
   var stickerGeo = new THREE.PlaneGeometry(0.84, 0.84);
   var mats = {};
   function mat(c){ return mats[c] || (mats[c] = new THREE.MeshLambertMaterial({color:c})); }
-
-  function sticker(cubie, normal, color){
+  var stickers = [], cubies = [];
+  function sticker(cubie, normal, color, face){
     var s = new THREE.Mesh(stickerGeo, mat(color));
     s.position.copy(normal).multiplyScalar(0.502);
     s.lookAt(normal.clone().multiplyScalar(2));
-    s.userData.sticker = true;
-    cubie.add(s);
+    s.userData.face = face; s.userData.colour = color;
+    cubie.add(s); stickers.push(s);
   }
-  function letterColour(pat, col, row, face){ return pat[row*5 + col] ? WHITE : face; }
-
-  var cubies = [], stickers = [];
+  function tile(pat, col, row, face){ return pat[row*5 + col] ? WHITE : face; }
   for(var x=-H; x<=H; x++) for(var y=-H; y<=H; y++) for(var z=-H; z<=H; z++){
-    if(Math.max(Math.abs(x),Math.abs(y),Math.abs(z)) < H) continue;     // hidden core
+    if(Math.max(Math.abs(x),Math.abs(y),Math.abs(z)) < H) continue;
     var c = new THREE.Mesh(bodyGeo, bodyMat);
     c.position.set(x*GAP, y*GAP, z*GAP);
     var row = H - y;
-    if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  letterColour(A, x+H, row, RED));      // front
-    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  letterColour(S, H-z, row, BLUE));     // right
-    if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), letterColour(A, H-x, row, GREEN));    // back
-    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), letterColour(P, z+H, row, ORANGE));   // left
-    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  letterColour(Q, x+H, z+H, ACID));     // top: ? (tip the cube towards you)
-    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE);     // bottom: black ! on white (tip it away)
+    if(z ===  H) sticker(c, new THREE.Vector3(0,0,1),  tile(A, x+H, row, RED), 0);        // front: A, Small Business
+    if(x ===  H) sticker(c, new THREE.Vector3(1,0,0),  tile(S, H-z, row, BLUE), 1);       // right: S, Brands
+    if(z === -H) sticker(c, new THREE.Vector3(0,0,-1), tile(A, H-x, row, GREEN), 2);      // back:  A, Creators
+    if(x === -H) sticker(c, new THREE.Vector3(-1,0,0), tile(P, z+H, row, ORANGE), 3);     // left:  P, Personalised
+    if(y ===  H) sticker(c, new THREE.Vector3(0,1,0),  tile(Q, x+H, z+H, ACID), 4);       // top: ?
+    if(y === -H) sticker(c, new THREE.Vector3(0,-1,0), X[(H-z)*5 + x+H] ? INK : WHITE, 5); // bottom: !
     cube.add(c); cubies.push(c);
   }
-  cubies.forEach(function(c){ c.children.forEach(function(s){ stickers.push(s); }); });
 
-  /* ---------- turning a slice ---------- */
-  var history = [], queue = [], turning = false, idleTimer = 0, solving = false;
-  var AX = ['x','y','z'];
+  /* ---------- orientations ---------- */
+  var Y = new THREE.Vector3(0,1,0);
+  var ISO = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.atan(1/Math.SQRT2), -Math.PI/4, 0));
+  var TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3, -0.42, 0));
+  var SPIN_AXIS = new THREE.Vector3(0.35, 1, 0.2).normalize();
+  function faceQ(i, tilted){
+    var q = new THREE.Quaternion().setFromAxisAngle(Y, -i * Math.PI/2);
+    return tilted ? q.premultiply(TILT) : q;
+  }
+  var FACE_TILTED = [0,1,2,3].map(function(i){ return faceQ(i, true); });
+  cube.quaternion.copy(ISO); cube.scale.setScalar(1.2);       // first view: classic isometric
 
+  /* ---------- slice turns (used by the click transition) ---------- */
   function layerOf(c, axis){ return Math.round(c.position[axis] / GAP); }
-
   function snap(c){
     c.position.set(Math.round(c.position.x/GAP)*GAP, Math.round(c.position.y/GAP)*GAP, Math.round(c.position.z/GAP)*GAP);
     c.updateMatrix();
@@ -1121,7 +1185,6 @@ Page: https://asapassets.com.au/personalised
     [0,1,2,4,5,6,8,9,10].forEach(function(i){ e[i] = Math.round(e[i]); });
     c.matrix.decompose(c.position, c.quaternion, c.scale);
   }
-
   function runTurn(m, ms){
     return new Promise(function(done){
       var pivot = new THREE.Object3D(); cube.add(pivot);
@@ -1129,8 +1192,7 @@ Page: https://asapassets.com.au/personalised
       group.forEach(function(c){ pivot.attach(c); });
       var t0 = performance.now(), target = m.dir * Math.PI/2;
       (function step(now){
-        var k = Math.min(1, (now - t0) / ms);
-        var e = k < 1 ? 1 - Math.pow(1 - k, 3) : 1;
+        var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
         pivot.rotation[m.axis] = target * e;
         if(k < 1) return requestAnimationFrame(step);
         pivot.updateMatrixWorld(true);
@@ -1139,153 +1201,145 @@ Page: https://asapassets.com.au/personalised
       })(t0);
     });
   }
-
-  function pump(){
-    if(turning || !queue.length) return;
-    turning = true;
-    var job = queue.shift();
-    runTurn(job.m, job.ms).then(function(){ turning = false; if(job.after) job.after(); pump(); });
+  function runAll(moves){
+    return moves.reduce(function(p, m){ return p.then(function(){ return runTurn(m, TURN_MS); }); }, Promise.resolve());
   }
 
-  function turn(m){
-    if(solving || turning || queue.length) return;      // one slice at a time, so a fast sweep can't pile up turns
-    history.push(m);
-    setStatus('Scrambled · ' + history.length + (history.length === 1 ? ' turn' : ' turns'));
-    queue.push({m:m, ms: reduce ? 1 : TURN_MS});
-    pump();
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(solve, history.length >= MAX_MOVES ? 250 : IDLE_MS);
-  }
-
-  function solve(){
-    clearTimeout(idleTimer);
-    if(solving || !history.length) return;
-    solving = true; setStatus('Solving…');
-    var moves = history.slice().reverse(); history = [];
-    moves.forEach(function(m, i){
-      queue.push({m:{axis:m.axis, layer:m.layer, dir:-m.dir}, ms: reduce ? 1 : SOLVE_MS,
-        after: i === moves.length - 1 ? function(){ solving = false; setStatus('Solved'); } : null});
-    });
-    pump();
-  }
-
-  function scramble(){
-    if(solving) return;
-    var last = null;
-    for(var i=0;i<6;i++){
-      var m; do { m = {axis:AX[Math.floor(Math.random()*3)], layer:Math.floor(Math.random()*N)-H, dir:Math.random()<.5?1:-1}; }
-      while(last && m.axis === last.axis && m.layer === last.layer);
-      last = m; history.push(m); queue.push({m:m, ms: reduce ? 1 : TURN_MS});
+  /* ---------- scroll state ---------- */
+  function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+  function smooth(a, b, v){ var t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+  var w = 0, facePos = 0, active = -1;
+  function readScroll(){
+    var s = -story.getBoundingClientRect().top;
+    var introH = intro.offsetHeight || innerHeight;
+    var panelH = (panels[0] && panels[0].offsetHeight) || innerHeight;
+    w = smooth(0, introH * 0.85, s);
+    var fp = clamp((s - introH) / panelH, 0, panels.length - 1);
+    var i0 = Math.floor(fp);
+    facePos = Math.min(i0 + smooth(0.25, 0.75, fp - i0), panels.length - 1);
+    var a = w > 0.6 ? Math.round(fp) : -1;
+    if(a !== active){
+      active = a;
+      panels.forEach(function(p, i){ p.classList.toggle('on', i === a); });
     }
-    setStatus('Scrambled · ' + history.length + ' turns');
-    pump();
-    clearTimeout(idleTimer); idleTimer = setTimeout(solve, 6*TURN_MS + 700);
+    var blur = ((1 - w) * 12).toFixed(1);
+    if(stage._blur !== blur){ stage._blur = blur; stage.style.filter = blur > 0 ? 'blur(' + blur + 'px)' : ''; stage.style.opacity = (0.55 + 0.45 * w).toFixed(2); }
   }
 
-  function setStatus(){}
+  /* ---------- click a face: solve sequence, then dive into a tile ---------- */
+  var mode = 'scroll', busy = false, zoom = null, overlay = null, home = stage.parentNode;
+  var flood = null;
+  function goTo(i){
+    var href = panels[i] && panels[i].getAttribute('data-href');
+    if(!href || busy) return;
+    if(reduce){ location.hash = '#' + href; return; }
+    busy = true; mode = 'zoom';
+    document.documentElement.classList.add('cube-zoom');
+    // lift the canvas into a full-screen layer (the page's own animation would trap a fixed element)
+    overlay = document.createElement('div'); overlay.className = 'cube-overlay';
+    document.body.appendChild(overlay); overlay.appendChild(stage);
+    zoom = {t0: performance.now(), q0: cube.quaternion.clone(), q1: faceQ(i, true), flat: faceQ(i, false),
+            p0: cube.position.clone(), s0: cube.scale.x, dive: null};
+    // R U R' U' F, then undo it: a quick, recognisable solve that ends on the logo
+    var seq = [['x',2,1],['y',2,1],['x',2,-1],['y',2,-1],['z',2,1],['x',0,-1]].map(function(m){ return {axis:m[0], layer:m[1], dir:m[2]}; });
+    var undo = seq.slice().reverse().map(function(m){ return {axis:m.axis, layer:m.layer, dir:-m.dir}; });
+    runAll(seq.concat(undo)).then(function(){ dive(i, href); });
+  }
 
-  /* ---------- pointer ----------
-     Mouse: hover a tile to turn its slice; press and drag anywhere to rotate the cube.
-     Touch: swipe from a tile to turn slices; drag from the background to rotate. */
-  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
-  var lastSticker = null, lastX = 0, lastY = 0, vx = 0, vy = 0;
-  var rotating = false, spinV = {x:0, y:0}, tilt = {x:0, y:0}, touchTurning = false;
-  var ROT = 0.009, X_AXIS = new THREE.Vector3(1,0,0), Y_AXIS = new THREE.Vector3(0,1,0);
+  function dive(i, href){
+    // find the tile with the cube squared up to the camera, then put the tilt back for the turn-in
+    var keepQ = cube.quaternion.clone(), keepP = cube.position.clone(), keepS = cube.scale.x;
+    cube.quaternion.copy(zoom.flat); cube.position.set(0, 0, 0); cube.scale.setScalar(1);
+    cube.updateMatrixWorld(true);
+    // the coloured tile of that face nearest its centre
+    var best = null, bestD = 1e9, wp = new THREE.Vector3();
+    stickers.forEach(function(s){
+      if(s.userData.face !== i || s.userData.colour === WHITE) return;
+      s.getWorldPosition(wp);
+      var d = wp.x * wp.x + wp.y * wp.y;
+      if(d < bestD){ bestD = d; best = wp.clone(); }
+    });
+    cube.quaternion.copy(keepQ); cube.position.copy(keepP); cube.scale.setScalar(keepS);
+    zoom.dive = {t0: performance.now(), qFrom: keepQ, from: camera.position.clone(), to: best.clone().add(new THREE.Vector3(0, 0, 0.75)), look: best};
+    flood = document.createElement('div');
+    flood.className = 'cube-flood';
+    flood.style.background = '#' + FACE_COLOUR[i].toString(16).padStart(6, '0');
+    document.body.appendChild(flood);
+    setTimeout(function(){ flood.classList.add('in'); }, 380);
+    setTimeout(function(){
+      location.hash = '#' + href;
+      mode = 'scroll'; zoom = null; busy = false;
+      camera.position.set(0, 0, CAM_Z); camera.lookAt(0, 0, 0);
+      document.documentElement.classList.remove('cube-zoom');
+      home.appendChild(stage); overlay.remove(); overlay = null;
+      requestAnimationFrame(function(){ flood.classList.remove('in'); flood.classList.add('out'); });
+      setTimeout(function(){ if(flood){ flood.remove(); flood = null; } }, 700);
+    }, 900);
+  }
 
-  function hit(e){
-    var r = renderer.domElement.getBoundingClientRect();
+  /* ---------- pointer: point at a face, click to open it ---------- */
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), cvs = renderer.domElement;
+  function faceAt(e){
+    var r = cvs.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
     var h = ray.intersectObjects(stickers, false)[0];
-    return h || null;
+    return h && h.object.userData.face < 4 ? h.object.userData.face : -1;
   }
-
-  function moveFor(h, dx, dy){
-    // face normal and screen drag, both in the cube's own frame
-    var inv = cube.quaternion.clone().invert();
-    var n = new THREE.Vector3(0,0,1).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).applyQuaternion(inv);
-    var drag = new THREE.Vector3(dx, -dy, 0).applyQuaternion(camera.quaternion).applyQuaternion(inv);
-    var axisV = new THREE.Vector3().crossVectors(n, drag);
-    var abs = [Math.abs(axisV.x), Math.abs(axisV.y), Math.abs(axisV.z)];
-    var i = abs.indexOf(Math.max.apply(null, abs)), axis = AX[i];
-    if(abs[i] < 1e-6) return null;
-    return {axis:axis, layer:layerOf(h.object.parent, axis), dir: axisV[axis] > 0 ? 1 : -1};
-  }
-
-  /* rotate around the screen's axes, so dragging always moves the cube the way your hand moves */
-  function rotateBy(dx, dy){
-    var q = new THREE.Quaternion().setFromAxisAngle(Y_AXIS, dx * ROT)
-      .multiply(new THREE.Quaternion().setFromAxisAngle(X_AXIS, dy * ROT));
-    base.premultiply(q).normalize();
-  }
-
-  var cvs = renderer.domElement;
-  cvs.tabIndex = 0;
-  cvs.setAttribute('aria-label', 'ASAP cube. Drag to rotate, arrow keys to rotate, hover tiles to turn them.');
-  cvs.addEventListener('pointerdown', function(e){
-    lastX = e.clientX; lastY = e.clientY; vx = vy = 0; spinV.x = spinV.y = 0;
-    var h = hit(e);
-    if(e.pointerType !== 'mouse' && h){ touchTurning = true; lastSticker = h.object; return; }
-    rotating = true; tilt.x = tilt.y = 0;
-    cvs.classList.add('grabbing'); cvs.setPointerCapture(e.pointerId);
+  cvs.addEventListener('pointermove', function(e){ if(e.pointerType === 'mouse') cvs.style.cursor = !busy && faceAt(e) >= 0 ? 'pointer' : ''; });
+  cvs.addEventListener('click', function(e){ var f = faceAt(e); if(f >= 0) goTo(f); });
+  story.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[data-face]');
+    if(!a || reduce) return;
+    e.preventDefault(); e.stopPropagation();
+    goTo(+a.getAttribute('data-face'));
   });
-  function release(){
-    rotating = false; touchTurning = false; cvs.classList.remove('grabbing');
-  }
-  cvs.addEventListener('pointerup', release);
-  cvs.addEventListener('pointercancel', release);
-  cvs.addEventListener('pointerleave', function(){ if(!rotating){ lastSticker = null; tilt.x = tilt.y = 0; } });
-  cvs.addEventListener('pointermove', function(e){
-    var dx = e.clientX - lastX, dy = e.clientY - lastY;
-    lastX = e.clientX; lastY = e.clientY;
-    vx = vx*0.6 + dx*0.4; vy = vy*0.6 + dy*0.4;
-    if(rotating){
-      rotateBy(dx, dy);
-      spinV.x = dx; spinV.y = dy;
-      return;
-    }
-    if(e.pointerType === 'mouse'){
-      var r = cvs.getBoundingClientRect();
-      tilt.x = ((e.clientY - r.top) / r.height - .5) * 0.18;
-      tilt.y = ((e.clientX - r.left) / r.width - .5) * 0.25;
-    } else if(!touchTurning) return;
-    var h = hit(e);
-    var s = h ? h.object : null;
-    // gaps between tiles hit nothing, so remember the last real tile
-    if(s && s !== lastSticker && (Math.abs(vx) + Math.abs(vy)) > 1.5){
-      var m = moveFor(h, vx, vy);
-      if(m) turn(m);
-    }
-    if(s) lastSticker = s;
-  });
-  cvs.addEventListener('keydown', function(e){
-    var k = {ArrowLeft:[-14,0], ArrowRight:[14,0], ArrowUp:[0,-14], ArrowDown:[0,14]}[e.key];
-    if(k){ e.preventDefault(); rotateBy(k[0], k[1]); }
-  });
-
 
   /* ---------- render ---------- */
+  var onScreen = true;
   function resize(){
-    var w = stage.clientWidth, h = stage.clientHeight;
-    if(!w || !h) return;                               // hero hidden on other pages
-    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+    var w2 = stage.clientWidth, h2 = stage.clientHeight;
+    if(!w2 || !h2) return;
+    renderer.setSize(w2, h2, false); camera.aspect = w2 / h2; camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(stage); resize();
-  var onScreen = true;
-  if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen = es[0].isIntersecting; }).observe(stage);
-  var target = new THREE.Quaternion(), tiltQ = new THREE.Quaternion(), tiltE = new THREE.Euler();
-  (function loop(){
-    if(!rotating && !reduce && (Math.abs(spinV.x) + Math.abs(spinV.y)) > 0.05){
-      rotateBy(spinV.x, spinV.y);                        // a flick keeps spinning, then slows
-      spinV.x *= 0.92; spinV.y *= 0.92;
-    }
-    tiltQ.setFromEuler(tiltE.set(tilt.x, tilt.y, 0));
-    target.copy(base).premultiply(tiltQ);
-    if(reduce || rotating) cube.quaternion.copy(target);
-    else cube.quaternion.slerp(target, 0.12);
-    if(onScreen && stage.offsetWidth) renderer.render(scene, camera);
+  if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen = es[0].isIntersecting; }).observe(story);
+
+  var qIdle = new THREE.Quaternion(), qFace = new THREE.Quaternion(), qSpin = new THREE.Quaternion(), goal = new THREE.Quaternion();
+  var pos = new THREE.Vector3(), t0 = performance.now();
+  function ease(k){ return k < .5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3) / 2; }
+  (function loop(now){
     requestAnimationFrame(loop);
-  })();
+    if(!(onScreen || busy) || !stage.offsetWidth) return;
+    if(mode === 'scroll'){
+      readScroll();
+      var t = reduce ? 0 : (now - t0) / 1000;
+      qIdle.copy(ISO).premultiply(qSpin.setFromAxisAngle(SPIN_AXIS, t * 0.35));
+      var i0 = Math.floor(facePos), i1 = Math.min(i0 + 1, 3);
+      qFace.copy(FACE_TILTED[i0]).slerp(FACE_TILTED[i1], facePos - i0);
+      goal.copy(qIdle).slerp(qFace, w);
+      var visH = 2 * CAM_Z * Math.tan(Math.PI / 12), visW = visH * camera.aspect;
+      var narrow = innerWidth < 880;
+      pos.set(narrow ? 0 : -visW * 0.22 * w, narrow ? visH * 0.2 * w : 0, 0);
+      var sc = 1.2 + ((narrow ? 0.7 : 0.88) - 1.2) * w;
+      var k = reduce ? 1 : 0.14;
+      cube.quaternion.slerp(goal, k);
+      cube.position.lerp(pos, k);
+      cube.scale.setScalar(cube.scale.x + (sc - cube.scale.x) * k);
+    } else if(zoom){
+      var kz = ease(Math.min(1, (now - zoom.t0) / 700));
+      if(zoom.dive) cube.quaternion.copy(zoom.dive.qFrom).slerp(zoom.flat, ease(Math.min(1, (now - zoom.dive.t0) / 320)));
+      else cube.quaternion.copy(zoom.q0).slerp(zoom.q1, kz);
+      cube.position.copy(zoom.p0).lerp(pos.set(0, 0, 0), kz);
+      cube.scale.setScalar(zoom.s0 + (1 - zoom.s0) * kz);
+      if(zoom.dive){
+        var kd = Math.min(1, (now - zoom.dive.t0) / 650); kd = kd * kd * kd;
+        camera.position.copy(zoom.dive.from).lerp(zoom.dive.to, kd);
+        camera.lookAt(zoom.dive.look.x * kd, zoom.dive.look.y * kd, 0);
+      }
+    }
+    renderer.render(scene, camera);
+  })(t0);
 })();
 </script>
 <script>
