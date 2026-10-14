@@ -363,6 +363,7 @@
   @media(prefers-reduced-motion:reduce){.scroll-cue::after{animation:none}.panel-card{transition:none}}
 
   html.kb-nav .page{animation:none}
+  .zoom-flood{position:fixed;inset:0;z-index:300;pointer-events:none;opacity:0}
   .tx-pick{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:400;display:flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:calc(100% - 32px);padding:8px;background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--acid);font:600 12px/1.2 var(--body)}
   .tx-pick span{padding:0 6px;color:#B9B9C0}
   .tx-pick button{font:700 12px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;padding:9px 11px;border:1.5px solid #4A4A52;background:transparent;color:var(--paper);cursor:pointer}
@@ -375,7 +376,7 @@
 </head>
 <body>
 <div class="preview-bar">Transition demo · scroll to a package and click its button or cube face · not the live site</div>
-<div class="tx-pick" role="group" aria-label="Package transition"><span>Transition</span><button type="button" data-tx="land">A · Land on the badge</button><button type="button" data-tx="pull">B · Pull back from the badge</button></div>
+<div class="tx-pick" role="group" aria-label="Package transition"><span>Zoom in, zoom out</span><button type="button" data-tx="colour">1 · Through the colour</button><button type="button" data-tx="clean">2 · Straight zoom</button></div>
 <nav>
 <div class="wrap nav-in">
 <a aria-label="ASAP Assets home" class="brand" href="/">
@@ -1254,17 +1255,70 @@ Page: https://asapassets.com.au/personalised
     // R U R' U' F, then undo it: a quick, recognisable solve that ends on the logo
     var seq = [['x',2,1],['y',2,1],['x',2,-1],['y',2,-1],['z',2,1],['x',0,-1]].map(function(m){ return {axis:m[0], layer:m[1], dir:m[2]}; });
     var undo = seq.slice().reverse().map(function(m){ return {axis:m.axis, layer:m.layer, dir:-m.dir}; });
-    runAll(seq.concat(undo)).then(function(){ (TRANSITION === 'pull' ? pullBack : landOnBadge)(i, href); });
+    runAll(seq.concat(undo)).then(function(){ zoomThrough(i, href, TRANSITION !== 'clean'); });
   }
 
   /* ---------- Ken Burns transitions (demo: two options to compare) ---------- */
-  var TRANSITION = 'land';
-  try{ TRANSITION = localStorage.getItem('asap-transition') || 'land'; }catch(e){}
-  window.setCubeTransition = function(t){ TRANSITION = t; try{ localStorage.setItem('asap-transition', t); }catch(e){} };
+  var TRANSITION = 'colour';
+  try{ TRANSITION = localStorage.getItem('asap-zoom') || 'colour'; }catch(e){}
+  window.setCubeTransition = function(t){ TRANSITION = t; try{ localStorage.setItem('asap-zoom', t); }catch(e){} };
+
+  /* Zoom in, zoom out: the camera accelerates into a tile at the centre of the face; the package page then
+     decelerates out from the same point, so the two halves read as one continuous move.
+     withColour: the tile's colour fills the screen at the turning point and clears as the page zooms out. */
+  var IN_MS = 750, OUT_MS = 1000;
+  function zoomThrough(i, href, withColour){
+    // aim at the coloured tile nearest the centre of the face, measured with the face squared up
+    var keepQ = cube.quaternion.clone();
+    cube.quaternion.copy(zoom.flat); cube.position.set(0, 0, 0); cube.scale.setScalar(1); cube.updateMatrixWorld(true);
+    var best = null, bestD = 1e9, wp = new THREE.Vector3();
+    stickers.forEach(function(st){
+      if(st.userData.face !== i || st.userData.colour === WHITE) return;
+      st.getWorldPosition(wp); var d = wp.x * wp.x + wp.y * wp.y;
+      if(d < bestD){ bestD = d; best = wp.clone(); }
+    });
+    cube.quaternion.copy(keepQ);
+    zoom.through = {t0: performance.now(), q: keepQ, to: best.clone().add(new THREE.Vector3(0, 0, 0.6)), look: best};
+    var colour = '#' + FACE_COLOUR[i].toString(16).padStart(6, '0');
+    var flood = null;
+    if(withColour){
+      flood = document.createElement('div'); flood.className = 'zoom-flood'; flood.style.background = colour;
+      document.body.appendChild(flood);
+      flood.animate([{opacity:0}, {opacity:0, offset:.45}, {opacity:1}], {duration:IN_MS, easing:'ease-in', fill:'forwards'});
+    }
+    setTimeout(function(){
+      openPage(href);
+      requestAnimationFrame(function(){
+        var view = document.querySelector('.view:not([hidden])'), vr = view.getBoundingClientRect();
+        view.style.transformOrigin = (innerWidth / 2 - vr.left) + 'px ' + (innerHeight / 2 - vr.top) + 'px';
+        var out = view.animate([{transform:'scale(3.4)', opacity: withColour ? 1 : 0}, {opacity:1, offset:.3}, {transform:'scale(1)', opacity:1}],
+                               {duration:OUT_MS, easing:'cubic-bezier(.12,.7,.25,1)'});
+        if(flood){
+          finish();                                         // the colour covers the swap; drop the cube layer now
+          flood.animate([{opacity:1}, {opacity:0}], {duration:OUT_MS * .55, easing:'ease-out', fill:'forwards'})
+               .onfinish = function(){ flood.remove(); };
+        } else {
+          overlay.style.transition = 'background-color .25s ease, opacity .3s ease';
+          overlay.style.backgroundColor = 'rgba(255,255,255,0)'; overlay.style.opacity = '0';
+          setTimeout(finish, 320);
+        }
+        out.onfinish = function(){ view.style.transformOrigin = ''; };
+      });
+    }, IN_MS);
+  }
 
   function openPage(href){
-    document.documentElement.classList.add('kb-nav');          // no slide-in: the Ken Burns is the entrance
+    document.documentElement.classList.add('kb-nav');          // no slide-in: the zoom is the entrance
     location.hash = '#' + href;
+    setTimeout(function(){
+      // keep the slide-in off for this page only, then restore it once the visitor moves on
+      var pg = document.querySelector('.view:not([hidden]) .page');
+      if(pg){
+        pg.style.animation = 'none';
+        document.documentElement.classList.remove('kb-nav');
+        window.addEventListener('hashchange', function(){ pg.style.animation = ''; }, {once:true});
+      }
+    }, 0);
   }
   function liveBadge(){
     var v = document.querySelector('.view:not([hidden])');
@@ -1275,7 +1329,7 @@ Page: https://asapassets.com.au/personalised
     camera.position.set(0, 0, CAM_Z); camera.lookAt(0, 0, 0);
     stage.style.opacity = ''; stage.style.transition = '';
     document.documentElement.classList.remove('cube-zoom', 'kb-nav');
-    home.appendChild(stage); if(overlay){ overlay.remove(); overlay = null; }
+    home.appendChild(stage); stage.style.opacity = ''; if(overlay){ overlay.remove(); overlay = null; }
   }
 
   /* Option A: the page drifts in around the badge while the cube face glides down and settles onto it */
@@ -1419,14 +1473,19 @@ Page: https://asapassets.com.au/personalised
       cube.scale.setScalar(cube.scale.x + (sc - cube.scale.x) * k);
     } else if(zoom){
       var kz = ease(Math.min(1, (now - zoom.t0) / 700));
-      if(zoom.land){ /* handled below */ }
+      if(zoom.land || zoom.through){ /* handled below */ }
       else if(zoom.dive) cube.quaternion.copy(zoom.dive.qFrom).slerp(zoom.flat, ease(Math.min(1, (now - zoom.dive.t0) / 320)));
       else cube.quaternion.copy(zoom.q0).slerp(zoom.q1, kz);
       if(!zoom.land){
         cube.position.copy(zoom.p0).lerp(pos.set(0, 0, 0), kz);
         cube.scale.setScalar(zoom.s0 + (1 - zoom.s0) * kz);
       }
-      if(zoom.land){
+      if(zoom.through){
+        var kt = Math.min(1, (now - zoom.through.t0) / IN_MS), ki = kt * kt * kt;    // accelerate in
+        cube.quaternion.copy(zoom.through.q).slerp(zoom.flat, ease(Math.min(1, kt * 2.2)));
+        camera.position.set(zoom.through.to.x * ki, zoom.through.to.y * ki, CAM_Z + (zoom.through.to.z - CAM_Z) * ki);
+        camera.lookAt(zoom.through.look.x * ki, zoom.through.look.y * ki, 0);
+      } else if(zoom.land){
         var kl = ease(Math.min(1, (now - zoom.land.t0) / 1400)), f = fitFace(zoom.land.badge.getBoundingClientRect(), {});
         cube.quaternion.copy(zoom.land.q).slerp(zoom.flat, kl);
         cube.position.set(zoom.land.p.x + (f.x - zoom.land.p.x) * kl, zoom.land.p.y + (f.y - zoom.land.p.y) * kl, 0);
@@ -1476,7 +1535,7 @@ document.querySelectorAll('.js-book').forEach(function(el){
 
 /* ---------- demo: choose which transition to preview ---------- */
 (function(){
-  var cur = 'land'; try{ cur = localStorage.getItem('asap-transition') || 'land'; }catch(e){}
+  var cur = 'colour'; try{ cur = localStorage.getItem('asap-zoom') || 'colour'; }catch(e){}
   var btns = document.querySelectorAll('.tx-pick button');
   function mark(){ btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.tx === cur)); }); }
   btns.forEach(function(b){ b.addEventListener('click', function(){ cur = b.dataset.tx; if(window.setCubeTransition) setCubeTransition(cur); mark(); }); });
