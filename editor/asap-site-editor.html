@@ -73,9 +73,10 @@
   .nav-links a.nav-cta{padding:10px 14px}
   /* ASAP cubes + ASSETS: capitals as tall as the letters inside the cubes (cube minus its border; cap height = .68em),
      strokes as thick as one tile */
-  .brand{--s:34px;align-items:flex-end}
+  .brand{--s:34px;align-items:flex-end;gap:calc(var(--s) * .26)}
   .brand .logo{--s:inherit}
-  .brand-word{font-family:var(--display);font-weight:450;font-size:calc((var(--s) - 4px) / .68);line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-bottom:calc(2px - .175em)}
+  .brand-word{font-family:var(--display);font-weight:500;font-size:calc((var(--s) - 4px) / .68 * .9);-webkit-font-smoothing:auto;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-bottom:calc(2px - .175em)}
+  /* ASSETS: 90% of the cube-letter height, a word space from the cubes, weight 500 so strokes still match one tile */
   /* the call button: a green handset resting flat, BOOK A CALL written underneath */
   .nav-links a.nav-phone{display:inline-flex;flex-direction:column;align-items:center;padding:0;background:none;border:0;box-shadow:none}
   .nav-phone .handset{display:block;width:62px;height:auto;overflow:visible;fill:var(--green);stroke:var(--ink);stroke-width:12px;paint-order:stroke;margin-bottom:3px;position:relative;z-index:1;transition:transform .16s ease}
@@ -229,12 +230,12 @@
 
   /* clickable A·S·A·P cubes in the closing block */
   .cube-links{gap:26px;flex-wrap:wrap}
-  .cube-links .lc{cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .22s ease,box-shadow .22s ease;perspective:340px}
+  .cube-links .lc{cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.45);transition:transform .22s ease,box-shadow .22s ease;perspective:340px}
   /* hover: the cube lifts towards you; its shadow stays put on the page, so it shows further out from under the cube */
-  .cube-links .lc:hover,.cube-links .lc:focus-visible{transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--ink)}
-  .cube-links .lc:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .cube-links .lc:hover,.cube-links .lc:focus-visible{transform:translate(-4px,-4px);box-shadow:10px 10px 0 rgba(0,0,0,.28)}
+  .cube-links .lc:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,.55)}
   .cube-links .lc:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
-  @media(max-width:520px){.cube-links{gap:18px}.cube-links .lc{box-shadow:4px 4px 0 var(--ink)}}
+  @media(max-width:520px){.cube-links{gap:18px}.cube-links .lc{box-shadow:4px 4px 0 rgba(0,0,0,.45)}}
 
   /* split-flap: only the cream tiles flip, revealing an acid underside */
   .cube-links .lc i.k{position:relative;transform-style:preserve-3d;backface-visibility:hidden;
