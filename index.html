@@ -380,6 +380,10 @@
   .cube-overlay{position:fixed;inset:0;z-index:150;background:var(--paper)}
   .cube-overlay .cube-stage{filter:none!important}
   html.cube-zoom .story-flow{opacity:0;transition:opacity .25s}
+  html.page-zoom nav{backdrop-filter:none;background:var(--paper)}
+  /* during the 1.4s zoom only the first screen of the new page can be seen, so only that much is painted */
+  html.page-zoom .view:not([hidden]) .page{height:100vh;overflow:hidden}
+  html.page-zoom footer{display:none}
   .cube-flood{position:fixed;inset:0;z-index:300;opacity:0;pointer-events:none;transition:opacity .38s ease-in}
   .cube-flood.in{opacity:1}
   .cube-flood.out{opacity:0;transition:opacity .55s ease-out}
@@ -1171,7 +1175,7 @@ ASAP Agency members get member pricing on Personalised work.
 <div>
 <span aria-hidden="true" class="logo md"><span class="lc" style="--c:var(--red)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--blue)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i></span><span class="lc" style="--c:var(--green)"><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i></span><span class="lc" style="--c:var(--orange)"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i></i></span></span>
 <p class="foot-h">Solve it ASAP.</p>
-<div class="sub">Tell us where you're stuck and we'll find the right one.</div>
+<div class="sub">Tell us where you're stuck and we'll help you find the right solution.</div>
 <div class="social">
 <a aria-label="ASAP Assets on Instagram" class="social-btn" href="https://www.instagram.com/asapassetsau/" rel="noopener noreferrer" target="_blank">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="19" rx="5" width="19" x="2.5" y="2.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" fill="currentColor" r="1.25" stroke="none"></circle></svg>
@@ -1373,6 +1377,10 @@ ASAP Agency members get member pricing on Personalised work.
       var qx = tr.left + tr.width / 2 - br.left, qy = tr.top + tr.height / 2 - br.top;   // tile centre, in page coordinates
       var s0 = Math.max(innerWidth, innerHeight) / Math.min(tr.width, tr.height) * 1.3;
       var t0 = performance.now();
+      // Paint the page once, at normal size, as a single layer before the zoom starts; the zoom then just
+      // magnifies that picture instead of re-drawing the whole page ~100x larger every frame (the old lag).
+      // The nav's frosted-glass blur is switched off for the 1.4s too: it would be recalculated every frame.
+      document.documentElement.classList.add('page-zoom');
       body.style.transformOrigin = '0 0'; body.style.willChange = 'transform';
       function place(now){
         var k = Math.min(1, (now - t0) / OUT_MS), e = 1 - Math.pow(1 - k, 3);   // pull back, slowing as it settles
@@ -1381,12 +1389,16 @@ ASAP Agency members get member pricing on Personalised work.
         body.style.transform = 'translate(' + (cx - br.left - s * qx) + 'px,' + (cy - br.top - s * qy) + 'px) scale(' + s + ')';
         if(k < 1) return requestAnimationFrame(place);
         body.style.transform = ''; body.style.transformOrigin = ''; body.style.willChange = '';
+        document.documentElement.classList.remove('page-zoom');
         window.__asapZooming = false;
         window.dispatchEvent(new CustomEvent('asap:landed'));
       }
-      place(t0);
-      finish();                                                    // the tile now fills the screen: drop the cube layer
-      requestAnimationFrame(place);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){   // the cube still covers the screen while the layer is made
+        t0 = performance.now();
+        place(t0);
+        finish();                                                  // the tile now fills the screen: drop the cube layer
+        requestAnimationFrame(place);
+      }); });
     })();
   }
   function finish(){
