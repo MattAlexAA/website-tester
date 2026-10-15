@@ -99,7 +99,7 @@
   /* ---------- hero ---------- */
   header{position:relative;padding:76px 0 74px;overflow:hidden}
   header::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-    background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+    background:none}
   .hero{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
   .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(50px,8.6vw,100px);line-height:.86;letter-spacing:-.035em;text-transform:uppercase;color:var(--ink)}
   .hl{position:relative;display:inline-block;z-index:1;padding:0 .06em}
@@ -224,7 +224,7 @@
 
   /* ---------- closing ---------- */
   .final{position:relative;padding:92px 0;border-top:2px solid var(--ink);text-align:center;overflow:hidden}
-  .final::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .final::before{content:"";position:absolute;inset:0;pointer-events:none;background:none}
   .final-in{position:relative;z-index:1}
   .final .logo{justify-content:center;margin:0 auto 32px}
   .final h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,7.4vw,76px);line-height:.9;letter-spacing:-.032em;text-transform:uppercase;color:var(--ink)}
@@ -333,7 +333,7 @@
 
   /* ---------- homepage cube story: blurred cube behind the headline, then one face per panel ---------- */
   .cube-story{position:relative;border-bottom:2px solid var(--ink)}
-  .cube-story::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+  .cube-story::before{content:"";position:absolute;inset:0;pointer-events:none;background:none}
   .cube-sticky{position:sticky;top:0;height:100vh;z-index:0}
   .cube-stage{width:100%;height:100%;will-change:filter}
   .cube-stage canvas{display:block;width:100%;height:100%;outline:none}
