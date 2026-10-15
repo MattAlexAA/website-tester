@@ -75,8 +75,8 @@
      strokes as thick as one tile */
   .brand{--s:34px;align-items:flex-end;gap:calc(var(--s) * .26)}
   .brand .logo{--s:inherit}
-  .brand-word{font-family:var(--display);font-weight:500;font-size:calc((var(--s) - 4px) / .68 * .9);-webkit-font-smoothing:auto;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-bottom:calc(2px - .175em)}
-  /* ASSETS: 90% of the cube-letter height, a word space from the cubes, weight 500 so strokes still match one tile */
+  .brand-word{font-family:var(--display);font-weight:500;font-size:calc((var(--s) - 4px) / .68 * .81);-webkit-font-smoothing:auto;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-bottom:-.175em}
+  /* ASSETS: 81% of the cube-letter height, sitting on the bottom edge of the cubes, a word space away, weight 500 */
   /* the call button: a green handset resting flat, BOOK A CALL written underneath */
   .nav-links a.nav-phone{display:inline-flex;flex-direction:column;align-items:center;padding:0;background:none;border:0;box-shadow:none}
   .nav-phone .handset{display:block;width:62px;height:auto;overflow:visible;fill:var(--green);stroke:var(--ink);stroke-width:12px;paint-order:stroke;margin-bottom:3px;position:relative;z-index:1;transition:transform .16s ease}
@@ -255,10 +255,11 @@
   .foot{display:flex;justify-content:space-between;gap:34px;flex-wrap:wrap;align-items:flex-end}
   .foot .foot-h{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,44px);letter-spacing:-.03em;line-height:.95;text-transform:uppercase;color:var(--ink)}
   .foot .sub{color:var(--muted);font-size:14px;margin-top:10px;max-width:44ch}
-  .foot .legal{font-family:var(--px);font-size:8px;color:#7A7A80;line-height:2.2;margin-top:20px}
-  .foot-cta{font-family:var(--px);font-size:11px;background:var(--acid);color:var(--ink)!important;padding:15px 20px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);display:inline-block;cursor:pointer;transition:transform .1s,box-shadow .1s}
+  .foot .legal{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.04em;color:#7A7A80;line-height:1.9;margin-top:20px}
+  .foot-cta{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;background:var(--acid);color:var(--ink)!important;padding:15px 20px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);display:inline-block;cursor:pointer;transition:transform .1s,box-shadow .1s}
   .foot-cta:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
   .foot .logo{margin-bottom:22px}
+  .copyright{margin-top:40px;padding-top:18px;border-top:2px solid var(--rule);font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.04em;color:#7A7A80}
   .foot .social{display:flex;align-items:center;gap:10px;margin-top:20px}
   .social-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--ink);color:var(--ink);transition:transform .1s,box-shadow .1s,background .1s}
   .social-btn svg{width:20px;height:20px;display:block}
@@ -1169,10 +1170,11 @@ ASAP Agency members get member pricing on Personalised work.
 </a>
 </div>
 <div class="foot-links"><a href="/small-business">Small Business</a><a href="/marketing">Marketing</a><a href="/creators">Creators</a><a href="/personalised">Personalised</a><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/work">Our work</a><a href="/faq">FAQ</a><a href="/compare">Compare</a><a href="/can-i-use-chatgpt-for-content-ideas">ChatGPT or us?</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/pricing.md">Pricing (plain text)</a><a href="mailto:agency@asapassets.com.au">agency@asapassets.com.au</a></div>
-<div class="legal">ASAP ASSETS — MELBOURNE, AUSTRALIA<br>ABN 69 359 785 929<br>PRICES IN AUD — NO GST<br>agency@asapassets.com.au</div>
+<div class="legal">ASAP ASSETS — MELBOURNE, AUSTRALIA<br>ABN 69 359 785 929<br>agency@asapassets.com.au</div>
 </div>
 <a class="foot-cta js-book" data-pkg="Footer — general" href="https://calendly.com/asapassetsau/30min">Book a call →</a>
 </div>
+<div class="wrap"><p class="copyright">© Copyright ASAP Assets 2026</p></div>
 </footer>
 <script data-src async="" src="https://assets.calendly.com/assets/external/widget.js"></script>
 <script data-src src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
