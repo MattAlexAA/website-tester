@@ -84,12 +84,12 @@
   .brand-word{font-family:var(--display);font-weight:450;font-size:calc((var(--s) - 4px) / .68);line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-bottom:calc(2px - .175em)}
   /* the call button: a green handset resting flat, BOOK A CALL written underneath */
   .nav-links a.nav-phone{display:inline-flex;flex-direction:column;align-items:center;padding:0;background:none;border:0;box-shadow:none}
-  .nav-phone .handset{display:block;width:92px;height:auto;overflow:visible;fill:var(--green);stroke:var(--ink);stroke-width:7px;paint-order:stroke;filter:drop-shadow(2px 2px 0 var(--ink));margin-bottom:4px;position:relative;z-index:1;transition:transform .16s ease}
-  .nav-phone .phone-base{display:block;font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.06em;line-height:1;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+  .nav-phone .handset{display:block;width:62px;height:auto;overflow:visible;fill:var(--green);stroke:var(--ink);stroke-width:12px;paint-order:stroke;margin-bottom:3px;position:relative;z-index:1;transition:transform .16s ease}
+  .nav-phone .phone-base{display:block;font-family:var(--display);font-weight:800;font-size:9.5px;letter-spacing:.06em;line-height:1;text-transform:uppercase;color:var(--ink);white-space:nowrap}
   .nav-links a.nav-phone:hover{transform:none;box-shadow:none}
   .nav-links a.nav-phone:active{transform:translate(2px,2px)}
   /* picked up: the whole handset lifts, the ear end higher, like a real hand would */
-  .nav-phone:hover .handset,.nav-phone:focus-visible .handset{transform:translateY(-6px) rotate(-8deg)}
+  .nav-phone:hover .handset,.nav-phone:focus-visible .handset{transform:translateY(-4px) rotate(-8deg)}
   .nav-links a.px{white-space:nowrap}
   @media(max-width:1100px){.brand{--s:28px}.nav-links{gap:12px}.nav-links a.px:not(.nav-cta){font-size:12px}}
   @media(max-width:520px){.brand{--s:20px}}
@@ -236,8 +236,8 @@
   /* clickable A·S·A·P cubes in the closing block */
   .cube-links{gap:26px;flex-wrap:wrap}
   .cube-links .lc{cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .22s ease,box-shadow .22s ease;perspective:340px}
-  /* hover: the cube lifts off the page, so its hard shadow softens and fades away below it */
-  .cube-links .lc:hover,.cube-links .lc:focus-visible{transform:translate(-4px,-6px);box-shadow:12px 16px 22px rgba(0,0,0,0)}
+  /* hover: the cube lifts towards you; its shadow stays put on the page, so it shows further out from under the cube */
+  .cube-links .lc:hover,.cube-links .lc:focus-visible{transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--ink)}
   .cube-links .lc:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
   .cube-links .lc:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
   @media(max-width:520px){.cube-links{gap:18px}.cube-links .lc{box-shadow:4px 4px 0 var(--ink)}}
