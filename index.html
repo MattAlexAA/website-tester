@@ -80,12 +80,15 @@
   /* ASAP tile mark (top left) */
   .brand .asap-mark{height:40px;width:auto;display:block}
   /* the call button is an old desk phone: handset resting flat on a base that says BOOK A CALL */
-  .nav-links a.nav-phone{display:inline-flex;flex-direction:column;align-items:center;padding:0;background:none;border:0;box-shadow:none;filter:drop-shadow(3px 3px 0 var(--ink))}
-  .nav-phone .handset{display:block;width:104px;height:auto;fill:var(--ink);margin-bottom:-2px;position:relative;z-index:1;transition:transform .16s ease}
-  .nav-phone .phone-base{display:block;font-family:var(--display);font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);white-space:nowrap;padding:7px 20px 6px;
+  .nav-links a.nav-phone{display:inline-flex;flex-direction:column;align-items:center;padding:0;background:none;border:0;box-shadow:none}
+  .nav-phone .handset{display:block;width:92px;height:auto;fill:var(--ink);margin-bottom:3px;position:relative;z-index:1;transition:transform .16s ease}
+  .nav-phone .phone-base{display:block;font-family:var(--display);font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);white-space:nowrap;padding:7px 20px 6px;filter:drop-shadow(3px 3px 0 var(--ink));transition:filter .1s;
     background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'><path d='M15 1H85L99 29H1Z' fill='%2300C24A' stroke='%23000' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/></svg>") center/100% 100% no-repeat}
-  .nav-links a.nav-phone:hover{transform:translate(2px,2px);filter:drop-shadow(1px 1px 0 var(--ink))}
-  .nav-phone:hover .handset,.nav-phone:focus-visible .handset{transform:translateY(-3px) rotate(-5deg)}
+  .nav-links a.nav-phone:hover{transform:none;box-shadow:none}
+  .nav-links a.nav-phone:active{transform:translate(2px,2px)}
+  .nav-phone:active .phone-base{filter:drop-shadow(1px 1px 0 var(--ink))}
+  /* picked up: the whole handset lifts, the ear end higher, like a real hand would */
+  .nav-phone:hover .handset,.nav-phone:focus-visible .handset{transform:translateY(-6px) rotate(-8deg)}
   @media(max-width:520px){.brand .asap-mark{height:32px}}
   @media(max-width:820px){.nav-links{gap:14px}.nav-links a.px:not(.nav-cta){display:none}.brand .wm2{display:none}}
 
@@ -353,7 +356,8 @@
   .panel-card p{font-size:16px;color:#2C2C34}
   .panel-card .meta{margin:16px 0 24px;font-weight:700;color:var(--ink);padding-left:12px;border-left:4px solid var(--c)}
   /* panel buttons wear their cube colour; the arrow says click through */
-  .panel-card .btn-go{background:var(--c);color:var(--bt,var(--ink));margin-top:22px;text-align:left;line-height:1.25}
+  .panel-card .btn-go{background:var(--c);color:var(--bt,var(--ink));margin-top:22px;text-align:left;line-height:1.25;white-space:nowrap;gap:14px}
+  .panel-card .btn-go .bl{display:flex;flex-direction:column}
   .cube-story.no-3d .cube-sticky{display:none}
   .cube-story.no-3d .story-flow{margin-top:0}
   .cube-story.no-3d .panel-card{width:100%;max-width:640px}
@@ -365,7 +369,7 @@
     .panel-card h2{font-size:clamp(22px,6.4vw,30px);margin:6px 0 10px}
     .panel-card p{font-size:14px;line-height:1.45}
     .panel-card .meta{margin:10px 0 14px}
-    .panel-card .btn{font-size:14px;padding:13px 16px}
+    .panel-card .btn{font-size:13px;padding:13px 14px}
   }
   .cube-overlay{position:fixed;inset:0;z-index:150;background:var(--paper)}
   .cube-overlay .cube-stage{filter:none!important;opacity:1!important}
@@ -393,7 +397,7 @@
 <a class="px nl" data-page="creators" href="/creators">Creators</a>
 <a class="px nl" data-page="ai" href="/personalised">Personalised</a>
 <a class="px nl" data-page="work" href="/work">Our work</a>
-<a class="nav-cta nav-phone js-book" data-pkg="Nav — general" href="https://calendly.com/asapassetsau/30min"><svg aria-hidden="true" class="handset" viewBox="0 0 140 30"><path d="M3 27C1 27 0 25 1 22C3 15 6 8 11 5C15 3 20 2 26 2H114C120 2 125 3 129 5C134 8 137 15 139 22C140 25 139 27 137 27H109C106 27 105 25 106 22L108 15C106 12 103 10 99 10H41C37 10 34 12 32 15L34 22C35 25 34 27 31 27Z"/></svg><span class="phone-base">Book a call</span></a>
+<a class="nav-cta nav-phone js-book" data-pkg="Nav — general" href="https://calendly.com/asapassetsau/30min"><svg aria-hidden="true" class="handset" viewBox="0 0 416 148"><path d="M24.4 145.0C17.7 141.2 15.4 138.3 9.0 126.0C3.7 115.6 3.6 114.1 8.0 114.0C8.8 114.0 36.3 110.2 69.0 105.6C101.7 100.9 128.6 97.3 128.8 97.4C129.2 97.9 123.0 115.0 120.0 121.7C117.2 127.9 110.2 136.5 107.2 137.4C104.9 138.2 34.2 147.9 31.0 148.0C30.2 148.0 27.2 146.7 24.4 145.0ZM353.0 143.9C337.9 141.8 321.7 139.6 317.1 138.9C309.4 137.8 308.3 137.4 304.2 133.7C301.8 131.4 298.6 127.1 297.0 124.0C293.8 117.6 286.5 98.2 287.1 97.6C287.3 97.4 293.4 98.0 300.5 99.0C329.9 103.3 399.9 113.0 405.3 113.6C408.5 114.0 411.3 114.6 411.5 115.0C412.4 116.5 401.5 136.5 397.7 140.3C393.4 144.6 386.8 148.0 383.0 147.9C381.6 147.8 368.1 146.0 353.0 143.9ZM0.6 101.9C-0.9 94.3 1.1 79.9 5.1 69.8C9.5 58.5 19.4 46.3 30.0 39.0C45.2 28.6 75.3 16.3 99.4 10.5C129.5 3.4 151.9 1.0 195.5 0.3C260.4 -0.7 300.9 4.1 339.5 17.3C384.9 32.9 405.8 50.0 413.1 77.7C415.1 85.2 416.3 103.0 414.9 104.4C414.5 104.8 409.1 104.3 402.9 103.5C396.6 102.6 385.4 101.0 378.0 100.0C370.6 98.9 359.3 97.4 353.0 96.5C319.5 91.9 284.7 87.0 284.5 86.7C284.5 86.6 282.8 83.1 280.8 79.0C276.5 70.2 270.8 64.3 265.4 62.8C260.5 61.6 176.9 60.8 160.8 61.9C150.9 62.5 148.6 63.0 145.5 65.1C141.4 67.9 135.8 75.6 133.4 82.0C132.4 84.5 131.6 86.6 131.6 86.7C131.4 87.0 3.8 105.0 1.8 105.0C1.5 105.0 1.0 103.6 0.6 101.9Z"/></svg><span class="phone-base">Book a call</span></a>
 </div>
 </div>
 </nav>
@@ -418,7 +422,7 @@
 <p class="kbd">A — SMALL BUSINESS</p>
 <h2>For small businesses</h2>
 <p>Three-month packages built on our 40-concept method. Film it yourself or have us shoot it. Start where your time and budget sit today.</p>
-<a class="btn btn-go" data-face="0" href="/small-business">3-month small business packages from $1,000 →</a>
+<a class="btn btn-go" data-face="0" href="/small-business">3-month packages from $1,000 →</a>
 </div></div>
 </article>
 <article class="story-panel" data-href="/marketing" style="--c:var(--blue);--ct:var(--blue-t);--bt:#fff">
@@ -426,7 +430,7 @@
 <p class="kbd">S — MARKETING</p>
 <h2>Strategy, execution, concepts</h2>
 <p>Not just content ideas. We build your marketing strategy, map out exactly how to execute it, then bring it to life with concepts your team can film. Start with a 3-month package, then keep us on as your agency.</p>
-<a class="btn btn-go" data-face="1" href="/marketing">Marketing strategy $3,000 · agency from $500/mo →</a>
+<a class="btn btn-go" data-face="1" href="/marketing"><span class="bl"><span>Marketing strategy $3,000</span><span>Agency from $500/mo</span></span><span>→</span></a>
 </div></div>
 </article>
 <article class="story-panel" data-href="/creators" style="--c:var(--green);--ct:var(--green-t)">
@@ -442,7 +446,7 @@
 <p class="kbd">P — PERSONALISED</p>
 <h2>Personalised: shoots, AI and web</h2>
 <p>When a package won't cut it. Tell us what you need, and we'll scope it with you. Bespoke shoots, plus AI and website help, built on the same tools and thinking we use to run ASAP every day.</p>
-<a class="btn btn-go" data-face="3" href="/personalised">Personalised bespoke shoot days from $3,000 →</a>
+<a class="btn btn-go" data-face="3" href="/personalised">Personalised shoot days from $3,000 →</a>
 </div></div>
 </article>
 </div>
